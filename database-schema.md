@@ -5,12 +5,14 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 
 | Field| Type | Relation
 |----|---------- |-
-| uuid | string
+| uuid | VARCHAR(36)
 | username | string 
 | email_address | string 
-| hashed_password | string 
-| biography | string 
-| profile_picture | string (or maybe BLOB?)
+| password | string 
+| description | string 
+| profile_picture | (undecided)
+
+(all fields will be hashed with salts for sake of user security)
 
 ## user_follows
 
