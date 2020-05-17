@@ -13,7 +13,10 @@ An open source live streaming application that is developer-oriented and removes
 - React
 - React Native 
 - Go 
+- Go gin router
 - PostgreSQL
 - GraphQL
 - Docker
 - C (OBS integration)
+- WebRTC
+- TailwindCSS
