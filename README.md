@@ -10,8 +10,10 @@ An open source live streaming application that is developer-oriented and removes
 
 ## Tech Stack
 
-- React (the frontend; CSR)
-- React Native (the app's frontend framework)
-- Go (predominant backend language)
-- PostgreSQL (database server)
+- React
+- React Native 
+- Go 
+- PostgreSQL
 - GraphQL
+- Docker
+- C (OBS integration)
