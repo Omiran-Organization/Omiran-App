@@ -10,7 +10,7 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 | email | VARCHAR(255)
 | password | string 
 | description | string 
-| profile_picture | (undecided)
+| profile_picture | VARCHAR(2083)
 
 (all fields will be hashed with salts for sake of user security)
 
