@@ -14,7 +14,7 @@ An open source live streaming application that is developer-oriented and removes
 - React Native 
 - Go 
 - Go gin router
-- PostgreSQL
+- MySQL
 - GraphQL
 - Docker
 - C (OBS integration)
