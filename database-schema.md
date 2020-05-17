@@ -1,6 +1,5 @@
 # Database schema
-Eventually we will be making a proper database diagram using some tool. But this will suffice during the planning phase. 
-Strings will also need to be given a length limit.
+Eventually, we will be making a proper database diagram using some tool. But, this will suffice during the planning phase. 
 
 ## user
 | Field| Type | Relation
