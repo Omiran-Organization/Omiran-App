@@ -1,7 +1,8 @@
 # Database schema
 Eventually, we will be making a proper database diagram using some tool. But, this will suffice during the planning phase. 
 
-## user
+## User 
+
 | Field| Type | Relation
 |----|---------- |-
 | uuid | string
@@ -11,9 +12,8 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 | biography | string 
 | profile_picture | string (or maybe BLOB?)
 
-profile_picture holds the URL to the image on AWS s3 bucket.
-
 ## user_follows
+
 | Field | Type | Relation
 | -|-|-
 | follower | string | FK user.uuid
