@@ -7,9 +7,11 @@ An open source live streaming application that is developer-oriented and removes
 - FOSS
 - Live websocket stream chat
 - Live streaming and future quirk integration
+- 0% deduction in subscription revenue to streamer
 
 ## Tech Stack
 
+- NextJS
 - React
 - React Native 
 - Go 
