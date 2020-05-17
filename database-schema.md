@@ -7,7 +7,7 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 |----|---------- |-
 | uuid | VARCHAR(36)
 | username | string 
-| email_address | string 
+| email | VARCHAR(255)
 | password | string 
 | description | string 
 | profile_picture | (undecided)
