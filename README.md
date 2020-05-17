@@ -20,3 +20,7 @@ An open source live streaming application that is developer-oriented and removes
 - C (OBS integration)
 - WebRTC
 - TailwindCSS
+
+## Architecture And Design
+
+### [Database Schema](https://github.com/Omiran-Organization/Omiran-App/blob/master/database-schema.md)
