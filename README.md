@@ -11,6 +11,7 @@ An open source live streaming application that is developer-oriented and removes
 
 ## Tech Stack
 
+- NextJS
 - React
 - React Native 
 - Go 
