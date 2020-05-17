@@ -7,6 +7,8 @@ An open source live streaming application that is developer-oriented and removes
 - Live chat
 
 ## Tech Stack
-- React
-- React Native
-- Go
+- React (the frontend database)
+- React Native (the native apps framework)
+- Go (the backend)
+- PostGres (the database)
+- GraphQL
