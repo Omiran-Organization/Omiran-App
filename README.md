@@ -27,3 +27,7 @@ An open source live streaming application that is developer-oriented and removes
 ## Architecture And Design
 
 ### [Database Schema](https://github.com/Omiran-Organization/Omiran-App/blob/master/database-schema.md)
+
+## Todo list
+
+[Here](todo.md)
