@@ -6,10 +6,10 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 | Field| Type | Relation
 |----|---------- |-
 | uuid | VARCHAR(36)
-| username | string 
+| username | TEXT 
 | email | VARCHAR(255)
-| password | string 
-| description | string 
+| password | TEXT
+| description | TEXT 
 | profile_picture | VARCHAR(2083)
 
 (all fields will be hashed with salts for sake of user security)
