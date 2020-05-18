@@ -32,6 +32,6 @@ An open source live streaming application that is developer-oriented and removes
 
 ## Todo list
 
-### [Frontend](frontend.md)
+## [Frontend](frontend.md)
 
 ## [Backend](backend.md)
