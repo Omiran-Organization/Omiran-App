@@ -1,13 +1,13 @@
 type User {
-	uuid: String!,
-	username: String!,
-	email: String!,
-	password: String!,
-	description: String,
-	profile_picture: String
-} 
+  uuid: String!,
+  username: String!,
+  email: String!,
+  password: String!,
+  description: String,
+  profile_picture: String
+}
 
 type Follows {
-	uuid: String!,
-	user_following: String!
+  uuid: String!,
+  user_following: String!
 }
