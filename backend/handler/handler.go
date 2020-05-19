@@ -7,8 +7,5 @@ import (
 )
 
 func GraphQLService(c *gin.Context) {
-	fields := graphql.Fields{}
-	rootQuery := graphql.ObjectConfig{}
-	schemaConfig := graphql.SchemaConfig{}
-	schema, err := graphql.NewSchema()
+
 }
