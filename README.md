@@ -8,6 +8,7 @@ An open source live streaming application that is developer-oriented and removes
 - Live websocket stream chat
 - Live streaming and future quirk integration
 - 0% deduction in subscription revenue to streamer
+- User and livestream search yielding optimized responses using elasticsearch
 
 ## Tech Stack
 
