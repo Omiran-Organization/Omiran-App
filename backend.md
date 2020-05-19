@@ -12,7 +12,7 @@
 
 ## Database CRUD
    
-   1. Create database and prerequisite columns with `backend/database-boilerplate.sql`
+   1. Create database and prerequisite tables with `backend/database-boilerplate.sql`
    2. Connect to database via go server (will probably use a `.yml` config for credentials and other necessary data)
    
    
