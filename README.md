@@ -24,6 +24,7 @@ An open source live streaming application that is developer-oriented and removes
 - C (OBS integration)
 - WebRTC
 - TailwindCSS
+- Elasticsearch
 
 ## Architecture And Design
 
