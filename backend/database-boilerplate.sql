@@ -1,5 +1,5 @@
 CREATE DATABASE Omiran;
-USE DATABASE Omiran;
+USE Omiran;
 
 CREATE TABLE User ( 
   uuid VARCHAR(36) PRIMARY KEY, 
