@@ -30,7 +30,9 @@ An open source live streaming application that is developer-oriented and removes
 
 ### [Database Schema](database-schema.md)
 
-### [Architecture Schematics](architecture-prototypes)
+### [Chat Architecture](architecture-prototypes/chat.png)
+
+### [Graph-ql service](architecture-prototypes/view_data_querying_architecture.png)
 
 ## Todo list
 
