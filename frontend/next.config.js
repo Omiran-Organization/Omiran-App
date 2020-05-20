@@ -4,17 +4,17 @@ module.exports = {
 
     oldConfig.resolve.alias = {
       ...(config.resolve.alias || {}),
-      'react-native$': 'react-native-web',
+      "react-native$": "react-native-web",
     };
     oldConfig.resolve.extensions = [
-      '.web.js',
-      '.web.ts',
-      '.web.tsx',
+      ".web.js",
+      ".web.ts",
+      ".web.tsx",
       ...config.resolve.extensions,
     ];
 
     oldConfig.node = {
-      fs: 'empty',
+      fs: "empty",
     };
 
     return oldConfig;
