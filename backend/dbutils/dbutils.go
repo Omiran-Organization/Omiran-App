@@ -50,3 +50,9 @@ func Open(filename string) {
 		log.Fatalf("database connection error: %s\n", err)
 	}
 }
+
+func SelectAllUsers() []User {
+	users := []User{}
+	DB.Select(&users, "SELECT * FROM User")
+	return users
+}
