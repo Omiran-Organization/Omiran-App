@@ -5,7 +5,8 @@ CREATE TABLE User (
 	uuid VARCHAR(36) PRIMARY KEY,
 	username TEXT,
 	email VARCHAR(255),
-	password text,
+	password TEXT,
+	description TEXT,
 	profile_picture VARCHAR(2083)
 );
 

@@ -50,7 +50,3 @@ func Open(filename string) {
 		log.Fatalf("database connection error: %s\n", err)
 	}
 }
-
-func (*sqlx.DB) SelectAll() {
-
-}
