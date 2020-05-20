@@ -22,17 +22,17 @@ type DBConfig struct {
 }
 
 type User struct {
-	UUID           string `db:uuid`
-	Username       string `db:username`
-	Email          string `db:email`
-	Password       string `db:password`
-	Description    string `db:description`
-	ProfilePicture string `db:profile_picture`
+	UUID           string `db:"uuid"`
+	Username       string `db:"username"`
+	Email          string `db:"email"`
+	Password       string `db:"password"`
+	Description    string `db:"description"`
+	ProfilePicture string `db:"profile_picture"`
 }
 
 type Follows struct {
-	UUID          string `db:uuid`
-	UserFollowing string `db:user_following`
+	UUID          string `db:"uuid"`
+	UserFollowing string `db:"user_following"`
 }
 
 func Open(filename string) {
