@@ -22,17 +22,17 @@ type DBConfig struct {
 }
 
 type User struct {
-	UUID           string
-	Username       string
-	Email          string
-	Password       string
-	Description    string
-	ProfilePicture string
+	UUID           string `db:uuid`
+	Username       string `db:username`
+	Email          string `db:email`
+	Password       string `db:password`
+	Description    string `db:description`
+	ProfilePicture string `db:profile_picture`
 }
 
 type Follows struct {
-	UUID          string
-	UserFollowing string
+	UUID          string `db:uuid`
+	UserFollowing string `db:user_following`
 }
 
 func Open(filename string) {
@@ -49,4 +49,8 @@ func Open(filename string) {
 	if err != nil {
 		log.Fatalf("database connection error: %s\n", err)
 	}
+}
+
+func (*sqlx.DB) SelectAll() {
+
 }
