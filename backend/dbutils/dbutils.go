@@ -45,7 +45,7 @@ func Open(filename string) {
 	if err != nil {
 		log.Fatalf("unmarshalling problem: %s\n", err)
 	}
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("user=%s password=%s dbname=Omiran sslmode=enabled", infoStruct.User, infoStruct.Password))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%d)/Omiran", infoStruct.User, infoStruct.Password, infoStruct.Port))
 	if err != nil {
 		log.Fatalf("database connection error: %s\n", err)
 	}
