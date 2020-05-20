@@ -56,3 +56,9 @@ func SelectAllUsers() []User {
 	DB.Select(&users, "SELECT * FROM User")
 	return users
 }
+
+func SelectAllFollows() []Follows {
+	follows := []Follows{}
+	DB.Select(&follows, "SELECT * FROM Follows;")
+	return follows
+}
