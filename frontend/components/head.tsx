@@ -1,12 +1,18 @@
 import React from "react";
 import NextHead from "next/head";
-import { string } from "prop-types";
 
 const defaultDescription = "";
 const defaultOGURL = "";
 const defaultOGImage = "";
 
-const Head = (props) => (
+type HeadProps = {
+  title: string;
+  description: string;
+  url: string;
+  ogImage: string;
+};
+
+const Head: React.FunctionComponent<HeadProps> = (props) => (
   <NextHead>
     <meta charSet="UTF-8" />
     <title>{props.title || ""}</title>
@@ -33,12 +39,5 @@ const Head = (props) => (
     <meta property="og:image:height" content="630" />
   </NextHead>
 );
-
-Head.propTypes = {
-  title: string,
-  description: string,
-  url: string,
-  ogImage: string,
-};
 
 export default Head;
