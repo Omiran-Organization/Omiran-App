@@ -25,6 +25,7 @@ An open source live streaming application that is developer-oriented and removes
 - WebRTC
 - TailwindCSS
 - Elasticsearch
+- Redis (caching)
 
 ## Architecture And Design
 
@@ -32,7 +33,7 @@ An open source live streaming application that is developer-oriented and removes
 
 ### [Chat Architecture](architecture-prototypes/chat.png)
 
-### [Graph-ql service](architecture-prototypes/view_data_querying_architecture.png)
+### [GraphQL service](architecture-prototypes/view_data_querying_architecture.png)
 
 ## Todo list
 
