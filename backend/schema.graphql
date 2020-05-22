@@ -1,7 +1,7 @@
 type User {
   uuid: String!,
-  username: String!,
-  email: String!,
+  username: String,
+  email: String,
   password: String!,
   description: String,
   profile_picture: String
