@@ -11,6 +11,32 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+var userType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "User",
+		Fields: graphql.Fields{
+			"uuid": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"username": &graphql.Field{
+				Type: graphql.String,
+			},
+			"email": &graphql.Field{
+				Type: graphql.String,
+			},
+			"password": &graphql.Field{
+				Type: graphql.String,
+			},
+			"description": &graphql.Field{
+				Type: graphql.String,
+			},
+			"profile_picture": &graphql.Field{
+				Type: graphql.String,
+			},
+		},
+	},
+)
+
 func GraphQLService(c *gin.Context) {
 
 }
@@ -31,7 +57,7 @@ func processQuery(query string) (result string) {
 func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
 	fields := &graphql.Fields{
 		"Users": &graphql.Field{
-			Type:        graphql.NewList(dbutils.User),
+			Type:        graphql.NewList(userType),
 			Description: "All Users",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				return user, nil
