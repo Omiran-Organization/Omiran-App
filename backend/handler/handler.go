@@ -10,7 +10,9 @@ import (
 )
 
 func GraphQLService(c *gin.Context) {
-
+	if c.Request.Body == nil {
+		c.Error("404")
+	}
 }
 
 func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
