@@ -37,6 +37,20 @@ var userType = graphql.NewObject(
 	},
 )
 
+var followsType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "Follows",
+		Fields: graphql.Fields{
+			"uuid": &graphql.Field{
+				Type: graphql.String,
+			},
+			"user_following": &graphql.Field{
+				Type: graphql.String,
+			},
+		},
+	},
+)
+
 func GraphQLService(c *gin.Context) {
 
 }
@@ -64,7 +78,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 			},
 		},
 		"Follows": &graphql.Field{
-			Type:        graphql.NewList(dbutils.Follows),
+			Type:        graphql.NewList(followsType),
 			Description: "All follows",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				return follows, nil
