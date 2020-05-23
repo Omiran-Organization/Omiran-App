@@ -59,6 +59,6 @@ func SelectAllUsers() []User {
 
 func SelectAllFollows() []Follows {
 	follows := []Follows{}
-	DB.Select(&follows, "SELECT * FROM Follows;")
+	DB.Select(&follows, "SELECT * FROM Follows")
 	return follows
 }
