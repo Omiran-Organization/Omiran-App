@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/internal/json"
 	"github.com/graphql-go/graphql"
 )
 
@@ -50,7 +51,12 @@ var followsType = graphql.NewObject(
 )
 
 func GraphQLService(c *gin.Context) {
-
+	var rBody string
+	err := json.NewDecoder(c.Request.Body).Decode(&rBody)
+	if err != nil {
+		log.Fatalf("Error parsing JSON request body %s", err)
+	}
+	c.JSON(200, processQuery(rBody))
 }
 
 func processQuery(query string) *graphql.Result {
