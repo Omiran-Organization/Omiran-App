@@ -13,6 +13,6 @@ func init() {
 
 func main() {
 	r := gin.Default()
-	r.GET("/graphql", handler.GraphQLService)
+	r.POST("/graphql", handler.GraphQLService)
 	r.Run()
 }
