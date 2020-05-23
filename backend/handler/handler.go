@@ -2,11 +2,11 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
+	"encoding/json"
 
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/internal/json"
 	"github.com/graphql-go/graphql"
 )
 
