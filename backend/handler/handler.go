@@ -23,9 +23,6 @@ var userType = graphql.NewObject(
 			"email": &graphql.Field{
 				Type: graphql.String,
 			},
-			"password": &graphql.Field{
-				Type: graphql.String,
-			},
 			"description": &graphql.Field{
 				Type: graphql.String,
 			},
