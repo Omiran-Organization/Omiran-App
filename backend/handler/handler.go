@@ -50,6 +50,7 @@ var followsType = graphql.NewObject(
 	},
 )
 
+// Handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var rBody string
 	err := json.NewDecoder(c.Request.Body).Decode(&rBody)
