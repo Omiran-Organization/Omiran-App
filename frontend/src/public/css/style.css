@@ -16,12 +16,16 @@
   @apply bg-blue-700;
 }
 
+.btn-disabled {
+  @apply bg-gray-300 text-white;
+}
+
 .input {
   @apply bg-white border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal;
 }
 
-.input:focus {
-  @apply outline-none shadow-outline;
+.input-error {
+  @apply border-2 border-red-500;
 }
 
 @tailwind utilities;
