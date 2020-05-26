@@ -1,10 +1,9 @@
 import * as React from "react";
 
 const SignupPage: React.FunctionComponent = () => (
-  <div className="flex flex-col justify-center items-center h-screen w-4/5 md:w-2/5 mx-auto">
-    <h1 className="text-blue-500 text-4xl font-bold text-center leading-none">
-      Omiran
-    </h1>
+  <div className="flex flex-col items-center h-screen w-4/5 md:w-2/5 mx-auto">
+    <div className="flex-grow-2" />
+    <h1 className="text-blue-500 text-4xl font-bold leading-none">Omiran</h1>
     <h3 className="text-blue-500 text-sm mb-2">
       The Open Source Streaming Platform
     </h3>
@@ -25,6 +24,7 @@ const SignupPage: React.FunctionComponent = () => (
     </label>
     <input className="input w-full mb-2" type="text" id="confirm-password-input" />
     <button className="btn btn-blue self-start">Signup</button>
+    <div className="flex-grow-3" />
   </div>
 );
 
