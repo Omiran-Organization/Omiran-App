@@ -17,7 +17,11 @@
 }
 
 .btn-disabled {
-  @apply bg-gray-300 text-white;
+  @apply bg-gray-300 text-white cursor-default;
+}
+
+.btn-large {
+  @apply py-4 px-8 text-lg;
 }
 
 .input {

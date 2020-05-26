@@ -5,6 +5,9 @@
     "paths": {
       "@/components/*": [
         "components/*"
+      ],
+      "@/types/*": [
+        "types/*"
       ]
     },
     "jsx": "preserve",

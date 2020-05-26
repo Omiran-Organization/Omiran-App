@@ -1,5 +1,6 @@
-import Link from "next/link";
 import * as React from "react";
+
+import Link from "next/link";
 
 const Nav: React.FunctionComponent = () => (
   <div className="fixed flex flex-row items-center h-30 w-screen p-3">

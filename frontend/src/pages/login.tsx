@@ -1,13 +1,21 @@
 import * as React from "react";
 
+import Head from "next/head";
+import { useRouter } from "next/router";
+
 import PasswordInput from "@/components/input/passwordinput";
 
 const LoginPage: React.FunctionComponent = () => {
+  const router = useRouter();
+
   const [emailAddressOrUsername, setEmailAddressOrUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   return (
     <div className="flex flex-col items-center h-screen w-4/5 md:w-2/5 mx-auto">
+      <Head>
+        <title>Login - Omiran</title>
+      </Head>
       <div className="flex-grow-2" />
       <h1 className="text-blue-500 text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-blue-500 text-sm mb-3">
@@ -40,7 +48,12 @@ const LoginPage: React.FunctionComponent = () => {
           id: "password-input",
         }}
       />
-      <button className="btn btn-blue self-start">Login</button>
+      <button
+        className="btn btn-blue self-start"
+        onClick={(): Promise<boolean> => router.push("/profile")}
+      >
+        Login
+      </button>
       <div className="flex-grow-3" />
     </div>
   );

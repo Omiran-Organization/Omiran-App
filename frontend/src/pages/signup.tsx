@@ -1,4 +1,7 @@
 import * as React from "react";
+
+import Head from "next/head";
+
 import PasswordInput from "@/components/input/passwordinput";
 
 const emailAddressRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -25,6 +28,9 @@ const SignupPage: React.FunctionComponent = () => {
 
   return (
     <div className="flex flex-col items-center h-screen w-4/5 md:w-2/5 mx-auto">
+      <Head>
+        <title>Signup - Omiran</title>
+      </Head>
       <div className="flex-grow-2" />
       <h1 className="text-blue-500 text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-blue-500 text-sm mb-2">
@@ -89,7 +95,9 @@ const SignupPage: React.FunctionComponent = () => {
         >
           Signup
         </button>
-        <span className="text-red-500">{ !arePasswordsMatching ? "Passwords do not match." : "" }</span>
+        <span className="text-red-500">
+          {!arePasswordsMatching ? "Passwords do not match." : ""}
+        </span>
       </div>
       <div className="flex-grow-3" />
     </div>
