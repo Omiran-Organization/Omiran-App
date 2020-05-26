@@ -20,3 +20,4 @@ yarn-error.log*
 
 # workspace
 .vscode
+.idea

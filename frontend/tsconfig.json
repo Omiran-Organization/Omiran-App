@@ -1,7 +1,7 @@
 {
   "strict": true,
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "@/components/*": [
         "components/*"
@@ -26,7 +26,7 @@
     "isolatedModules": true
   },
   "include": [
-    "./components/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"
