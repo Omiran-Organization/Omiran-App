@@ -19,10 +19,17 @@ const SignupPage: React.FunctionComponent = () => (
       Password
     </label>
     <input className="input w-full mb-1" type="password" id="password-input" />
-    <label className="text-blue-500 w-full pl-1" htmlFor="confirm-password-input">
+    <label
+      className="text-blue-500 w-full pl-1"
+      htmlFor="confirm-password-input"
+    >
       Confirm Password
     </label>
-    <input className="input w-full mb-2" type="text" id="confirm-password-input" />
+    <input
+      className="input w-full mb-2"
+      type="password"
+      id="confirm-password-input"
+    />
     <button className="btn btn-blue self-start">Signup</button>
     <div className="flex-grow-3" />
   </div>
