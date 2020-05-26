@@ -19,6 +19,8 @@ const ProfilePage: React.FunctionComponent = () => {
         data={{
           username: username as string,
           profilePicture: "https://picsum.photos/100",
+          following: 5,
+          followers: 10,
         }}
       />
       <div className="flex-grow-3" />
