@@ -62,3 +62,18 @@ func SelectAllFollows() []Follows {
 	DB.Select(&follows, "SELECT * FROM Follows")
 	return follows
 }
+
+func CreateUser(username, email, password, description, profilePicture string) {
+	user := &User{
+		Username:       username,
+		Email:          email,
+		Password:       password,
+		Description:    description,
+		ProfilePicture: profilePicture,
+	}
+	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User VALUES (username, email, password, description, profile_picture) (%s)", user.Username, user.Email, user.Password, user.Description, user.ProfilePicture))
+	if err != nil {
+		log.Fatalf("Prepare err: %s\n", err)
+	}
+	query.Exec()
+}
