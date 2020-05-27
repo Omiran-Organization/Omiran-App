@@ -1,13 +1,13 @@
 module.exports = {
-  purge: [],
+  purge: ["./src/**/*.tsx"],
   theme: {
     fontFamily: {
       Inter: ["Inter", "Sans-serif"],
     },
-    colors: {
-      white: "#FFFFFF",
-      blue: "#3349FF",
-      black: "#213436",
+    flexGrow: {
+      default: 1,
+      "2": 2,
+      "3": 3,
     },
   },
   variants: {},

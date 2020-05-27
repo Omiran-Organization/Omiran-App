@@ -1,10 +1,13 @@
 {
   "strict": true,
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "@/components/*": [
         "components/*"
+      ],
+      "@/types/*": [
+        "types/*"
       ]
     },
     "jsx": "preserve",
@@ -26,7 +29,7 @@
     "isolatedModules": true
   },
   "include": [
-    "./components/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"
