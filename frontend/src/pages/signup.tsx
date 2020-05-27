@@ -27,22 +27,20 @@ const SignupPage: React.FunctionComponent = () => {
     arePasswordsMatching;
 
   return (
-    <div className="flex flex-col items-center h-screen w-4/5 md:w-2/5 mx-auto">
+    <div className="main flex flex-col items-center w-4/5 md:w-2/5 mx-auto">
       <Head>
         <title>Signup - Omiran</title>
       </Head>
       <div className="flex-grow-2" />
-      <h1 className="text-blue-500 text-4xl font-bold leading-none">Omiran</h1>
-      <h3 className="text-blue-500 text-sm mb-2">
-        The Open Source Streaming Platform
-      </h3>
-      <label className="text-blue-500 w-full pl-1" htmlFor="email-input">
+      <h1 className="text-4xl font-bold leading-none">Omiran</h1>
+      <h3 className="text-sm mb-2">The Open Source Streaming Platform</h3>
+      <label className="w-full pl-1" htmlFor="email-input">
         Email
       </label>
       <input
         className={`input ${
           !isEmailAddressValid && emailAddress.length > 0 ? "input-error" : ""
-        } w-full mb-1`}
+        } w-full mb-2`}
         type="email"
         value={emailAddress}
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
@@ -50,11 +48,11 @@ const SignupPage: React.FunctionComponent = () => {
         }
         id="email-input"
       />
-      <label className="text-blue-500 w-full pl-1" htmlFor="username-input">
+      <label className="w-full pl-1" htmlFor="username-input">
         Username
       </label>
       <input
-        className="input w-full mb-1"
+        className="input w-full mb-2"
         type="text"
         value={username}
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
@@ -62,11 +60,11 @@ const SignupPage: React.FunctionComponent = () => {
         }
         id="username-input"
       />
-      <label className="text-blue-500 w-full pl-1" htmlFor="password-input">
+      <label className="w-full pl-1" htmlFor="password-input">
         Password
       </label>
       <PasswordInput
-        containerProps={{ className: "mb-1" }}
+        containerProps={{ className: "mb-2" }}
         inputProps={{
           value: password,
           onChange: (e: React.ChangeEvent<HTMLInputElement>): void =>
@@ -74,14 +72,11 @@ const SignupPage: React.FunctionComponent = () => {
           id: "password-input",
         }}
       />
-      <label
-        className="text-blue-500 w-full pl-1"
-        htmlFor="password-confirmation-input"
-      >
+      <label className="w-full pl-1" htmlFor="password-confirmation-input">
         Confirm Password
       </label>
       <PasswordInput
-        containerProps={{ className: "mb-1" }}
+        containerProps={{ className: "mb-3" }}
         inputProps={{
           value: passwordConfirmation,
           onChange: (e: React.ChangeEvent<HTMLInputElement>): void =>
@@ -91,7 +86,7 @@ const SignupPage: React.FunctionComponent = () => {
       />
       <div className="flex flex-row items-center w-full">
         <button
-          className={`btn ${isFormComplete ? "btn-blue" : "btn-disabled"} mr-4`}
+          className={`btn ${isFormComplete ? "btn-orange" : "btn-disabled"} mr-4`}
         >
           Signup
         </button>

@@ -5,19 +5,27 @@
 @tailwind components;
 
 .btn {
-  @apply font-bold py-2 px-4 rounded;
+  @apply py-2 px-4 rounded;
 }
 
-.btn-blue {
-  @apply bg-blue-500 text-white;
+.btn-orange {
+  @apply bg-orange-500 text-black;
 }
 
-.btn-blue:hover {
-  @apply bg-blue-700;
+.btn-orange:hover {
+  @apply bg-orange-600;
 }
 
 .btn-disabled {
-  @apply bg-gray-300 text-white cursor-default;
+  @apply bg-gray-400 text-white cursor-default;
+}
+
+.btn-outlined {
+  @apply border-2 border-black text-black;
+}
+
+.btn-outlined:hover {
+  @apply bg-black text-white;
 }
 
 .btn-large {
@@ -25,15 +33,23 @@
 }
 
 .input {
-  @apply bg-white border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal;
+  @apply block text-black bg-white border border-gray-300 rounded-lg py-2 px-4 appearance-none leading-normal;
 }
 
 .input-error {
   @apply border-2 border-red-500;
 }
 
+.main {
+  @apply mt-20;
+  min-height: calc(100vh - 5rem);
+}
+
 @tailwind utilities;
 
 html {
   font-family: "Inter", sans-serif;
+  background-color: #1a202c;
+  color: white;
 }
+

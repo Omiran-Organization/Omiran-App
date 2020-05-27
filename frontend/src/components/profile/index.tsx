@@ -24,7 +24,9 @@ const ProfileComponent: React.FunctionComponent<ProfileComponentProps> = ({
           width={100}
         />
         <div className="flex flex-col">
-          <h1 className="text-3xl text-left">{username}</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl text-left">
+            {username}
+          </h1>
           <div className="flex flex-row">
             <span className="text-sm mr-3">
               <b>{followers}</b> Followers
@@ -35,7 +37,7 @@ const ProfileComponent: React.FunctionComponent<ProfileComponentProps> = ({
           </div>
         </div>
         <div className="flex-grow" />
-        <button className="btn btn-blue btn-large">
+        <button className="btn btn-orange">
           {isLoggedIn ? "Edit Profile" : "Follow"}
         </button>
       </div>

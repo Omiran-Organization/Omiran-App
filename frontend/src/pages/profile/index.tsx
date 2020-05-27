@@ -8,7 +8,7 @@ const MyProfilePage: React.FunctionComponent = () => {
   const username = "Your Username Here";
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-4/5 lg:w-1/2 mx-auto text-center">
+    <div className="main flex flex-col justify-center items-center w-11/12 lg:w-1/2 mx-auto text-center">
       <Head>
         <title>{username} - Omiran</title>
       </Head>

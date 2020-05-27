@@ -8,23 +8,20 @@ import PasswordInput from "@/components/input/passwordinput";
 const LoginPage: React.FunctionComponent = () => {
   const router = useRouter();
 
-  const [emailAddressOrUsername, setEmailAddressOrUsername] = React.useState("");
+  const [emailAddressOrUsername, setEmailAddressOrUsername] = React.useState(
+    ""
+  );
   const [password, setPassword] = React.useState("");
 
   return (
-    <div className="flex flex-col items-center h-screen w-4/5 md:w-2/5 mx-auto">
+    <div className="main flex flex-col items-center w-4/5 md:w-2/5 mx-auto">
       <Head>
         <title>Login - Omiran</title>
       </Head>
       <div className="flex-grow-2" />
-      <h1 className="text-blue-500 text-4xl font-bold leading-none">Omiran</h1>
-      <h3 className="text-blue-500 text-sm mb-3">
-        The Open Source Streaming Platform
-      </h3>
-      <label
-        className="text-blue-500 w-full pl-1"
-        htmlFor="email-username-input"
-      >
+      <h1 className="text-4xl font-bold leading-none">Omiran</h1>
+      <h3 className="text-sm mb-3">The Open Source Streaming Platform</h3>
+      <label className="w-full pl-1" htmlFor="email-username-input">
         Email / Username
       </label>
       <input
@@ -36,7 +33,7 @@ const LoginPage: React.FunctionComponent = () => {
         }
         id="email-username-input"
       />
-      <label className="text-blue-500 w-full pl-1" htmlFor="password-input">
+      <label className="w-full pl-1" htmlFor="password-input">
         Password
       </label>
       <PasswordInput
@@ -49,7 +46,7 @@ const LoginPage: React.FunctionComponent = () => {
         }}
       />
       <button
-        className="btn btn-blue self-start"
+        className="btn btn-orange self-start"
         onClick={(): Promise<boolean> => router.push("/profile")}
       >
         Login
