@@ -33,6 +33,7 @@ type User struct {
 	ProfilePicture string `db:"profile_picture" json:"profile_picture"`
 }
 
+// Follows is a sqlx database Follows table abstraction struct
 type Follows struct {
 	UUID          string `db:"uuid" json:"uuid"`
 	UserFollowing string `db:"user_following" json:"user_following"`
