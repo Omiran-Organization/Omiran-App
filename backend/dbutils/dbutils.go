@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	// DB is an instance of sqlx.DB
 	DB *sqlx.DB
 )
 
