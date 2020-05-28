@@ -63,7 +63,7 @@ func SelectAllFollows() []Follows {
 	return follows
 }
 
-func (u *User) CreateUser() {
+func (u *User) Create() {
 	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (%s, %s, %s, %s, %s, %s)", u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture))
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
@@ -71,7 +71,7 @@ func (u *User) CreateUser() {
 	query.Exec()
 }
 
-func (f *Follows) CreateFollows() {
+func (f *Follows) Create() {
 	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES (%s, %s)", f.UUID, f.UserFollowing))
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
