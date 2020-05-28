@@ -72,16 +72,16 @@ func SelectAllFollows() []Follows {
 
 // Create creates a new User row
 func (u *User) Create() {
-	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (%s, %s, %s, %s, %s, %s)", u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture))
+	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  ('%s', '%s', '%s', '%s', '%s', '%s')", u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture))
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
 	}
 	query.Exec()
 }
 
-// Create creates a new Follows row 
+// Create creates a new Follows row
 func (f *Follows) Create() {
-	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO Follows (uuid, user_following) VALUES (%s, %s)", f.UUID, f.UserFollowing))
+	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO Follows (uuid, user_following) VALUES ('%s', '%s')", f.UUID, f.UserFollowing))
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
 	}
