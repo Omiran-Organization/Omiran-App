@@ -23,6 +23,7 @@ type DBConfig struct {
 	Port     uint32 `yaml:"port"`
 }
 
+// User is a sqlx database User table abstraction struct
 type User struct {
 	UUID           string `db:"uuid" json:"uuid"`
 	Username       string `db:"username" json:"username"`
