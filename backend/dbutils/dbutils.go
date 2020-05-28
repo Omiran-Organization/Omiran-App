@@ -39,6 +39,7 @@ type Follows struct {
 	UserFollowing string `db:"user_following" json:"user_following"`
 }
 
+// Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
 func Open(filename string) {
 	infoStruct := &DBConfig{}
 	file, err := ioutil.ReadFile(filename)
