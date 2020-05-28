@@ -79,6 +79,7 @@ func (u *User) Create() {
 	query.Exec()
 }
 
+// Create creates a new Follows row 
 func (f *Follows) Create() {
 	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO Follows (uuid, user_following) VALUES (%s, %s)", f.UUID, f.UserFollowing))
 	if err != nil {
