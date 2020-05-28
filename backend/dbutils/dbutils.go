@@ -56,6 +56,7 @@ func Open(filename string) {
 	}
 }
 
+// SelectAllUsers returns all Users from the User table
 func SelectAllUsers() []User {
 	users := []User{}
 	DB.Select(&users, "SELECT * FROM User")
