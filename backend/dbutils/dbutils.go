@@ -70,6 +70,7 @@ func SelectAllFollows() []Follows {
 	return follows
 }
 
+// Create creates a new User row
 func (u *User) Create() {
 	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (%s, %s, %s, %s, %s, %s)", u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture))
 	if err != nil {
