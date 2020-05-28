@@ -80,7 +80,7 @@ func (u *User) Create() {
 }
 
 func (f *Follows) Create() {
-	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES (%s, %s)", f.UUID, f.UserFollowing))
+	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO Follows (uuid, user_following) VALUES (%s, %s)", f.UUID, f.UserFollowing))
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
 	}
