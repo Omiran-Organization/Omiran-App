@@ -15,6 +15,7 @@ var (
 	DB *sqlx.DB
 )
 
+// DBConfig is a database configuration abstraction struct
 type DBConfig struct {
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
