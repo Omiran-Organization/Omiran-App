@@ -88,6 +88,7 @@ func (f *Follows) Create() {
 	query.Exec()
 }
 
+// Auth checks to see if a row exists with certain user credentials
 func (u *User) Auth() error {
 	err := DB.Select(&u, fmt.Sprintf("SELECT * FROM User WHERE email=%s AND WHERE password=%s", u.Email, u.Password))
 	return err
