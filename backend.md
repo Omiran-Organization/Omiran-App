@@ -2,8 +2,8 @@
 
 ## GraphQL Service (frontend queries it)
 
-  [x] Go server with MySQL database transactions serving graphql
-  [] Elasticsearch support for stream/user search
+  - [x] Go server with MySQL database transactions serving graphql
+  - [] Elasticsearch support for stream/user search
 
 ## CI/CD 
 
