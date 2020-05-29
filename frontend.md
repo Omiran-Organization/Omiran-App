@@ -21,17 +21,17 @@
 
 ## Footer
 
-### [ ] Site logo
+### Site logo
 
-- A footer logo
+- [ ] A footer logo
 
-### [ ] Social Media Buttons
+### Social Media Buttons
 
 - [ ] Facebook
 - [ ] Instagram
 - [ ] Twitter
 
-### [ ] Footer links and Text
+### Footer links and Text
 
 All Rights Reserved
 - Terms of Service
