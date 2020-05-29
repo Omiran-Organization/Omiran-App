@@ -31,5 +31,6 @@
   3. [ ] Implement emote support
   4. [ ] Implement message deletion by moderator
   5. [ ] Implement special icons for admins in chat (backend involvement will be necessary for this)
+  6. [ ] Somewhere down the line, implement hype train stuff + integrated GIFs/chat animations?!
   
   
