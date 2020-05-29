@@ -4,34 +4,34 @@
 
 ### Site 
 
-A logo or a text
+- [ ] A logo or a text
 
 ### Navigation Bar
 
-- Sign up
-- Login
+- [ ] Sign up
+- [ ] Login
 
 ## Main
 
 ### Hero
 
-Contains the search box only
+- [ ] Contains the search box only
 
 ### Popular Streams
 
 ## Footer
 
-### Site logo
+### [ ] Site logo
 
-A footer logo
+- A footer logo
 
-### Social Media Buttons
+### [ ] Social Media Buttons
 
-- Facebook
-- Instagram
-- Twitter
+- [ ] Facebook
+- [ ] Instagram
+- [ ] Twitter
 
-### Footer links and Text
+### [ ] Footer links and Text
 
 All Rights Reserved
 - Terms of Service
