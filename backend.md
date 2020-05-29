@@ -24,3 +24,12 @@
   4. [ ] Implement auth resolution feature
   5. [ ] Allow users to choose reception resolution
   
+## Stream Chat
+
+  1. [ ] Implement stream chat with websocket
+  2. [ ] Implement unicode/utf-8 support (for emotes)
+  3. [ ] Implement emote support
+  4. [ ] Implement message deletion by moderator
+  5. [ ] Implement special icons for admins in chat (backend involvement will be necessary for this)
+  
+  
