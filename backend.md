@@ -16,4 +16,8 @@
    2. [x] Connect to database via go server (will probably use a `.yml` config for credentials and other necessary data)
    3. [x] Perform Read and Write of data from both tables with successful struct scanning for programmatic use of data
    
-   
+## Live Streaming Service
+
+  1. [ ] Implement OBS integration
+  2. [ ] Implement connection to backend service with something similar to Twitch's streamkey solution
+  
