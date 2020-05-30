@@ -93,3 +93,8 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 	}
 	return schema
 }
+
+func AccountCreationHandler(c *gin.Context) {
+	userIntermediary := &dbutils.User{Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
+	userIntermediary.Create()
+}
