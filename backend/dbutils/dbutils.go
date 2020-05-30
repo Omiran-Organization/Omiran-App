@@ -36,8 +36,8 @@ type User struct {
 
 // Follows is a sqlx database Follows table abstraction struct
 type Follows struct {
-	UUID          string `db:"uuid" json:"uuid"`
-	UserFollowing string `db:"user_following" json:"user_following"`
+	UUID          uuid.UUID `db:"uuid" json:"uuid"`
+	UserFollowing string    `db:"user_following" json:"user_following"`
 }
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
