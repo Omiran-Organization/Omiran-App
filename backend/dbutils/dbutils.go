@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
+	uuid "github.com/satori/go.uuid"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/yaml.v2"
@@ -25,12 +26,12 @@ type DBConfig struct {
 
 // User is a sqlx database User table abstraction struct
 type User struct {
-	UUID           string `db:"uuid" json:"uuid"`
-	Username       string `db:"username" json:"username"`
-	Email          string `db:"email" json:"email"`
-	Password       string `db:"password" json:"password"`
-	Description    string `db:"description" json:"description"`
-	ProfilePicture string `db:"profile_picture" json:"profile_picture"`
+	UUID           uuid.UUID `db:"uuid" json:"uuid"`
+	Username       string    `db:"username" json:"username"`
+	Email          string    `db:"email" json:"email"`
+	Password       string    `db:"password" json:"password"`
+	Description    string    `db:"description" json:"description"`
+	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
 }
 
 // Follows is a sqlx database Follows table abstraction struct
