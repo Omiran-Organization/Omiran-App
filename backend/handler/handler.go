@@ -95,6 +95,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 	return schema
 }
 
+// AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
 func AccountCreationHandler(c *gin.Context) {
 	u, err := uuid.NewV4()
 	if err != nil {
