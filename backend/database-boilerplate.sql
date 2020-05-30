@@ -2,7 +2,7 @@ CREATE DATABASE Omiran;
 USE Omiran;
 
 CREATE TABLE User (
-	uuid VARCHAR(35) PRIMARY KEY,
+	uuid VARCHAR(36) PRIMARY KEY,
 	username TEXT,
 	email VARCHAR(255),
 	password TEXT NOT NULL,
