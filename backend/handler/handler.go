@@ -2,13 +2,14 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
+	"database/sql"
 	"encoding/json"
 
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var userType = graphql.NewObject(
@@ -103,4 +104,14 @@ func AccountCreationHandler(c *gin.Context) {
 	}
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
 	userIntermediary.Create()
+}
+
+func AuthHandler(c *gin.Context) {
+	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
+	err := userIntermediary.Auth()
+	if err != nil && err != sql.ErrNoRows {
+		log.Fatalf("user auth err %s\n", err)
+	} else if err == sql.ErrNoRows {
+		// refuse user access (heavily integrated on frontend); for auth eventually we'll add tokens/cookies
+	}
 }
