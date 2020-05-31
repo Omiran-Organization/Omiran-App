@@ -12,6 +12,7 @@ An open source live streaming application that is developer-oriented and removes
 
 ## Tech Stack
 
+- MinIO
 - NextJS
 - React
 - React Native 
