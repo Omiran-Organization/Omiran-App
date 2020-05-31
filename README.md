@@ -37,8 +37,10 @@ An open source live streaming application that is developer-oriented and removes
 
 ### [Auth architecture](architecture-prototypes/auth-architecture.png)
 
+### [Streaming Architecture](architecture-prototypes/streaming.png)
+
 ## Todo list
 
-## [Frontend](frontend.md)
+### [Frontend](frontend.md)
 
-## [Backend](backend.md)
+### [Backend](backend.md)
