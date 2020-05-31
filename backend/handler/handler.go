@@ -113,5 +113,7 @@ func AuthHandler(c *gin.Context) {
 		log.Fatalf("user auth err %s\n", err)
 	} else if err == sql.ErrNoRows {
 		// refuse user access (heavily integrated on frontend); for auth eventually we'll add tokens/cookies
+	} else {
+		// allow access
 	}
 }
