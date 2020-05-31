@@ -106,6 +106,7 @@ func AccountCreationHandler(c *gin.Context) {
 	userIntermediary.Create()
 }
 
+// AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
 	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
 	err := userIntermediary.Auth()
