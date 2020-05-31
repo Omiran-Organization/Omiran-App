@@ -12,7 +12,6 @@ An open source live streaming application that is developer-oriented and removes
 
 ## Tech Stack
 
-- MinIO 
 - NextJS
 - React
 - React Native 
@@ -22,7 +21,7 @@ An open source live streaming application that is developer-oriented and removes
 - GraphQL
 - Docker
 - C (OBS integration)
-- WebRTC
+- RTMP
 - TailwindCSS
 - Elasticsearch
 - Redis (caching)
