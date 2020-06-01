@@ -5,10 +5,10 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 
 | Field| Type | Relation
 |----|---------- |-
-| uuid | VARCHAR(36)
+| uuid | VARCHAR(36) PRIMARY KEY
 | username | TEXT 
 | email | VARCHAR(255)
-| password | TEXT
+| password | TEXT NOT NULL
 | description | TEXT 
 | profile_picture | VARCHAR(2083)
 
@@ -18,8 +18,8 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 
 | Field | Type | Relation
 | -|-|-
-| uuid | VARCHAR(36) | FK User.uuid
-| user_following | VARCHAR(36) | FK User.uuid
+| uuid | FOREIGN KEY VARCHAR(36) NOT NULL | FK User.uuid
+| user_following | VARCHAR(36) NOT NULL | FK User.uuid
 
 **uuid** is the person following **user_following**.
 The relationship in the `Follows` table, follows a one to one schema. 
