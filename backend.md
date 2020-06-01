@@ -40,3 +40,4 @@
 ## Object transactions
 
   1. [ ] Implement MinIO client for profile picture implementation
+  2. [ ] Implement link storage in profile_picture column for easy image attainment
