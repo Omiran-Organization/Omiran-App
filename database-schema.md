@@ -18,7 +18,7 @@ Eventually, we will be making a proper database diagram using some tool. But, th
 
 | Field | Type | Relation
 | -|-|-
-| uuid | FOREIGN KEY VARCHAR(36) NOT NULL | FK User.uuid
+| uuid | VARCHAR(36) NOT NULL | FK User.uuid
 | user_following | VARCHAR(36) NOT NULL | FK User.uuid
 
 **uuid** is the person following **user_following**.
