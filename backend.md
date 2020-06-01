@@ -36,4 +36,7 @@
 ## Auth system
 
   1. [x] Implement login system on backend 
-  
+
+## Object transactions
+
+  1. [ ] Implement MinIO client for profile picture implementation
