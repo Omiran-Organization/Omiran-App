@@ -36,8 +36,6 @@ An open source live streaming application that is developer-oriented and removes
 
 ### [GraphQL service](architecture-prototypes/view_data_querying_architecture.png)
 
-### [Auth architecture](architecture-prototypes/auth-architecture.png)
-
 ### [Streaming Architecture](architecture-prototypes/streaming.png)
 
 ## Todo list
