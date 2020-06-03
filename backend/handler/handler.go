@@ -17,7 +17,7 @@ var userType = graphql.NewObject(
 		Name: "User",
 		Fields: graphql.Fields{
 			"uuid": &graphql.Field{
-				Type: graphql.Int,
+				Type: graphql.String,
 			},
 			"username": &graphql.Field{
 				Type: graphql.String,
@@ -79,6 +79,15 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				return user, nil
 			},
 		},
+		// "User": &graphql.Field{
+		// 	Type: userType,
+		// 	Description: "get users by any field",
+		// 	Args: graphql.FieldConfigArgument{
+		// 		"uuid": &graphql.ArgumentConfig {
+		// 			Type: graphql.String,
+		// 		},
+		// 	},
+		// },
 		"Follows": &graphql.Field{
 			Type:        graphql.NewList(followsType),
 			Description: "All follows",
