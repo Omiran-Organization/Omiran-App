@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var userType = graphql.NewObject(
@@ -79,15 +79,27 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				return user, nil
 			},
 		},
-		// "User": &graphql.Field{
-		// 	Type: userType,
-		// 	Description: "get users by any field",
-		// 	Args: graphql.FieldConfigArgument{
-		// 		"uuid": &graphql.ArgumentConfig {
-		// 			Type: graphql.String,
-		// 		},
-		// 	},
-		// },
+		"User": &graphql.Field{
+			Type:        userType,
+			Description: "get users by any field",
+			Args: graphql.FieldConfigArgument{
+				"uuid": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"username": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"email": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"description": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"profile_picture": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+		},
 		"Follows": &graphql.Field{
 			Type:        graphql.NewList(followsType),
 			Description: "All follows",
