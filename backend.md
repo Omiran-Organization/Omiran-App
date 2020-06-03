@@ -9,6 +9,7 @@
 
    1. [ ] Dockerize application monolithically
    2. [ ] Integrate test automation and deploy automation scripts
+   3. [x] Implement localhost automation scripts
 
 ## Database CRUD
    
