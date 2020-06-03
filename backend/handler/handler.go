@@ -81,7 +81,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 		},
 		"User": &graphql.Field{
 			Type:        userType,
-			Description: "get users by any field",
+			Description: "get users by any field (except password)",
 			Args: graphql.FieldConfigArgument{
 				"uuid": &graphql.ArgumentConfig{
 					Type: graphql.String,
