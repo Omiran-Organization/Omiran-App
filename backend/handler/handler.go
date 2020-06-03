@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var userType = graphql.NewObject(
@@ -98,10 +98,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
 func AccountCreationHandler(c *gin.Context) {
-	u, err := uuid.NewV4()
-	if err != nil {
-		log.Fatalf("uuid generation error %s\n", err)
-	}
+	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
 	userIntermediary.Create()
 }
