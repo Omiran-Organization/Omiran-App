@@ -107,6 +107,18 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				return follows, nil
 			},
 		},
+		"Follow": &graphql.Field{
+			Type:        followsType,
+			Description: "get follows by any field",
+			Args: graphql.FieldConfigArgument{
+				"uuid": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"user_following": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
+		},
 	}
 	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
 	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
