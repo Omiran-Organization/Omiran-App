@@ -136,6 +136,6 @@ func AuthHandler(c *gin.Context) {
 	} else if err == sql.ErrNoRows {
 		c.String(401, "unauthorized")
 	} else {
-		// allow access
+		c.String(200, "example content blah blah blah")
 	}
 }
