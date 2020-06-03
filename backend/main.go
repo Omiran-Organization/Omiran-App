@@ -15,5 +15,6 @@ func main() {
 	r := gin.Default()
 	r.POST("/graphql", handler.GraphQLService)
 	r.POST("/create", handler.AccountCreationHandler)
+	r.POST("/auth", handler.AuthHandler)
 	r.Run()
 }
