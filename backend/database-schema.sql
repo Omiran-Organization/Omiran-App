@@ -3,8 +3,8 @@ USE Omiran;
 
 CREATE TABLE User (
 	uuid VARCHAR(36) PRIMARY KEY,
-	username TEXT,
-	email VARCHAR(255),
+	username TEXT NOT NULL,
+	email VARCHAR(255) NOT NULL,
 	password TEXT NOT NULL,
 	description TEXT,
 	profile_picture VARCHAR(2083)
