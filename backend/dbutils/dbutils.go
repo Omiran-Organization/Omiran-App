@@ -1,6 +1,7 @@
 package dbutils
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -37,7 +38,7 @@ type User struct {
 // Follows is a sqlx database Follows table abstraction struct
 type Follows struct {
 	UUID          uuid.UUID `db:"uuid" json:"uuid"`
-	UserFollowing string    `db:"user_following" json:"user_following"`
+	UserFollowing uuid.UUID `db:"user_following" json:"user_following"`
 }
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
@@ -81,12 +82,19 @@ func (u *User) Create() {
 }
 
 // Create creates a new Follows row
-func (f *Follows) Create() {
-	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO Follows (uuid, user_following) VALUES ('%s', '%s')", f.UUID, f.UserFollowing))
+func (f *Follows) Create() error {
+	// REPLACE so it doesn't fail if it already exist. If it already exist we can just return success again. INSERT ... ON DUPLICATE KEY UPDATE could also be used, but it doesn't matter since the keys are the only values.
+	query, err := DB.Prepare(fmt.Sprintf("REPLACE INTO Follows (uuid, user_following) VALUES ('%s', '%s')", f.UUID, f.UserFollowing))
 	if err != nil {
-		log.Fatalf("Prepare err: %s\n", err)
+		log.Printf("Prepare err: %s\n", err)
+		return errors.New("SQL statement error")
 	}
-	query.Exec()
+	_, err2 := query.Exec()
+	if err2 != nil {
+		log.Printf("Error inserting follower: %s\n", err2)
+		return errors.New("User or followee does not exist")
+	}
+	return nil
 }
 
 // Auth checks to see if a row exists with certain user credentials
