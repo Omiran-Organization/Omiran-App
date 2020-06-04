@@ -74,24 +74,22 @@ func SelectAllFollows() []Follows {
 
 // Create creates a new User row
 func (u *User) Create() {
-	query, err := DB.Prepare(fmt.Sprintf("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  ('%s', '%s', '%s', '%s', '%s', '%s')", u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture))
+	query, err := DB.Prepare("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatalf("Prepare err: %s\n", err)
 	}
-	query.Exec()
+	query.Exec(u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture)
 }
 
 // Create creates a new Follows row
 func (f *Follows) Create() error {
 	// REPLACE so it doesn't fail if it already exist. If it already exist we can just return success again. INSERT ... ON DUPLICATE KEY UPDATE could also be used, but it doesn't matter since the keys are the only values.
-	query, err := DB.Prepare(fmt.Sprintf("REPLACE INTO Follows (uuid, user_following) VALUES ('%s', '%s')", f.UUID, f.UserFollowing))
+	query, err := DB.Prepare("REPLACE INTO Follows (uuid, user_following) VALUES (?, ?)")
 	if err != nil {
-		log.Printf("Prepare err: %s\n", err)
 		return errors.New("SQL statement error")
 	}
-	_, err2 := query.Exec()
+	_, err2 := query.Exec(f.UUID, f.UserFollowing)
 	if err2 != nil {
-		log.Printf("Error inserting follower: %s\n", err2)
 		return errors.New("User or followee does not exist")
 	}
 	return nil

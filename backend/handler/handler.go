@@ -141,7 +141,6 @@ func StartFollowingHandler(c *gin.Context) {
 	var follow dbutils.Follows
 	err := c.BindJSON(&follow)
 	if err != nil {
-		log.Printf("WARNING: Invalid data in StartFollowingHandler: %s\n", err)
 		c.String(400, "Bad format. Expected {\"uuid\": user_uuid, \"user_following\": followee_id}")
 		return
 	}
