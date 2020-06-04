@@ -27,6 +27,7 @@ An open source live streaming application that is developer-oriented and removes
 - Elasticsearch
 - Redis (caching)
 - SocketIO
+- Bash
 
 ## Architecture And Design
 
