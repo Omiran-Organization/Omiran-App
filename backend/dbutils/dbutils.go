@@ -26,12 +26,21 @@ type DBConfig struct {
 	Port     uint32 `yaml:"port"`
 }
 
-// User is a sqlx database User table abstraction struct
-type User struct {
+// UserAccount is a sqlx database User table abstraction struct
+// Use this ONLY when password field is NEEDED.
+type UserAccount struct {
 	UUID           uuid.UUID `db:"uuid" json:"uuid"`
 	Username       string    `db:"username" json:"username"`
 	Email          string    `db:"email" json:"email"`
 	Password       string    `db:"password" json:"password"`
+	Description    string    `db:"description" json:"description"`
+	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
+}
+
+// User is for when you need information about a user.
+type User struct {
+	UUID           uuid.UUID `db:"uuid" json:"uuid"`
+	Username       string    `db:"username" json:"username"`
 	Description    string    `db:"description" json:"description"`
 	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
 }
@@ -62,14 +71,14 @@ func Open(filename string) {
 // SelectAllUsers returns all Users from the User table
 func SelectAllUsers() []User {
 	users := []User{}
-	DB.Select(&users, "SELECT * FROM User")
+	DB.Select(&users, "SELECT uuid, username, description, profile_picture FROM User")
 	return users
 }
 
 // SelectAllFollows returns all Follows from the Follows table
 func SelectAllFollows() []Follows {
 	follows := []Follows{}
-	DB.Select(&follows, "SELECT * FROM Follows")
+	DB.Select(&follows, "SELECT uuid, user_following FROM Follows")
 	return follows
 }
 
@@ -81,7 +90,7 @@ type Username struct {
 }
 
 // Create creates a new User row
-func (u *User) Create() error {
+func (u *UserAccount) Create() error {
 	var count Username
 	err := DB.Get(&count, "SELECT username FROM User WHERE username = ? LIMIT 1", u.Username)
 
@@ -104,18 +113,20 @@ func (u *User) Create() error {
 func (f *Follows) Create() error {
 	// REPLACE so it doesn't fail if it already exist. If it already exist we can just return success again. INSERT ... ON DUPLICATE KEY UPDATE could also be used, but it doesn't matter since the keys are the only values.
 	query, err := DB.Prepare("REPLACE INTO Follows (uuid, user_following) VALUES (?, ?)")
+	defer query.Close()
 	if err != nil {
 		return errors.New("SQL statement error")
 	}
-	_, err2 := query.Exec(f.UUID, f.UserFollowing)
-	if err2 != nil {
+	_, err = query.Exec(f.UUID, f.UserFollowing)
+	if err != nil {
 		return errors.New("User or followee does not exist")
 	}
 	return nil
 }
 
 // Auth checks to see if a row exists with certain user credentials
-func (u *User) Auth() error {
-	err := DB.Get(u, "SELECT * FROM User WHERE email = ? AND password = ?", u.Email, u.Password)
-	return err
+func (u *UserAccount) Auth() (User, error) {
+	var userInfo User
+	err := DB.Get(&userInfo, "SELECT uuid, username, description, profile_picture FROM User WHERE email = ? AND password = ?", u.Email, u.Password)
+	return userInfo, err
 }
