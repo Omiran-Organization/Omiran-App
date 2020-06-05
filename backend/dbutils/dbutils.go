@@ -1,6 +1,7 @@
 package dbutils
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -81,9 +82,10 @@ type Username struct {
 
 // Create creates a new User row
 func (u *User) Create() error {
-	count := []Username{}
-	DB.Select(&count, "SELECT username FROM User WHERE username = ? LIMIT 1", u.Username)
-	if len(count) != 0 {
+	var count Username
+	err := DB.Get(&count, "SELECT username FROM User WHERE username = ? LIMIT 1", u.Username)
+
+	if err != sql.ErrNoRows {
 		return errors.New("Username taken")
 	}
 
@@ -114,6 +116,6 @@ func (f *Follows) Create() error {
 
 // Auth checks to see if a row exists with certain user credentials
 func (u *User) Auth() error {
-	err := DB.Select(&u, fmt.Sprintf("SELECT * FROM User WHERE email='%s' AND WHERE password='%s'", u.Email, u.Password))
+	err := DB.Get(u, "SELECT * FROM User WHERE email = ? AND password = ?", u.Email, u.Password)
 	return err
 }
