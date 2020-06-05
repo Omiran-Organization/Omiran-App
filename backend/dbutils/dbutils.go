@@ -72,13 +72,30 @@ func SelectAllFollows() []Follows {
 	return follows
 }
 
+// Username is used for extracting usernames from the database.
+// To optimize the SELECT we only extract the fields needed.
+// This is for the User.Create() below.
+type Username struct {
+	Username string `db:"username"`
+}
+
 // Create creates a new User row
-func (u *User) Create() {
-	query, err := DB.Prepare("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (?, ?, ?, ?, ?, ?)")
-	if err != nil {
-		log.Fatalf("Prepare err: %s\n", err)
+func (u *User) Create() error {
+	count := []Username{}
+	DB.Select(&count, "SELECT username FROM User WHERE username = ? LIMIT 1", u.Username)
+	if len(count) != 0 {
+		return errors.New("Username taken")
 	}
-	query.Exec(u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture)
+
+	query, err := DB.Prepare("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (?, ?, ?, ?, ?, ?)")
+	defer query.Close()
+
+	if err != nil {
+		// log.Fatalf("Prepare err: %s\n", err)
+		return err
+	}
+	_, err = query.Exec(u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture)
+	return nil
 }
 
 // Create creates a new Follows row
