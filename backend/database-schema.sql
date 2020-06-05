@@ -13,7 +13,7 @@ CREATE TABLE User (
 CREATE TABLE Follows (
 	uuid VARCHAR(36) NOT NULL,
 	user_following VARCHAR(36) NOT NULL,
-	FOREIGN KEY (uuid) REFERENCES User(uuid),
-	FOREIGN KEY (user_following) REFERENCES User(uuid),
+	FOREIGN KEY (uuid) REFERENCES User(uuid) ON DELETE CASCADE,
+	FOREIGN KEY (user_following) REFERENCES User(uuid) ON DELETE CASCADE,
 	PRIMARY KEY (uuid, user_following)
 );
