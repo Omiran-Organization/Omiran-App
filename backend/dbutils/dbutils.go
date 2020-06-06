@@ -1,7 +1,6 @@
 package dbutils
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -82,30 +81,25 @@ func SelectAllFollows() []Follows {
 	return follows
 }
 
-// Username is used for extracting usernames from the database.
-// To optimize the SELECT we only extract the fields needed.
-// This is for the User.Create() below.
-type Username struct {
-	Username string `db:"username"`
-}
-
 // Create creates a new User row
 func (u *UserAccount) Create() error {
-	var count Username
-	err := DB.Get(&count, "SELECT username FROM User WHERE username = ? LIMIT 1", u.Username)
-
-	if err != sql.ErrNoRows {
-		return errors.New("Username taken")
+	if len(u.Username) > 40 {
+		return errors.New("Username too long (can be maximum 40 characters)")
 	}
 
 	query, err := DB.Prepare("INSERT INTO User (uuid, username, email, password, description, profile_picture) VALUES  (?, ?, ?, ?, ?, ?)")
 	defer query.Close()
 
 	if err != nil {
-		// log.Fatalf("Prepare err: %s\n", err)
+		log.Printf("Prepare err: %s\n", err)
 		return err
 	}
+
 	_, err = query.Exec(u.UUID, u.Username, u.Email, u.Password, u.Description, u.ProfilePicture)
+	if err != nil {
+		return fmt.Errorf("Username '%s' taken", u.Username)
+	}
+
 	return nil
 }
 
