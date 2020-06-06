@@ -127,6 +127,6 @@ func (f *Follows) Create() error {
 // Auth checks to see if a row exists with certain user credentials
 func (u *UserAccount) Auth() (User, error) {
 	var userInfo User
-	err := DB.Get(&userInfo, "SELECT uuid, username, description, profile_picture FROM User WHERE email = ? AND password = ?", u.Email, u.Password)
+	err := DB.Get(&userInfo, "SELECT uuid, username, description, profile_picture FROM User WHERE email = ? AND password = ? LIMIT 1", u.Email, u.Password)
 	return userInfo, err
 }
