@@ -25,21 +25,12 @@ type DBConfig struct {
 	Port     uint32 `yaml:"port"`
 }
 
-// UserAccount is a sqlx database User table abstraction struct
-// Use this ONLY when password field is NEEDED.
-type UserAccount struct {
+// User is a sqlx database User table abstraction struct
+type User struct {
 	UUID           uuid.UUID `db:"uuid" json:"uuid"`
 	Username       string    `db:"username" json:"username"`
 	Email          string    `db:"email" json:"email"`
 	Password       string    `db:"password" json:"password"`
-	Description    string    `db:"description" json:"description"`
-	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
-}
-
-// User is for when you need information about a user.
-type User struct {
-	UUID           uuid.UUID `db:"uuid" json:"uuid"`
-	Username       string    `db:"username" json:"username"`
 	Description    string    `db:"description" json:"description"`
 	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
 }
@@ -70,7 +61,7 @@ func Open(filename string) {
 // SelectAllUsers returns all Users from the User table
 func SelectAllUsers() []User {
 	users := []User{}
-	DB.Select(&users, "SELECT uuid, username, description, profile_picture FROM User")
+	DB.Select(&users, "SELECT uuid, username, email, description, profile_picture FROM User")
 	return users
 }
 
@@ -82,7 +73,7 @@ func SelectAllFollows() []Follows {
 }
 
 // Create creates a new User row
-func (u *UserAccount) Create() error {
+func (u *User) Create() error {
 	if len(u.Username) > 40 {
 		return errors.New("Username too long (can be maximum 40 characters)")
 	}
@@ -119,8 +110,7 @@ func (f *Follows) Create() error {
 }
 
 // Auth checks to see if a row exists with certain user credentials
-func (u *UserAccount) Auth() (User, error) {
-	var userInfo User
-	err := DB.Get(&userInfo, "SELECT uuid, username, description, profile_picture FROM User WHERE email = ? AND password = ? LIMIT 1", u.Email, u.Password)
-	return userInfo, err
+func (u *User) Auth() error {
+	err := DB.Get(u, "SELECT uuid, username, email, description, profile_picture FROM User WHERE email = ? AND password = ? LIMIT 1", u.Email, u.Password)
+	return err
 }

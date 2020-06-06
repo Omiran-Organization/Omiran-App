@@ -132,7 +132,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
-	userIntermediary := &dbutils.UserAccount{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
+	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
 
 	err := userIntermediary.Create()
 	if err != nil {
@@ -163,8 +163,9 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	userIntermediary := &dbutils.UserAccount{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
-	_, err := userIntermediary.Auth()
+	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
+	err := userIntermediary.Auth()
+
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalf("user auth err %s\n", err)
 	} else if err == sql.ErrNoRows {
