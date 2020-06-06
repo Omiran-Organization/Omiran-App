@@ -165,6 +165,7 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
 	err := userIntermediary.Auth()
+
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalf("user auth err %s\n", err)
 	} else if err == sql.ErrNoRows {
