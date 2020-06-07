@@ -4,13 +4,18 @@ import (
 	"Omiran-App/backend/dbutils"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
+
+	"github.com/gomodule/redigo/redis"
 )
+
+var cache redis.Conn
 
 var userType = graphql.NewObject(
 	graphql.ObjectConfig{
@@ -49,7 +54,22 @@ var followsType = graphql.NewObject(
 	},
 )
 
-// GraphQLService is the handler for GraphQL api
+//InitCache creates the cache
+func InitCache() {
+	conn, err := redis.DialURL("redis://localhost")
+	if err != nil {
+		panic(err)
+	}
+	cache = conn
+}
+
+//Examine looks at the users
+func Examine() {
+	users := dbutils.SelectAllUsers()
+	fmt.Println(users)
+}
+
+//GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var rBody string
 	err := json.NewDecoder(c.Request.Body).Decode(&rBody)

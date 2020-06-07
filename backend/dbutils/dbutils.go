@@ -35,6 +35,11 @@ type User struct {
 	ProfilePicture string    `db:"profile_picture" json:"profile_picture"`
 }
 
+type Credentials struct {
+	Password string `json:"password", db:"password"`
+	Username string `json:"username", db:"username"`
+}
+
 // Follows is a sqlx database Follows table abstraction struct
 type Follows struct {
 	UUID          uuid.UUID `db:"uuid" json:"uuid"`
