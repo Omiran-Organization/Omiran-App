@@ -2,6 +2,7 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
+	"Omiran-App/backend/gql"
 	"database/sql"
 
 	"log"
@@ -9,43 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
-)
-
-var userType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "User",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"username": &graphql.Field{
-				Type: graphql.String,
-			},
-			"email": &graphql.Field{
-				Type: graphql.String,
-			},
-			"description": &graphql.Field{
-				Type: graphql.String,
-			},
-			"profile_picture": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
-)
-
-var followsType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "Follows",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"user_following": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
 )
 
 // Query is for deserializing graphql queries
@@ -64,103 +28,12 @@ func GraphQLService(c *gin.Context) {
 }
 
 func processQuery(query string) *graphql.Result {
-	params := graphql.Params{Schema: graphQLSchema(), RequestString: query}
+	params := graphql.Params{Schema: gql.GraphQLSchema(), RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
 		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
 	}
 	return r
-}
-
-func graphQLSchema() graphql.Schema {
-	fields := graphql.Fields{
-		"Users": &graphql.Field{
-			Type:        graphql.NewList(userType),
-			Description: "All Users",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				users := dbutils.SelectAllUsers()
-				return users, nil
-			},
-		},
-		"User": &graphql.Field{
-			Type:        userType,
-			Description: "get users by uuid or username",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"username": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				users := dbutils.SelectAllUsers()
-				if name, ok := params.Args["username"]; ok {
-					for _, u := range users {
-						if name == u.Username {
-							return u, nil
-						}
-					}
-				} else if id, ok := params.Args["uuid"].(string); ok {
-					uuid, err := uuid.FromString(id)
-					if err != nil {
-						return nil, nil
-					}
-					for _, u := range users {
-						if uuid == u.UUID {
-							return u, nil
-						}
-					}
-				}
-				return nil, nil
-			},
-		},
-		"Follows": &graphql.Field{
-			Type:        graphql.NewList(followsType),
-			Description: "get a list of users you are following or users following you",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"user_following": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				follows := dbutils.SelectAllFollows()
-				var followList []dbutils.Follows
-				if id, ok := params.Args["uuid"].(string); ok {
-					uuid, err := uuid.FromString(id)
-					if err != nil {
-						return nil, nil
-					}
-					for _, f := range follows {
-						if uuid == f.UUID {
-							followList = append(followList, f)
-						}
-					}
-				} else if id, ok := params.Args["user_following"].(string); ok {
-					uuid, err := uuid.FromString(id)
-					if err != nil {
-						return nil, nil
-					}
-					for _, f := range follows {
-						if uuid == f.UserFollowing {
-							followList = append(followList, f)
-						}
-					}
-				}
-				return followList, nil
-			},
-		},
-	}
-	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
-	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
-	schema, err := graphql.NewSchema(schemaConfig)
-	if err != nil {
-		log.Fatalf("failed to create new schema; %s\n", err)
-	}
-	return schema
 }
 
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
