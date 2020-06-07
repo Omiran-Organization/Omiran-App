@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -26,7 +28,7 @@ type Query struct {
 	Query string `json:"query"`
 }
 
-// GraphQLService is the handler for GraphQL api
+//GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var q Query
 	err := c.BindJSON(&q)
@@ -49,14 +51,29 @@ func processQuery(query string) *graphql.Result {
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
-
-	err := userIntermediary.Create()
+	// hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userIntermediary.Password), bcrypt.MinCost)
+	hashedPassword, err := HashPassword(userIntermediary.Password)
+	userIntermediary.Password = string(hashedPassword)
+	//Maybe 500 status code
+	err = userIntermediary.Create()
 	if err != nil {
 		c.String(400, err.Error())
 		return
 	}
 
 	c.String(200, "Success")
+}
+
+//HashPassword hashes password
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	return string(bytes), err
+}
+
+//CheckPasswordHash checks whether string input hashes to password after extracating salt
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
 
 // StartFollowingHandler handles follow requests
@@ -80,6 +97,7 @@ func StartFollowingHandler(c *gin.Context) {
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
 	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
+
 	err := userIntermediary.Auth()
 
 	if err != nil && err != sql.ErrNoRows {
@@ -88,5 +106,17 @@ func AuthHandler(c *gin.Context) {
 		c.String(401, "unauthorized")
 	} else {
 		c.String(200, "Success")
+
+	}
+
+	hash, err2 := HashPassword(userIntermediary.Password)
+	if err2 != nil {
+		c.String(500, "Internal service error")
+		return
+	}
+	match := CheckPasswordHash(userIntermediary.Password, hash)
+	if match != true {
+		c.String(401, "unauthorized")
+		return
 	}
 }
