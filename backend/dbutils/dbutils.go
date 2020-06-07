@@ -114,3 +114,27 @@ func (u *User) Auth() error {
 	err := DB.Get(u, "SELECT uuid, username, email, description, profile_picture FROM User WHERE email = ? AND password = ? LIMIT 1", u.Email, u.Password)
 	return err
 }
+
+// GetFollowers returns a list of all followers of the user passed in.
+func GetFollowers(uuid uuid.UUID) ([]User, error) {
+	queryString := `
+		SELECT User.uuid, username, email FROM User
+		JOIN Follows on User.uuid = Follows.uuid 
+		WHERE Follows.user_following = ?
+		`
+	var followers []User
+	err := DB.Select(&followers, queryString, uuid)
+	return followers, err
+}
+
+// GetUsersBeingFollowed returns a list of all users you are followed.
+func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
+	queryString := `
+		SELECT User.uuid, username, email FROM User
+		JOIN Follows on User.uuid = Follows.user_following 
+		WHERE Follows.uuid = ?
+		`
+	var followees []User
+	err := DB.Select(&followees, queryString, uuid)
+	return followees, err
+}

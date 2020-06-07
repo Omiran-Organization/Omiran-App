@@ -2,8 +2,8 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
+	"Omiran-App/backend/gql"
 	"database/sql"
-	"encoding/json"
 
 	"log"
 
@@ -12,121 +12,37 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var userType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "User",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"username": &graphql.Field{
-				Type: graphql.String,
-			},
-			"email": &graphql.Field{
-				Type: graphql.String,
-			},
-			"description": &graphql.Field{
-				Type: graphql.String,
-			},
-			"profile_picture": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
+var (
+	schema graphql.Schema
 )
 
-var followsType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "Follows",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"user_following": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
-)
+// InitGQLSchema initializes the schema for graphql.
+func InitGQLSchema() {
+	schema = gql.GraphQLSchema()
+}
+
+// Query is for deserializing graphql queries
+type Query struct {
+	Query string `json:"query"`
+}
 
 // GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
-	var rBody string
-	err := json.NewDecoder(c.Request.Body).Decode(&rBody)
+	var q Query
+	err := c.BindJSON(&q)
 	if err != nil {
 		log.Fatalf("Error parsing JSON request body %s", err)
 	}
-	c.JSON(200, processQuery(rBody))
+	c.JSON(200, processQuery(q.Query))
 }
 
 func processQuery(query string) *graphql.Result {
-	users := dbutils.SelectAllUsers()
-	follows := dbutils.SelectAllFollows()
-	params := graphql.Params{Schema: graphQLSchema(users, follows), RequestString: query}
+	params := graphql.Params{Schema: schema, RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
-		log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
+		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
 	}
 	return r
-}
-
-func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
-	fields := &graphql.Fields{
-		"Users": &graphql.Field{
-			Type:        graphql.NewList(userType),
-			Description: "All Users",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return user, nil
-			},
-		},
-		"User": &graphql.Field{
-			Type:        userType,
-			Description: "get users by any field (except password)",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"username": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"email": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"description": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"profile_picture": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-		},
-		"Follows": &graphql.Field{
-			Type:        graphql.NewList(followsType),
-			Description: "All follows",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return follows, nil
-			},
-		},
-		"Follow": &graphql.Field{
-			Type:        followsType,
-			Description: "get follows by any field",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"user_following": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-		},
-	}
-	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
-	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
-	schema, err := graphql.NewSchema(schemaConfig)
-	if err != nil {
-		log.Fatalf("failed to create new schema; %s\n", err)
-	}
-	return schema
 }
 
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
