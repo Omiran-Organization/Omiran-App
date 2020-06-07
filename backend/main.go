@@ -9,6 +9,7 @@ import (
 
 func init() {
 	dbutils.Open("database-config.yaml")
+	handler.InitGQLSchema()
 }
 
 func main() {

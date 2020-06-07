@@ -12,6 +12,15 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+var (
+	schema graphql.Schema
+)
+
+// InitGQLSchema initializes the schema for graphql.
+func InitGQLSchema() {
+	schema = gql.GraphQLSchema()
+}
+
 // Query is for deserializing graphql queries
 type Query struct {
 	Query string `json:"query"`
@@ -28,7 +37,7 @@ func GraphQLService(c *gin.Context) {
 }
 
 func processQuery(query string) *graphql.Result {
-	params := graphql.Params{Schema: gql.GraphQLSchema(), RequestString: query}
+	params := graphql.Params{Schema: schema, RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
 		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
