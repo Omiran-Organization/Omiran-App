@@ -9,5 +9,6 @@ require (
 	github.com/graphql-go/graphql v0.7.9
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/satori/go.uuid v1.2.0
+	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
 	gopkg.in/yaml.v2 v2.3.0
 )
