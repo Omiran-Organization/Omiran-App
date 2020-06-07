@@ -4,8 +4,6 @@ import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/gql"
 	"database/sql"
-	"fmt"
-	"reflect"
 
 	"log"
 
@@ -13,11 +11,8 @@ import (
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
 
-	"github.com/gomodule/redigo/redis"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var cache redis.Conn
 
 var (
 	schema graphql.Schema
@@ -31,22 +26,6 @@ func InitGQLSchema() {
 // Query is for deserializing graphql queries
 type Query struct {
 	Query string `json:"query"`
-}
-
-//InitCache creates the cache
-func InitCache() {
-	conn, err := redis.DialURL("redis://localhost")
-	if err != nil {
-		panic(err)
-	}
-	cache = conn
-}
-
-//Examine looks at the users
-func Examine() {
-	users := dbutils.SelectAllUsers()
-	fmt.Println(reflect.TypeOf(users))
-
 }
 
 //GraphQLService is the handler for GraphQL api
