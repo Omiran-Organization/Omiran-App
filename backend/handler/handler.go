@@ -117,9 +117,39 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 		},
 		"Follows": &graphql.Field{
 			Type:        graphql.NewList(followsType),
-			Description: "All follows",
+			Description: "get a list of users you are following or users following you",
+			Args: graphql.FieldConfigArgument{
+				"uuid": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"user_following": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return follows, nil
+				var followList []dbutils.Follows
+				if id, ok := params.Args["uuid"].(string); ok {
+					uuid, err := uuid.FromString(id)
+					if err != nil {
+						return nil, nil
+					}
+					for _, f := range follows {
+						if uuid == f.UUID {
+							followList = append(followList, f)
+						}
+					}
+				} else if id, ok := params.Args["user_following"].(string); ok {
+					uuid, err := uuid.FromString(id)
+					if err != nil {
+						return nil, nil
+					}
+					for _, f := range follows {
+						if uuid == f.UserFollowing {
+							followList = append(followList, f)
+						}
+					}
+				}
+				return followList, nil
 			},
 		},
 		"Follow": &graphql.Field{
