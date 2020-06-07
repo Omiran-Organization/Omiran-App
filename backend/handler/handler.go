@@ -49,14 +49,19 @@ var followsType = graphql.NewObject(
 	},
 )
 
+// Query is for deserializing graphql queries
+type Query struct {
+	Query string `json:"query"`
+}
+
 // GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
-	var rBody string
-	err := json.NewDecoder(c.Request.Body).Decode(&rBody)
+	var q Query
+	err := c.BindJSON(&q)
 	if err != nil {
 		log.Fatalf("Error parsing JSON request body %s", err)
 	}
-	c.JSON(200, processQuery(rBody))
+	c.JSON(200, processQuery(q.Query))
 }
 
 func processQuery(query string) *graphql.Result {
@@ -71,7 +76,7 @@ func processQuery(query string) *graphql.Result {
 }
 
 func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
-	fields := &graphql.Fields{
+	fields := graphql.Fields{
 		"Users": &graphql.Field{
 			Type:        graphql.NewList(userType),
 			Description: "All Users",
