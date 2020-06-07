@@ -2,4 +2,3 @@
 .vscode
 backend/database-config.yaml
 backend/vendor
-go_run_script.sh
