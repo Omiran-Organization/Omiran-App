@@ -64,9 +64,7 @@ func GraphQLService(c *gin.Context) {
 }
 
 func processQuery(query string) *graphql.Result {
-	users := dbutils.SelectAllUsers()
-	follows := dbutils.SelectAllFollows()
-	params := graphql.Params{Schema: graphQLSchema(users, follows), RequestString: query}
+	params := graphql.Params{Schema: graphQLSchema(), RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
 		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
@@ -74,13 +72,14 @@ func processQuery(query string) *graphql.Result {
 	return r
 }
 
-func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
+func graphQLSchema() graphql.Schema {
 	fields := graphql.Fields{
 		"Users": &graphql.Field{
 			Type:        graphql.NewList(userType),
 			Description: "All Users",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return user, nil
+				users := dbutils.SelectAllUsers()
+				return users, nil
 			},
 		},
 		"User": &graphql.Field{
@@ -95,8 +94,9 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				users := dbutils.SelectAllUsers()
 				if name, ok := params.Args["username"]; ok {
-					for _, u := range user {
+					for _, u := range users {
 						if name == u.Username {
 							return u, nil
 						}
@@ -106,7 +106,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 					if err != nil {
 						return nil, nil
 					}
-					for _, u := range user {
+					for _, u := range users {
 						if uuid == u.UUID {
 							return u, nil
 						}
@@ -127,6 +127,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				follows := dbutils.SelectAllFollows()
 				var followList []dbutils.Follows
 				if id, ok := params.Args["uuid"].(string); ok {
 					uuid, err := uuid.FromString(id)
