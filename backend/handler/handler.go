@@ -46,7 +46,7 @@ func InitCache() {
 func Examine() {
 	users := dbutils.SelectAllUsers()
 	fmt.Println(reflect.TypeOf(users))
-	fmt.Println(users[0].Name)
+
 }
 
 //GraphQLService is the handler for GraphQL api
@@ -75,13 +75,13 @@ func AccountCreationHandler(c *gin.Context) {
 	// hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userIntermediary.Password), bcrypt.MinCost)
 	hashedPassword, err := HashPassword(userIntermediary.Password)
 	userIntermediary.Password = string(hashedPassword)
-
+	//Maybe 500 status code
 	err = userIntermediary.Create()
 	if err != nil {
-		c.String(500, err.Error())
+		c.String(400, err.Error())
 		return
 	}
-	Examine()
+
 	c.String(200, "Success")
 }
 

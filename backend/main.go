@@ -18,7 +18,7 @@ func main() {
 
 	r.POST("/graphql", handler.GraphQLService)
 	r.POST("/create", handler.AccountCreationHandler)
-	//r.POST("/signin")
+
 	r.POST("/auth", handler.AuthHandler)
 	r.POST("/follow", handler.StartFollowingHandler)
 	handler.Examine()
