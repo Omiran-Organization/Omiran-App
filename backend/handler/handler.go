@@ -3,7 +3,6 @@ package handler
 import (
 	"Omiran-App/backend/dbutils"
 	"database/sql"
-	"encoding/json"
 
 	"log"
 
@@ -70,7 +69,7 @@ func processQuery(query string) *graphql.Result {
 	params := graphql.Params{Schema: graphQLSchema(users, follows), RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
-		log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
+		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
 	}
 	return r
 }
@@ -86,7 +85,7 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 		},
 		"User": &graphql.Field{
 			Type:        userType,
-			Description: "get users by any field (except password)",
+			Description: "get users by uuid or username",
 			Args: graphql.FieldConfigArgument{
 				"uuid": &graphql.ArgumentConfig{
 					Type: graphql.String,
@@ -94,15 +93,26 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 				"username": &graphql.ArgumentConfig{
 					Type: graphql.String,
 				},
-				"email": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"description": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"profile_picture": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
+			},
+			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+				if name, ok := params.Args["username"]; ok {
+					for _, u := range user {
+						if name == u.Username {
+							return u, nil
+						}
+					}
+				} else if id, ok := params.Args["uuid"].(string); ok {
+					uuid, err := uuid.FromString(id)
+					if err != nil {
+						return nil, nil
+					}
+					for _, u := range user {
+						if uuid == u.UUID {
+							return u, nil
+						}
+					}
+				}
+				return nil, nil
 			},
 		},
 		"Follows": &graphql.Field{
