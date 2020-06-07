@@ -153,8 +153,14 @@ func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schem
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
-	userIntermediary.Create()
+
+	err := userIntermediary.Create()
+	if err != nil {
+		c.String(400, err.Error())
+		return
+	}
 	Examine()
+	c.String(200, "Success")
 }
 
 // StartFollowingHandler handles follow requests
@@ -179,11 +185,12 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
 	err := userIntermediary.Auth()
+
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalf("user auth err %s\n", err)
 	} else if err == sql.ErrNoRows {
 		c.String(401, "unauthorized")
 	} else {
-		c.String(200, "example content blah blah blah")
+		c.String(200, "Success")
 	}
 }
