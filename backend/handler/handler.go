@@ -28,7 +28,7 @@ type Query struct {
 	Query string `json:"query"`
 }
 
-//GraphQLService is the handler for GraphQL api
+// GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var q Query
 	err := c.BindJSON(&q)
