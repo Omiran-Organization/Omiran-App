@@ -111,7 +111,7 @@ func AuthHandler(c *gin.Context) {
 
 	hash, err2 := HashPassword(userIntermediary.Password)
 	if err2 != nil {
-		c.String(500, "Internal service error")
+		c.String(500, "Internal server error")
 		return
 	}
 	match := CheckPasswordHash(userIntermediary.Password, hash)
