@@ -64,13 +64,13 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-//HashPassword hashes password
+// HashPassword hashes password
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	return string(bytes), err
 }
 
-//CheckPasswordHash checks whether string input hashes to password after extracating salt
+// CheckPasswordHash checks whether string input hashes to password after extracating salt
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
