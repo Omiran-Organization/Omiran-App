@@ -1,6 +1,7 @@
 package dbutils
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/yaml.v2"
@@ -16,6 +18,14 @@ import (
 var (
 	// DB is an instance of sqlx.DB
 	DB *sqlx.DB
+)
+
+// Errors
+var (
+	// ErrUnauthorized indicates the user is not authorized
+	ErrUnauthorized = errors.New("unauthorized")
+	// ErrInternalServer indicates an internal server error
+	ErrInternalServer = errors.New("internal server error")
 )
 
 // DBConfig is a database configuration abstraction struct
@@ -109,10 +119,35 @@ func (f *Follows) Create() error {
 	return nil
 }
 
-// Auth checks to see if a row exists with certain user credentials
-func (u *User) Auth() error {
-	err := DB.Get(u, "SELECT uuid, username, email, description, profile_picture FROM User WHERE email = ? AND password = ? LIMIT 1", u.Email, u.Password)
-	return err
+// CheckPasswordHash checks whether string input hashes to password after extracating salt
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+// Auth returns the user if it exists and password matches
+// Returns an empty user in case of error.
+func Auth(username string, password string) (User, error) {
+	var user User
+	err := DB.Get(&user, "SELECT uuid, username, password, email, description, profile_picture FROM User WHERE username = ? LIMIT 1", username)
+
+	if err != nil && err != sql.ErrNoRows {
+		log.Printf("user auth err %s\n", err)
+		// Problem with query
+		return User{}, ErrInternalServer
+
+	} else if err == sql.ErrNoRows {
+		// Username does not exist
+		return User{}, ErrUnauthorized
+	}
+
+	match := CheckPasswordHash(password, user.Password)
+	if match {
+		user.Password = "" // Password not needed outside of this
+		return user, nil
+	}
+
+	return User{}, ErrUnauthorized
 }
 
 // GetFollowers returns a list of all followers of the user passed in.

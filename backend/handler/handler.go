@@ -3,14 +3,12 @@ package handler
 import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/gql"
-	"database/sql"
 
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -70,12 +68,6 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-// CheckPasswordHash checks whether string input hashes to password after extracating salt
-func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
-}
-
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
 	var follow dbutils.Follows
@@ -96,27 +88,19 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
+	username := c.Request.FormValue("username")
+	password := c.Request.FormValue("password")
 
-	err := userIntermediary.Auth()
+	// The user is return here, but currently not used.
+	_, err := dbutils.Auth(username, password)
 
-	if err != nil && err != sql.ErrNoRows {
-		log.Fatalf("user auth err %s\n", err)
-	} else if err == sql.ErrNoRows {
-		c.String(401, "unauthorized")
+	if err == dbutils.ErrUnauthorized {
+		c.String(401, err.Error())
+	} else if err == dbutils.ErrInternalServer {
+		c.String(500, err.Error())
+	} else if err == nil {
+		c.String(200, "success")
 	} else {
-		c.String(200, "Success")
-
-	}
-
-	hash, err2 := HashPassword(userIntermediary.Password)
-	if err2 != nil {
-		c.String(500, "Internal server error")
-		return
-	}
-	match := CheckPasswordHash(userIntermediary.Password, hash)
-	if match != true {
-		c.String(401, "unauthorized")
-		return
+		c.String(500, "internal server error")
 	}
 }
