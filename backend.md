@@ -6,10 +6,11 @@
   - [ ] Elasticsearch support for stream/user search
 
 ## CI/CD 
-
-   1. [ ] Dockerize application monolithically
+  
+   1. [ ] Dockerize application
    2. [ ] Integrate test automation and deploy automation scripts
    3. [x] Implement localhost automation scripts
+   4. [ ] Implement container orchestration
 
 ## Database CRUD
    
