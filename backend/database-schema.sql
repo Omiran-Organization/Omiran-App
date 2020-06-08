@@ -12,9 +12,10 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Follows (
-	uuid VARCHAR(36) NOT NULL,
-	user_following VARCHAR(36) NOT NULL,
-	FOREIGN KEY (uuid) REFERENCES User(uuid) ON DELETE CASCADE,
-	FOREIGN KEY (user_following) REFERENCES User(uuid) ON DELETE CASCADE,
-	PRIMARY KEY (uuid, user_following)
+	follower VARCHAR(36) NOT NULL,
+	followee VARCHAR(36) NOT NULL,
+	FOREIGN KEY (follower) REFERENCES User(uuid) ON DELETE CASCADE,
+	FOREIGN KEY (followee) REFERENCES User(uuid) ON DELETE CASCADE,
+	PRIMARY KEY (follower, followee),
+  INDEX (followee)
 );
