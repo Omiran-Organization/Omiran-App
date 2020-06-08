@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
 	uuid "github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -49,23 +48,15 @@ func processQuery(query string) *graphql.Result {
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
-	// hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userIntermediary.Password), bcrypt.MinCost)
-	hashedPassword, err := HashPassword(userIntermediary.Password)
-	userIntermediary.Password = string(hashedPassword)
+
 	//Maybe 500 status code
-	err = userIntermediary.Create()
+	err := userIntermediary.Create()
 	if err != nil {
 		c.String(400, err.Error())
 		return
 	}
 
 	c.String(200, "Success")
-}
-
-// HashPassword hashes password
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
-	return string(bytes), err
 }
 
 // StartFollowingHandler handles follow requests
