@@ -79,11 +79,7 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	username := c.Request.FormValue("username")
-	password := c.Request.FormValue("password")
-
-	// The user is return here, but currently not used.
-	_, err := dbutils.Auth(username, password)
+	_, err := dbutils.Auth(c.Request.FormValue("username"), c.Request.FormValue("password"))
 
 	if err == dbutils.ErrUnauthorized {
 		c.String(401, err.Error())
