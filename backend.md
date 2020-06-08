@@ -20,7 +20,7 @@
    
 ## Live Streaming Service
 
-  1. [ ] Implement OBS inspacextegration
+  1. [ ] Implement OBS integration
   2. [ ] Implement connection to backend service with something similar to Twitch's streamkey solution
   3. [ ] Implement media streaming with either RTMP or WebRTC
   4. [ ] Implement auth resolution feature
