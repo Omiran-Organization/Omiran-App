@@ -35,10 +35,10 @@ var followsType = graphql.NewObject(
 	graphql.ObjectConfig{
 		Name: "Follows",
 		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
+			"follower": &graphql.Field{
 				Type: graphql.String,
 			},
-			"user_following": &graphql.Field{
+			"followee": &graphql.Field{
 				Type: graphql.String,
 			},
 		},
@@ -94,32 +94,32 @@ func GraphQLSchema() graphql.Schema {
 			Type:        graphql.NewList(userType),
 			Description: "get a list of users you are following or users following you",
 			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
+				"follower": &graphql.ArgumentConfig{
 					Type: graphql.String,
 				},
-				"user_following": &graphql.ArgumentConfig{
+				"followee": &graphql.ArgumentConfig{
 					Type: graphql.String,
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				// follows := dbutils.SelectAllFollows()
 				var followList []dbutils.User
-				if id, ok := params.Args["uuid"].(string); ok {
-					uuid, err := uuid.FromString(id)
-					if err != nil {
-						return nil, err
-					}
-					followList, err = dbutils.GetFollowers(uuid)
-					if err != nil {
-						return nil, err
-					}
-
-				} else if id, ok := params.Args["user_following"].(string); ok {
+				if id, ok := params.Args["follower"].(string); ok {
 					uuid, err := uuid.FromString(id)
 					if err != nil {
 						return nil, err
 					}
 					followList, err = dbutils.GetUsersBeingFollowed(uuid)
+					if err != nil {
+						return nil, err
+					}
+
+				} else if id, ok := params.Args["followee"].(string); ok {
+					uuid, err := uuid.FromString(id)
+					if err != nil {
+						return nil, err
+					}
+					followList, err = dbutils.GetFollowers(uuid)
 					if err != nil {
 						return nil, err
 					}
