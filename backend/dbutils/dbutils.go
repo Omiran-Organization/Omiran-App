@@ -47,8 +47,8 @@ type User struct {
 
 // Follows is a sqlx database Follows table abstraction struct
 type Follows struct {
-	UUID          uuid.UUID `db:"uuid" json:"uuid"`
-	UserFollowing uuid.UUID `db:"user_following" json:"user_following"`
+	Follower uuid.UUID `db:"follower" json:"follower"`
+	Followee uuid.UUID `db:"followee" json:"followee"`
 }
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
@@ -121,12 +121,12 @@ func (u *User) Create() error {
 // Create creates a new Follows row
 func (f *Follows) Create() error {
 	// REPLACE so it doesn't fail if it already exist. If it already exist we can just return success again. INSERT ... ON DUPLICATE KEY UPDATE could also be used, but it doesn't matter since the keys are the only values.
-	query, err := DB.Prepare("REPLACE INTO Follows (uuid, user_following) VALUES (?, ?)")
+	query, err := DB.Prepare("REPLACE INTO Follows (follower, followee) VALUES (?, ?)")
 	defer query.Close()
 	if err != nil {
 		return errors.New("SQL statement error")
 	}
-	_, err = query.Exec(f.UUID, f.UserFollowing)
+	_, err = query.Exec(f.Follower, f.Followee)
 	if err != nil {
 		return errors.New("User or followee does not exist")
 	}
@@ -168,8 +168,8 @@ func Auth(username string, password string) (User, error) {
 func GetFollowers(uuid uuid.UUID) ([]User, error) {
 	queryString := `
 		SELECT User.uuid, username, email FROM User
-		JOIN Follows on User.uuid = Follows.uuid 
-		WHERE Follows.user_following = ?
+		JOIN Follows ON User.uuid = Follows.follower 
+		WHERE Follows.followee = ?
 		`
 	var followers []User
 	err := DB.Select(&followers, queryString, uuid)
@@ -180,8 +180,8 @@ func GetFollowers(uuid uuid.UUID) ([]User, error) {
 func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
 	queryString := `
 		SELECT User.uuid, username, email FROM User
-		JOIN Follows on User.uuid = Follows.user_following 
-		WHERE Follows.uuid = ?
+		JOIN Follows ON User.uuid = Follows.followee 
+		WHERE Follows.follower = ?
 		`
 	var followees []User
 	err := DB.Select(&followees, queryString, uuid)

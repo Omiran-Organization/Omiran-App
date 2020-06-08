@@ -64,7 +64,7 @@ func StartFollowingHandler(c *gin.Context) {
 	var follow dbutils.Follows
 	err := c.BindJSON(&follow)
 	if err != nil {
-		c.String(400, "Bad format. Expected {\"uuid\": user_uuid, \"user_following\": followee_id}")
+		c.String(400, "Bad format. Expected {\"follower\": user_uuid, \"followee\": followee_id}")
 		return
 	}
 
