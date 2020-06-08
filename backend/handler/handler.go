@@ -103,7 +103,7 @@ func AuthHandler(c *gin.Context) {
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalf("user auth err %s\n", err)
 	} else if err == sql.ErrNoRows {
-		c.String(401, "unauthorized")
+		c.String(401, "unauthorized1")
 	} else {
 		c.String(200, "Success")
 
@@ -116,7 +116,7 @@ func AuthHandler(c *gin.Context) {
 	}
 	match := CheckPasswordHash(userIntermediary.Password, hash)
 	if match != true {
-		c.String(401, "unauthorized")
+		c.String(401, "bad")
 		return
 	}
 }
