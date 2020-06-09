@@ -134,8 +134,8 @@ func (f *Follows) Create() error {
 	return nil
 }
 
-// CheckPasswordHash checks whether string input hashes to password after extracating salt
-func CheckPasswordHash(password, hash string) bool {
+// checkPasswordHash checks whether string input hashes to password after extracating salt
+func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
@@ -155,8 +155,8 @@ func Auth(username string, password string) (User, error) {
 		// Username does not exist
 		return User{}, ErrUnauthorized
 	}
-	// log.Printf(use.Username)
-	match := CheckPasswordHash(password, user.Password)
+
+	match := checkPasswordHash(password, user.Password)
 	if match {
 		user.Password = "" // Password not needed outside of this
 

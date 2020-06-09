@@ -1,5 +1,6 @@
-FROM alpine:3.7
-
-RUN apt-get update && apt-get upgrade
-RUN apt install npm
-RUN ./npm-run.sh
+FROM node:12
+WORKDIR /home/node/app
+COPY frontend /home/node/app
+RUN npm install
+CMD npm run dev
+EXPOSE 3000

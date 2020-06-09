@@ -39,6 +39,8 @@ An open source live streaming application that is developer-oriented and removes
 
 ### [Streaming Architecture](architecture-prototypes/streaming.png)
 
+### [Container Orchestration Conception](architecture-prototypes/container-orchestration-prototype.png)
+
 ## Todo list
 
 ### [Frontend](frontend.md)

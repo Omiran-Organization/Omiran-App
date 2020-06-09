@@ -6,10 +6,11 @@
   - [ ] Elasticsearch support for stream/user search
 
 ## CI/CD 
-
-   1. [ ] Dockerize application monolithically
+  
+   1. [ ] Dockerize application
    2. [ ] Integrate test automation and deploy automation scripts
    3. [x] Implement localhost automation scripts
+   4. [ ] Implement container orchestration
 
 ## Database CRUD
    
@@ -19,7 +20,7 @@
    
 ## Live Streaming Service
 
-  1. [ ] Implement OBS inspacextegration
+  1. [ ] Implement OBS integration
   2. [ ] Implement connection to backend service with something similar to Twitch's streamkey solution
   3. [ ] Implement media streaming with either RTMP or WebRTC
   4. [ ] Implement auth resolution feature
