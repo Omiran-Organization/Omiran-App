@@ -22,6 +22,7 @@ var (
 
 // Errors
 var (
+
 	// ErrUnauthorized indicates the user is not authorized
 	ErrUnauthorized = errors.New("unauthorized")
 	// ErrInternalServer indicates an internal server error
@@ -154,10 +155,11 @@ func Auth(username string, password string) (User, error) {
 		// Username does not exist
 		return User{}, ErrUnauthorized
 	}
-
+	// log.Printf(use.Username)
 	match := CheckPasswordHash(password, user.Password)
 	if match {
 		user.Password = "" // Password not needed outside of this
+
 		return user, nil
 	}
 

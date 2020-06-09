@@ -3,6 +3,7 @@ package handler
 import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/gql"
+	"Omiran-App/backend/redis"
 
 	"log"
 
@@ -81,17 +82,24 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
-
+	// r := c.Request
 	// The user is return here, but currently not used.
-	_, err := dbutils.Auth(username, password)
+	user, err := dbutils.Auth(username, password)
+	redis.SetCache(user.Username)
+	redis.SetSessCookie(c)
+	// token, err := r.Cookie("session_token")
+	// sessionToken := token.Value
 
+	// response, err := redis.Cache.Do("GET", sessionToken)
 	if err == dbutils.ErrUnauthorized {
 		c.String(401, err.Error())
 	} else if err == dbutils.ErrInternalServer {
 		c.String(500, err.Error())
 	} else if err == nil {
+
 		c.String(200, "success")
 	} else {
 		c.String(500, "internal server error")
 	}
+
 }
