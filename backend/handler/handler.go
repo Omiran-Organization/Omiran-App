@@ -81,13 +81,14 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	_, err := dbutils.Auth(c.Request.FormValue("username"), c.Request.FormValue("password"))
 
-	if err == dbutils.ErrUnauthorized {
+	switch err {
+	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
-	} else if err == dbutils.ErrInternalServer {
+	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
-	} else if err == nil {
+	case nil:
 		c.String(200, "success")
-	} else {
+	default:
 		c.String(500, "internal server error")
 	}
 }
