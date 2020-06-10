@@ -101,14 +101,14 @@ func AuthHandler(c *gin.Context) {
 //RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
 func RefreshSessionHandler(c *gin.Context) {
 	err := redis.Refresh(c)
-	switch err {
-	case dbutils.ErrUnauthorized:
+	if err == dbutils.ErrUnauthorized{
 		c.String(401, err.Error())
-	case dbutils.ErrInternalServer:
+	} else if err == dbutils.ErrInternalServer {
 		c.String(500, err.Error())
-	case nil:
+	} else if err == nil {
 		c.String(200, "success")
-	default:
+	} else {
 		c.String(500, "internal server error")
 	}
 }
+
