@@ -45,7 +45,7 @@ func processQuery(query string) *graphql.Result {
 	return r
 }
 
-// AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
+// AccountCreationHandler generates a new UUID, receives form values, and creates a new user
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
