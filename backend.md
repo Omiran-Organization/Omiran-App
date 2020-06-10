@@ -38,7 +38,7 @@
 ## Auth system
 
   1. [x] Implement auth
-  2. [] Implement login system on backend  (with sessions)
+  2. [ ] Implement login system on backend  (with sessions)
 
 ## Object transactions
 
