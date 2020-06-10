@@ -94,6 +94,6 @@ func AuthHandler(c *gin.Context) {
 }
 
 // Chat is a chat function
-func Chat() {
+func Chat(c *gin.Context) {
 
 }
