@@ -3,6 +3,7 @@ package handler
 import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/gql"
+	"Omiran-App/backend/redis"
 
 	"log"
 
@@ -44,17 +45,18 @@ func processQuery(query string) *graphql.Result {
 	return r
 }
 
-// AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
+// AccountCreationHandler generates a new UUID, receives form values, and creates a new user
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
 
-	//Maybe 500 status code
+	// Maybe 500 status code
 	err := userIntermediary.Create()
 	if err != nil {
 		c.String(400, err.Error())
 		return
 	}
+	redis.SetCachePlusToken(c, userIntermediary.Username)
 
 	c.String(200, "Success")
 }
@@ -79,8 +81,26 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	_, err := dbutils.Auth(c.Request.FormValue("username"), c.Request.FormValue("password"))
+	username := c.Request.FormValue("username")
+	password := c.Request.FormValue("password")
+	_, err := dbutils.Auth(username, password)
+	err = redis.CheckSessCookie(c)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
 
+}
+
+//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+func RefreshSessionHandler(c *gin.Context) {
+	err := redis.Refresh(c)
 	switch err {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
