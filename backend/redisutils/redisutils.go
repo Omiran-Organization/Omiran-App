@@ -14,3 +14,8 @@ func InitCache() {
 	}
 	cache = conn
 }
+
+// CreateUserSession creates a new user session in redis cache
+func CreateUserSession() {
+
+}
