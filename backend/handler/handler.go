@@ -92,3 +92,8 @@ func AuthHandler(c *gin.Context) {
 		c.String(500, "internal server error")
 	}
 }
+
+// Chat is a chat function
+func Chat() {
+
+}
