@@ -9,7 +9,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-//Cache is where redis cache is setup
+// Cache is where redis cache is setup
 var Cache redis.Conn
 var session string
 
@@ -22,7 +22,7 @@ func InitCache() {
 	Cache = conn
 }
 
-//SetCachePlusToken sets the cache
+// SetCachePlusToken sets the cache
 func SetCachePlusToken(c *gin.Context, username string) {
 	log.Printf(username)
 	sessionToken := uuid.NewV4().String()
@@ -35,7 +35,7 @@ func SetCachePlusToken(c *gin.Context, username string) {
 
 }
 
-//CheckSessCookie checks cookie when authorizing
+// CheckSessCookie checks cookie when authorizing
 func CheckSessCookie(c *gin.Context) error {
 	cookie, err := c.Request.Cookie("session_token")
 	if err != nil {
@@ -54,7 +54,7 @@ func CheckSessCookie(c *gin.Context) error {
 	return nil
 }
 
-//Refresh refreshes a users session_token
+// Refresh refreshes a users session_token
 func Refresh(c *gin.Context) error {
 	r := c.Request
 	cookie, err := r.Cookie("session_token")
