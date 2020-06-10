@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"Omiran-App/backend/dbutils"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,12 +22,12 @@ func InitCache() {
 	Cache = conn
 }
 
-//SetCache sets the cache
-func SetCache(username string) {
+//SetCachePlusToken sets the cache
+func SetCachePlusToken(c *gin.Context, username string) {
 	log.Printf(username)
 	sessionToken := uuid.NewV4().String()
 	_, err := Cache.Do("SETEX", sessionToken, "120", username)
-
+	c.SetCookie("session_token", sessionToken, 120000, "/", "localhost", false, false)
 	if err != nil {
 		return
 	}
@@ -34,14 +35,68 @@ func SetCache(username string) {
 
 }
 
-// SetSessCookie sets the cookie
-func SetSessCookie(c *gin.Context) {
-	c.SetCookie("session_token", session, 120, "/", "localhost", false, true)
-	cookie, err := c.Cookie("session_token")
-	log.Printf(cookie)
+//CheckSessCookie checks cookie when authorizing
+func CheckSessCookie(c *gin.Context) error {
+
+	cookie, err := c.Request.Cookie("session_token")
 	if err != nil {
-		return
+		return dbutils.ErrUnauthorized
 	}
-	return
+
+	sessionToken := cookie.Value
+
+	response, err := Cache.Do("GET", sessionToken)
+
+	log.Printf(sessionToken)
+
+	log.Println(response)
+
+	if err != nil {
+		return dbutils.ErrInternalServer
+
+	}
+	if response == nil {
+		return dbutils.ErrUnauthorized
+	}
+	return nil
+}
+
+//Refresh refreshes a users session_token
+func Refresh(c *gin.Context) error {
+	r := c.Request
+	cookie, err := r.Cookie("session_token")
+
+	if err != nil {
+		return dbutils.ErrUnauthorized
+	}
+
+	sessionToken := cookie.Value
+
+	response, err := Cache.Do("GET", sessionToken)
+
+	if err != nil {
+		return dbutils.ErrInternalServer
+
+	}
+	if response == nil {
+		return dbutils.ErrUnauthorized
+	}
+
+	newSessionToken := uuid.NewV4().String()
+	_, err = Cache.Do("SETEX", newSessionToken, "120", response)
+	if err != nil {
+		return dbutils.ErrInternalServer
+
+	}
+
+	_, err = Cache.Do("DEL", sessionToken)
+	if err != nil {
+		return dbutils.ErrInternalServer
+
+	}
+
+	c.SetCookie("session_token", newSessionToken, 120000, "/", "localhost", false, false)
+
+	return nil
 
 }

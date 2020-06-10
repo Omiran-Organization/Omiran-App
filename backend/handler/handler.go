@@ -56,6 +56,7 @@ func AccountCreationHandler(c *gin.Context) {
 		c.String(400, err.Error())
 		return
 	}
+	redis.SetCachePlusToken(c, userIntermediary.Username)
 
 	c.String(200, "Success")
 }
@@ -82,15 +83,27 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
-	// r := c.Request
-	// The user is return here, but currently not used.
-	user, err := dbutils.Auth(username, password)
-	redis.SetCache(user.Username)
-	redis.SetSessCookie(c)
-	// token, err := r.Cookie("session_token")
-	// sessionToken := token.Value
 
-	// response, err := redis.Cache.Do("GET", sessionToken)
+	// The user is return here, but currently not used.
+	_, err := dbutils.Auth(username, password)
+	err = redis.CheckSessCookie(c)
+
+	if err == dbutils.ErrUnauthorized {
+		c.String(401, err.Error())
+	} else if err == dbutils.ErrInternalServer {
+		c.String(500, err.Error())
+	} else if err == nil {
+
+		c.String(200, "success")
+	} else {
+		c.String(500, "internal server error")
+	}
+
+}
+
+//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+func RefreshSessionHandler(c *gin.Context) {
+	err := redis.Refresh(c)
 	if err == dbutils.ErrUnauthorized {
 		c.String(401, err.Error())
 	} else if err == dbutils.ErrInternalServer {

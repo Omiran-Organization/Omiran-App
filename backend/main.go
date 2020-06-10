@@ -20,5 +20,7 @@ func main() {
 	r.POST("/create", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
 	r.POST("/follow", handler.StartFollowingHandler)
+	r.POST("/refresh", handler.RefreshSessionHandler)
+
 	r.Run()
 }
