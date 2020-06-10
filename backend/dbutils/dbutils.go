@@ -84,7 +84,7 @@ func SelectAllFollows() []Follows {
 }
 
 // HashPassword hashes password
-func HashPassword(password string) (string, error) {
+func hashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	return string(bytes), err
 }
@@ -95,7 +95,7 @@ func (u *User) Create() error {
 		return errors.New("Username too long (can be maximum 40 characters)")
 	}
 
-	hashedPassword, err := HashPassword(u.Password)
+	hashedPassword, err := hashPassword(u.Password)
 	u.Password = string(hashedPassword)
 
 	if err != nil {

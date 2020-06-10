@@ -7,7 +7,7 @@
 
 ## CI/CD 
   
-   1. [ ] Dockerize application
+   1. [x] Dockerize application (sorta done)
    2. [ ] Integrate test automation and deploy automation scripts
    3. [x] Implement localhost automation scripts
    4. [ ] Implement container orchestration
@@ -37,7 +37,8 @@
 
 ## Auth system
 
-  1. [ ] Implement login system on backend 
+  1. [x] Implement auth
+  2. [ ] Implement login system on backend  (with sessions)
 
 ## Object transactions
 
