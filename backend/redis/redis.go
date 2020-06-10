@@ -37,23 +37,16 @@ func SetCachePlusToken(c *gin.Context, username string) {
 
 //CheckSessCookie checks cookie when authorizing
 func CheckSessCookie(c *gin.Context) error {
-
 	cookie, err := c.Request.Cookie("session_token")
 	if err != nil {
 		return dbutils.ErrUnauthorized
 	}
-
 	sessionToken := cookie.Value
-
 	response, err := Cache.Do("GET", sessionToken)
-
-	log.Printf(sessionToken)
-
-	log.Println(response)
-
+	// log.Printf(sessionToken)
+	// log.Println(response)
 	if err != nil {
 		return dbutils.ErrInternalServer
-
 	}
 	if response == nil {
 		return dbutils.ErrUnauthorized
@@ -65,38 +58,28 @@ func CheckSessCookie(c *gin.Context) error {
 func Refresh(c *gin.Context) error {
 	r := c.Request
 	cookie, err := r.Cookie("session_token")
-
 	if err != nil {
 		return dbutils.ErrUnauthorized
 	}
-
 	sessionToken := cookie.Value
-
 	response, err := Cache.Do("GET", sessionToken)
-
 	if err != nil {
 		return dbutils.ErrInternalServer
-
 	}
 	if response == nil {
 		return dbutils.ErrUnauthorized
 	}
-
 	newSessionToken := uuid.NewV4().String()
 	_, err = Cache.Do("SETEX", newSessionToken, "120", response)
 	if err != nil {
 		return dbutils.ErrInternalServer
 
 	}
-
 	_, err = Cache.Do("DEL", sessionToken)
 	if err != nil {
 		return dbutils.ErrInternalServer
-
 	}
-
 	c.SetCookie("session_token", newSessionToken, 120000, "/", "localhost", false, false)
-
 	return nil
 
 }

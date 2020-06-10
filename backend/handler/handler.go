@@ -83,6 +83,7 @@ func StartFollowingHandler(c *gin.Context) {
 func AuthHandler(c *gin.Context) {
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
+	_, err := dbutils.Auth(username, password)
 	err = redis.CheckSessCookie(c)
 	switch err {
 	case dbutils.ErrUnauthorized:
@@ -95,4 +96,19 @@ func AuthHandler(c *gin.Context) {
 		c.String(500, "internal server error")
 	}
 
+}
+
+//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+func RefreshSessionHandler(c *gin.Context) {
+	err := redis.Refresh(c)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
 }
