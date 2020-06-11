@@ -7,10 +7,11 @@
 
 ## CI/CD 
   
-   1. [x] Dockerize frontend 
-   2. [ ] Integrate test automation and deploy automation scripts
-   3. [x] Implement localhost automation scripts
-   4. [ ] Implement container orchestration
+   1. [x] Dockerize frontend
+   2. [ ] Dockerize backend
+   3. [ ] Integrate test automation and deploy automation scripts
+   4. [x] Implement localhost automation scripts
+   5. [ ] Implement container orchestration
 
 ## Database CRUD
    
