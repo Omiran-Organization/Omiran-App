@@ -7,7 +7,7 @@
 
 ## CI/CD 
   
-   1. [x] Dockerize application (sorta done)
+   1. [ ] Dockerize application
    2. [ ] Integrate test automation and deploy automation scripts
    3. [x] Implement localhost automation scripts
    4. [ ] Implement container orchestration
