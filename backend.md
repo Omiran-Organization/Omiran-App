@@ -38,7 +38,8 @@
 ## Auth system
 
   1. [x] Implement auth
-  2. [x] Implement login system on backend  (with sessions)
+  2. [x] Implement login system on backend with redis sessions 
+  3. [x] Implement cookie assignment with redis  
 
 ## Object transactions
 
