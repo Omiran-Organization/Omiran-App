@@ -28,7 +28,7 @@
   
 ## Stream Chat
 
-  1. [ ] Implement stream chat with websocket
+  1. [ ] Implement stream chat with socketio 
   2. [ ] Implement unicode/utf-8 support (for emotes)
   3. [ ] Implement emote support
   4. [ ] Implement message deletion by moderator
