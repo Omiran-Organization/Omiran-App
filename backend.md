@@ -12,7 +12,7 @@
    3. [ ] Integrate test automation and deploy automation scripts
    4. [x] Implement localhost automation scripts
    5. [ ] Implement container orchestration
-
+   
 ## Database CRUD
    
    1. [x] Create database and prerequisite tables with `backend/database-boilerplate.sql`
