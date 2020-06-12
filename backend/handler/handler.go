@@ -2,8 +2,8 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
-	"database/sql"
-	"encoding/json"
+	"Omiran-App/backend/gql"
+	"Omiran-App/backend/redis"
 
 	"log"
 
@@ -12,128 +12,45 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var userType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "User",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"username": &graphql.Field{
-				Type: graphql.String,
-			},
-			"email": &graphql.Field{
-				Type: graphql.String,
-			},
-			"description": &graphql.Field{
-				Type: graphql.String,
-			},
-			"profile_picture": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
+var (
+	schema graphql.Schema
 )
 
-var followsType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "Follows",
-		Fields: graphql.Fields{
-			"uuid": &graphql.Field{
-				Type: graphql.String,
-			},
-			"user_following": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
-)
+// InitGQLSchema initializes the schema for graphql.
+func InitGQLSchema() {
+	schema = gql.GraphQLSchema()
+}
+
+// Query is for deserializing graphql queries
+type Query struct {
+	Query string `json:"query"`
+}
 
 // GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
-	var rBody string
-	err := json.NewDecoder(c.Request.Body).Decode(&rBody)
+	var q Query
+	err := c.BindJSON(&q)
 	if err != nil {
 		log.Fatalf("Error parsing JSON request body %s", err)
 	}
-	c.JSON(200, processQuery(rBody))
+	c.JSON(200, processQuery(q.Query))
 }
 
 func processQuery(query string) *graphql.Result {
-	users := dbutils.SelectAllUsers()
-	follows := dbutils.SelectAllFollows()
-	params := graphql.Params{Schema: graphQLSchema(users, follows), RequestString: query}
+	params := graphql.Params{Schema: schema, RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
-		log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
+		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
 	}
 	return r
 }
 
-func graphQLSchema(user []dbutils.User, follows []dbutils.Follows) graphql.Schema {
-	fields := &graphql.Fields{
-		"Users": &graphql.Field{
-			Type:        graphql.NewList(userType),
-			Description: "All Users",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return user, nil
-			},
-		},
-		"User": &graphql.Field{
-			Type:        userType,
-			Description: "get users by any field (except password)",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"username": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"email": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"description": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"profile_picture": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-		},
-		"Follows": &graphql.Field{
-			Type:        graphql.NewList(followsType),
-			Description: "All follows",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return follows, nil
-			},
-		},
-		"Follow": &graphql.Field{
-			Type:        followsType,
-			Description: "get follows by any field",
-			Args: graphql.FieldConfigArgument{
-				"uuid": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-				"user_following": &graphql.ArgumentConfig{
-					Type: graphql.String,
-				},
-			},
-		},
-	}
-	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
-	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
-	schema, err := graphql.NewSchema(schemaConfig)
-	if err != nil {
-		log.Fatalf("failed to create new schema; %s\n", err)
-	}
-	return schema
-}
-
-// AccountCreationHandler generates a new UUID, receives form values, and creates a new user (auth logic for credentials and stuff will probably happen on the frontend)
+// AccountCreationHandler generates a new UUID, receives form values, and creates a new user
 func AccountCreationHandler(c *gin.Context) {
 	u := uuid.NewV4()
 	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
 
+	// Maybe 500 status code
 	err := userIntermediary.Create()
 	if err != nil {
 		c.String(400, err.Error())
@@ -143,12 +60,32 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
+// SignInHandler signs in user
+func SignInHandler(c *gin.Context) {
+
+	username := c.Request.FormValue("username")
+	password := c.Request.FormValue("password")
+	_, err := dbutils.Auth(username, password)
+	redis.SetCachePlusToken(c, username)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
+
+}
+
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
 	var follow dbutils.Follows
 	err := c.BindJSON(&follow)
 	if err != nil {
-		c.String(400, "Bad format. Expected {\"uuid\": user_uuid, \"user_following\": followee_id}")
+		c.String(400, "Bad format. Expected {\"follower\": user_uuid, \"followee\": followee_id}")
 		return
 	}
 
@@ -163,13 +100,32 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	userIntermediary := &dbutils.User{Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password")}
-	err := userIntermediary.Auth()
-	if err != nil && err != sql.ErrNoRows {
-		log.Fatalf("user auth err %s\n", err)
-	} else if err == sql.ErrNoRows {
-		c.String(401, "unauthorized")
-	} else {
-		c.String(200, "Success")
+
+	err := redis.CheckSessCookie(c)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
+
+}
+
+//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+func RefreshSessionHandler(c *gin.Context) {
+	err := redis.Refresh(c)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
 	}
 }

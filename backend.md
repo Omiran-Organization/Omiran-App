@@ -6,12 +6,13 @@
   - [ ] Elasticsearch support for stream/user search
 
 ## CI/CD 
-
-   1. [ ] Dockerize application
-   2. [ ] Integrate test automation and deploy automation scripts
-   3. [x] Implement localhost automation scripts
-   4. [ ] Implement container orchestration
-
+  
+   1. [ ] Dockerize frontend
+   2. [ ] Dockerize backend
+   3. [ ] Integrate test automation and deploy automation scripts
+   4. [x] Implement localhost automation scripts
+   5. [ ] Implement container orchestration
+   
 ## Database CRUD
    
    1. [x] Create database and prerequisite tables with `backend/database-boilerplate.sql`
@@ -20,7 +21,7 @@
    
 ## Live Streaming Service
 
-  1. [ ] Implement OBS inspacextegration
+  1. [ ] Implement OBS integration
   2. [ ] Implement connection to backend service with something similar to Twitch's streamkey solution
   3. [ ] Implement media streaming with either RTMP or WebRTC
   4. [ ] Implement auth resolution feature
@@ -28,7 +29,7 @@
   
 ## Stream Chat
 
-  1. [ ] Implement stream chat with websocket
+  1. [ ] Implement stream chat with socketio 
   2. [ ] Implement unicode/utf-8 support (for emotes)
   3. [ ] Implement emote support
   4. [ ] Implement message deletion by moderator
@@ -37,7 +38,9 @@
 
 ## Auth system
 
-  1. [x] Implement login system on backend 
+  1. [x] Implement auth
+  2. [x] Implement login system on backend with redis sessions 
+  3. [x] Implement cookie assignment with redis  
 
 ## Object transactions
 
