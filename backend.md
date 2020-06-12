@@ -7,7 +7,7 @@
 
 ## CI/CD 
   
-   1. [x] Dockerize frontend
+   1. [ ] Dockerize frontend
    2. [ ] Dockerize backend
    3. [ ] Integrate test automation and deploy automation scripts
    4. [x] Implement localhost automation scripts
