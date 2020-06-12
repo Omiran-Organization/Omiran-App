@@ -60,7 +60,7 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-//SignInHandler signs in user
+// SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
 
 	username := c.Request.FormValue("username")
