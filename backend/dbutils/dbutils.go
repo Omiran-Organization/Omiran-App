@@ -155,7 +155,7 @@ func Auth(username string, password string) (User, error) {
 		// Username does not exist
 		return User{}, ErrUnauthorized
 	}
-
+	log.Println("hello")
 	match := checkPasswordHash(password, user.Password)
 	if match {
 		user.Password = "" // Password not needed outside of this

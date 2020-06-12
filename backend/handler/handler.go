@@ -56,9 +56,28 @@ func AccountCreationHandler(c *gin.Context) {
 		c.String(400, err.Error())
 		return
 	}
-	redis.SetCachePlusToken(c, userIntermediary.Username)
 
 	c.String(200, "Success")
+}
+
+//SignInHandler signs in user
+func SignInHandler(c *gin.Context) {
+
+	username := c.Request.FormValue("username")
+	password := c.Request.FormValue("password")
+	_, err := dbutils.Auth(username, password)
+	redis.SetCachePlusToken(c, username)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
+
 }
 
 // StartFollowingHandler handles follow requests
@@ -81,10 +100,8 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-	username := c.Request.FormValue("username")
-	password := c.Request.FormValue("password")
-	_, err := dbutils.Auth(username, password)
-	err = redis.CheckSessCookie(c)
+
+	err := redis.CheckSessCookie(c)
 	switch err {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
