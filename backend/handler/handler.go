@@ -62,7 +62,6 @@ func AccountCreationHandler(c *gin.Context) {
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
-
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
 	_, err := dbutils.Auth(username, password)
@@ -77,7 +76,6 @@ func SignInHandler(c *gin.Context) {
 	default:
 		c.String(500, "internal server error")
 	}
-
 }
 
 // StartFollowingHandler handles follow requests
