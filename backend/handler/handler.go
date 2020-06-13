@@ -62,17 +62,16 @@ func AccountCreationHandler(c *gin.Context) {
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
-
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
 	_, err := dbutils.Auth(username, password)
-	redis.SetCachePlusToken(c, username)
 	switch err {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
+		redis.SetCachePlusToken(c, username)
 		c.String(200, "success")
 	default:
 		c.String(500, "internal server error")
@@ -128,4 +127,9 @@ func RefreshSessionHandler(c *gin.Context) {
 	default:
 		c.String(500, "internal server error")
 	}
+}
+
+// SignOut signs a user out by clearing their cookies and deleting their session cache
+func SignOut(c *gin.Context) {
+
 }

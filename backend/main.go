@@ -22,5 +22,6 @@ func main() {
 	r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
+	r.DELETE("/signout", handler.SignOut)
 	r.Run()
 }
