@@ -131,5 +131,15 @@ func RefreshSessionHandler(c *gin.Context) {
 
 // SignOut signs a user out by clearing their cookies and deleting their session cache
 func SignOut(c *gin.Context) {
-
+	err := redis.DeleteSessionByToken(c)
+	switch err {
+	case dbutils.ErrUnauthorized:
+		c.String(401, err.Error())
+	case dbutils.ErrInternalServer:
+		c.String(500, err.Error())
+	case nil:
+		c.String(200, "success")
+	default:
+		c.String(500, "internal server error")
+	}
 }

@@ -1,4 +1,4 @@
 # Workspace settings
 .vscode
-backend/database-config.yaml
+backend/config.yaml
 backend/vendor
