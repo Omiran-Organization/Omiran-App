@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	flag := flag.String("config", "database-config.yaml", "database-configuration file")
+	flag := flag.String("config", "config.yaml", "backend configuration file")
 	dbutils.Open(*flag)
 	handler.InitGQLSchema()
 	redis.InitCache()
