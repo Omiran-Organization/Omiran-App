@@ -129,3 +129,8 @@ func RefreshSessionHandler(c *gin.Context) {
 		c.String(500, "internal server error")
 	}
 }
+
+// SignOut signs a user out by clearing their cookies and deleting their session cache
+func SignOut(c *gin.Context) {
+
+}
