@@ -71,13 +71,18 @@ func SignInHandler(c *gin.Context) {
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
-		redis.SetCachePlusToken(c, username)
+		user := &dbutils.User{}
+		err := dbutils.DB.Select(&user, "SELECT uuid FROM User WHERE username = ?", username)
+		if err != nil {
+			panic(err)
+		}
+		redis.SetCachePlusToken(c, user.UUID)
 		c.String(200, "success")
 	default:
 		c.String(500, "internal server error")
 	}
-}
 
+}
 
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
