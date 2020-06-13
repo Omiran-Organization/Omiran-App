@@ -4,14 +4,12 @@ import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/handler"
 	"Omiran-App/backend/redis"
-	"flag"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	flag := flag.String("config", "config.yaml", "backend configuration file")
-	dbutils.Open(*flag)
+	dbutils.Open("config.yaml")
 	handler.InitGQLSchema()
 	redis.InitCache()
 }
