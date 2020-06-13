@@ -78,6 +78,7 @@ func SignInHandler(c *gin.Context) {
 	}
 }
 
+
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
 	var follow dbutils.Follows
