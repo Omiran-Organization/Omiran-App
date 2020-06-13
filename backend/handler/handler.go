@@ -66,13 +66,13 @@ func SignInHandler(c *gin.Context) {
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
 	_, err := dbutils.Auth(username, password)
-	redis.SetCachePlusToken(c, username)
 	switch err {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
+		redis.SetCachePlusToken(c, username)
 		c.String(200, "success")
 	default:
 		c.String(500, "internal server error")
