@@ -83,3 +83,8 @@ func Refresh(c *gin.Context) error {
 	return nil
 
 }
+
+// DeleteSessionByToken deletes a session by tokee
+func DeleteSessionByToken() {
+
+}
