@@ -2,7 +2,6 @@ package redis
 
 import (
 	"Omiran-App/backend/dbutils"
-	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
@@ -23,10 +22,9 @@ func InitCache() {
 }
 
 // SetCachePlusToken sets the cache
-func SetCachePlusToken(c *gin.Context, username string) {
-	log.Printf(username)
+func SetCachePlusToken(c *gin.Context, id uuid.UUID) {
 	sessionToken := uuid.NewV4().String()
-	_, err := Cache.Do("SETEX", sessionToken, "120", username)
+	_, err := Cache.Do("SETEX", sessionToken, "120", id)
 	c.SetCookie("session_token", sessionToken, 120000, "/", "localhost", false, false)
 	if err != nil {
 		return
