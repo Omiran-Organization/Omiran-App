@@ -34,7 +34,7 @@ const SignupPage: React.FunctionComponent = () => {
       <div className="flex-grow-2" />
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-2">The Open Source Streaming Platform</h3>
-      <label className="w-full pl-1" htmlFor="email-input">
+      <label className="w-full pl-1" htmlFor="email-input" name="email">
         Email
       </label>
       <input
@@ -48,7 +48,7 @@ const SignupPage: React.FunctionComponent = () => {
         }
         id="email-input"
       />
-      <label className="w-full pl-1" htmlFor="username-input">
+      <label className="w-full pl-1" htmlFor="username-input" name="username">
         Username
       </label>
       <input
@@ -60,7 +60,7 @@ const SignupPage: React.FunctionComponent = () => {
         }
         id="username-input"
       />
-      <label className="w-full pl-1" htmlFor="password-input">
+      <label className="w-full pl-1" htmlFor="password-input" name="password">
         Password
       </label>
       <PasswordInput
