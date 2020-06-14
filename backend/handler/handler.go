@@ -4,6 +4,9 @@ import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/gql"
 	"Omiran-App/backend/redis"
+	"fmt"
+	"io/ioutil"
+	"net/url"
 
 	"log"
 
@@ -141,5 +144,30 @@ func SignOut(c *gin.Context) {
 		c.String(200, "success")
 	default:
 		c.String(500, "internal server error")
+	}
+}
+
+// StreamAuth authorizes streamer
+func StreamAuth(c *gin.Context) {
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	fmt.Print("BODY: ")
+	fmt.Println(string(body))
+	values, err := url.ParseQuery(string(body))
+
+	if err != nil {
+		c.String(500, "Internal server error")
+		return
+	}
+
+	key := values.Get("psk")
+
+	// key := c.Query("psk")
+	fmt.Printf("KEY: %s\n", key)
+	if key == "test" {
+		fmt.Println("SUCCESS")
+		c.String(200, "Success")
+	} else {
+		fmt.Println("DENIED")
+		c.String(400, "Denied")
 	}
 }
