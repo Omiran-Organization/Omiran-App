@@ -189,3 +189,24 @@ func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
 	err := DB.Select(&followees, queryString, uuid)
 	return followees, err
 }
+
+// CreateNewStreamKey creates a new private stream key. If one already
+// exists it is overwritten. Then it returns the new
+func CreateNewStreamKey(id uuid.UUID) (uuid.UUID, error) {
+	streamKey := uuid.NewV4()
+
+	stmnt, err := DB.Prepare("UPDATE User SET private_stream_key = ? WHERE uuid = ?")
+	defer stmnt.Close()
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	_, err = stmnt.Exec(streamKey, id)
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	return streamKey, nil
+}

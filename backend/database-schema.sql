@@ -8,6 +8,7 @@ CREATE TABLE User (
 	password TEXT NOT NULL,
 	description TEXT,
 	profile_picture VARCHAR(2083),
+  private_stream_key VARCHAR(36) DEFAULT '',
   UNIQUE KEY (username)
 );
 
