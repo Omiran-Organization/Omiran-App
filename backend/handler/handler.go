@@ -64,14 +64,14 @@ func AccountCreationHandler(c *gin.Context) {
 func SignInHandler(c *gin.Context) {
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
-	_, err := dbutils.Auth(username, password)
+	user, err := dbutils.Auth(username, password)
 	switch err {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
-		redis.SetCachePlusToken(c, username)
+		redis.SetCachePlusToken(c, user.UUID)
 		c.String(200, "success")
 	default:
 		c.String(500, "internal server error")
