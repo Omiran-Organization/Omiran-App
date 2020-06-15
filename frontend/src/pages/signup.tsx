@@ -103,7 +103,7 @@ const SignupPage: React.FunctionComponent = () => {
         <button
           className={`btn ${isFormComplete ? "btn-orange" : "btn-disabled"} mr-4`}
         >
-          Signup
+          Sign Up
         </button>
         <span className="text-red-500">
           {!arePasswordsMatching ? "Passwords do not match." : ""}
