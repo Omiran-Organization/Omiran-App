@@ -8,7 +8,7 @@ const emailAddressRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
 const SignupPage: React.FunctionComponent = () => {
   const [emailAddress, setEmailAddress] = React.useState("");
-  const [username, setUsername] = React.useState("");
+  const [username, setUsername, setDescription, description] = React.useState("");
 
   const [password, setPassword] = React.useState("");
   const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
@@ -34,7 +34,7 @@ const SignupPage: React.FunctionComponent = () => {
       <div className="flex-grow-2" />
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-2">The Open Source Streaming Platform</h3>
-      <label className="w-full pl-1" htmlFor="email-input">
+      <label className="w-full pl-1" htmlFor="email-input" name="email">
         Email
       </label>
       <input
@@ -59,6 +59,20 @@ const SignupPage: React.FunctionComponent = () => {
           setUsername(e.target.value)
         }
         id="username-input"
+        name="username"
+      />
+      <label className="w-full pl-1" htmlFor="description-input">
+        Description
+      </label>
+      <input
+        className="input w-full mb-2"
+        type="text"
+        value={description}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+          setDescription(e.target.value)
+        }
+        id="description-input"
+        name="description"     
       />
       <label className="w-full pl-1" htmlFor="password-input">
         Password
@@ -71,6 +85,7 @@ const SignupPage: React.FunctionComponent = () => {
             setPassword(e.target.value),
           id: "password-input",
         }}
+        name="password"
       />
       <label className="w-full pl-1" htmlFor="password-confirmation-input">
         Confirm Password
@@ -88,7 +103,7 @@ const SignupPage: React.FunctionComponent = () => {
         <button
           className={`btn ${isFormComplete ? "btn-orange" : "btn-disabled"} mr-4`}
         >
-          Signup
+          Sign Up
         </button>
         <span className="text-red-500">
           {!arePasswordsMatching ? "Passwords do not match." : ""}

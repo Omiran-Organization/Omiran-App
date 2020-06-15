@@ -12,7 +12,7 @@
    3. [ ] Integrate test automation and deploy automation scripts
    4. [x] Implement localhost automation scripts
    5. [ ] Implement container orchestration
-   6. [ ] Implement github actions
+   6. [x] Implement github actions
    
 ## Database CRUD
    
@@ -22,7 +22,7 @@
    
 ## Live Streaming Service
 
-  1. [ ] Implement OBS integration
+  1. [x] Implement OBS integration
   2. [x] Implement connection to backend service with something similar to Twitch's streamkey solution (architecture is different for this)
   3. [x] Implement media streaming with either RTMP or WebRTC (using a tool for this)
   4. [x] Allow users to choose reception resolution (with tool, yes)
