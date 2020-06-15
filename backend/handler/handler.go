@@ -81,12 +81,22 @@ func SignInHandler(c *gin.Context) {
 
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
-	var follow dbutils.Follows
-	err := c.BindJSON(&follow)
+
+	UUID, err := redis.GetLoggedInUUID(c)
+
 	if err != nil {
-		c.String(400, "Bad format. Expected {\"follower\": user_uuid, \"followee\": followee_id}")
+		c.String(400, "unauthorized")
 		return
 	}
+
+	var follow dbutils.Follows
+	err = c.BindJSON(&follow)
+	if err != nil {
+		c.String(400, "Bad format. Expected {\"followee\": followee_id}")
+		return
+	}
+
+	follow.Follower = UUID
 
 	err2 := follow.Create()
 	if err2 != nil {
