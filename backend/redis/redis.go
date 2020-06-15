@@ -2,6 +2,7 @@ package redis
 
 import (
 	"Omiran-App/backend/dbutils"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
@@ -22,9 +23,9 @@ func InitCache() {
 }
 
 // SetCachePlusToken sets the cache
-func SetCachePlusToken(c *gin.Context, username string) {
+func SetCachePlusToken(c *gin.Context, id uuid.UUID) {
 	sessionToken := uuid.NewV4().String()
-	_, err := Cache.Do("SETEX", sessionToken, "120000", username)
+	_, err := Cache.Do("SETEX", sessionToken, "120000", id.String())
 	c.SetCookie("session_token", sessionToken, 120000, "/", "localhost", false, false)
 	if err != nil {
 		return
@@ -96,4 +97,32 @@ func DeleteSessionByToken(c *gin.Context) error {
 	}
 	c.SetCookie("session_token", sessionToken, -1, "/", "localhost", false, false)
 	return nil
+}
+
+// GetLoggedInUUID gets the uuid of the currently logged in user.
+// Can be used to check if the user is currently logged in.
+func GetLoggedInUUID(c *gin.Context) (uuid.UUID, error) {
+	// func GetUser(c *gin.Context) {
+
+	cookie, err := c.Request.Cookie("session_token")
+	if err != nil {
+		return uuid.UUID{}, dbutils.ErrUnauthorized
+	}
+
+	sessionToken := cookie.Value
+
+	idString, err := redis.String(Cache.Do("GET", sessionToken))
+
+	if err != nil {
+		log.Println(err)
+		return uuid.UUID{}, dbutils.ErrInternalServer
+	}
+
+	UUID, err := uuid.FromString(idString)
+
+	if err != nil {
+		return uuid.UUID{}, dbutils.ErrUnauthorized
+	}
+
+	return UUID, nil
 }
