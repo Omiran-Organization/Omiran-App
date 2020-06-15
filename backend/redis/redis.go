@@ -25,7 +25,7 @@ func InitCache() {
 // SetCachePlusToken sets the cache
 func SetCachePlusToken(c *gin.Context, id uuid.UUID) {
 	sessionToken := uuid.NewV4().String()
-	_, err := Cache.Do("SETEX", sessionToken, "1209600", username)
+	_, err := Cache.Do("SETEX", sessionToken, "1209600", id.String())
 	c.SetCookie("session_token", sessionToken, 1209600, "/", "localhost", false, false)
 	if err != nil {
 		return

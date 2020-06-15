@@ -93,7 +93,7 @@ func SignInHandler(c *gin.Context) {
 		c.String(500, err.Error())
 	case nil:
 		r := c.Request
-		redis.SetCachePlusToken(c, username)
+		redis.SetCachePlusToken(c, user.UUID)
 		cookie, err := r.Cookie("session_token")
 		token := cookie.Value
 		if err != nil {
