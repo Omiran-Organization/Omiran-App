@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    backend:
+        build: ./backend
+        volumes:
+            - ./backend:/go/src/app
+        ports:
+            - 80:8080 
+            
