@@ -22,7 +22,7 @@ const LoginPage: React.FunctionComponent = () => {
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-3">The Open Source Streaming Platform</h3>
       <label className="w-full pl-1" htmlFor="email-username-input">
-        Email / Username
+        Username
       </label>
       <input
         className="input w-full mb-3"
