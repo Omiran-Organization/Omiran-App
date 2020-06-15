@@ -2,6 +2,8 @@ package handler
 
 import (
 	"Omiran-App/backend/dbutils"
+	"Omiran-App/backend/redis"
+
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -51,9 +53,12 @@ func GetStreamKey(c *gin.Context) {
 
 	// If logged in, fetch stream key for that user.
 
-	// The line below should be redis.GetLoggedInUser(c). Currently redis is
-	// using username instead of uuid.
-	uuid, err := uuid.FromString("e1f80a79-7449-4a73-a4d1-39254c74df41")
+	uuid, err := redis.GetLoggedInUUID(c)
+
+	if err != nil {
+		c.String(400, "unauthorized")
+		return
+	}
 
 	var user UserStreamKey
 
@@ -85,8 +90,13 @@ func GetStreamKey(c *gin.Context) {
 func CreateNewStreamKey(c *gin.Context) {
 
 	// If logged in, create or update key for user.
-	// Replace with redis.GetLoggedInUser(c).
-	uuid, err := uuid.FromString("e1f80a79-7449-4a73-a4d1-39254c74df41")
+	uuid, err := redis.GetLoggedInUUID(c)
+
+	if err != nil {
+		c.String(400, "unauthorized")
+		return
+	}
+
 	var user UserStreamKey
 
 	err = dbutils.DB.Get(&user, "SELECT uuid, username, private_stream_key FROM User WHERE uuid = ?", uuid.String())
