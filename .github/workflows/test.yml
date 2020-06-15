@@ -3,11 +3,11 @@ name: test
 on:
     push:
         branches:
-            - backend-development
+           - master 
 
 jobs:
     test:
         runs-on: ubuntu-18.04
         steps:
             - name: backend-runtime-check
-            run: go run backend/main.go
+              run: go run backend/main.go
