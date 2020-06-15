@@ -48,7 +48,7 @@ const SignupPage: React.FunctionComponent = () => {
         }
         id="email-input"
       />
-      <label className="w-full pl-1" htmlFor="username-input" name="username">
+      <label className="w-full pl-1" htmlFor="username-input">
         Username
       </label>
       <input
@@ -59,8 +59,9 @@ const SignupPage: React.FunctionComponent = () => {
           setUsername(e.target.value)
         }
         id="username-input"
+        name="username"
       />
-      <label className="w-full pl-1" htmlFor="password-input" name="password">
+      <label className="w-full pl-1" htmlFor="password-input">
         Password
       </label>
       <PasswordInput
@@ -71,6 +72,7 @@ const SignupPage: React.FunctionComponent = () => {
             setPassword(e.target.value),
           id: "password-input",
         }}
+        name="password"
       />
       <label className="w-full pl-1" htmlFor="password-confirmation-input">
         Confirm Password
