@@ -1,5 +1,6 @@
 {
   "name": "create-next-example-app",
+  "proxy": "http://localhost:8080/",
   "scripts": {
     "dev": "next",
     "build": "next build",

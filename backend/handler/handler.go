@@ -26,6 +26,22 @@ type Query struct {
 	Query string `json:"query"`
 }
 
+//Credentials is for structuring the signin route
+type Credentials struct {
+	Username string `json:"username" `
+	Password string `json:"password"`
+}
+
+//SignInData is structured data that will be converted to json and sent bck to the client
+type SignInData struct {
+	UUID           uuid.UUID `json:"uuid"`
+	Username       string    `json:"username"`
+	Email          string    `json:"email"`
+	Description    string    `json:"description`
+	ProfilePicture string    `json:"profilepicture`
+	Token          string    `json:"token" `
+}
+
 // GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var q Query
@@ -62,17 +78,37 @@ func AccountCreationHandler(c *gin.Context) {
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
-	username := c.Request.FormValue("username")
-	password := c.Request.FormValue("password")
-	_, err := dbutils.Auth(username, password)
-	switch err {
+	var creds Credentials
+	err := c.BindJSON(&creds)
+	if err != nil {
+		panic(err)
+	}
+	username := creds.Username
+	password := creds.Password
+	user, err2 := dbutils.Auth(username, password)
+	switch err2 {
 	case dbutils.ErrUnauthorized:
 		c.String(401, err.Error())
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
+		r := c.Request
 		redis.SetCachePlusToken(c, username)
-		c.String(200, "success")
+		cookie, err := r.Cookie("session_token")
+		token := cookie.Value
+		if err != nil {
+
+			log.Println(err)
+		}
+		var re SignInData
+		re.UUID = user.UUID
+		re.Email = user.Email
+		re.Description = user.Description
+		re.Username = user.Username
+		re.ProfilePicture = user.ProfilePicture
+		re.Token = token
+		c.JSON(200, re)
+
 	default:
 		c.String(500, "internal server error")
 	}

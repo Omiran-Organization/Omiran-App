@@ -24,8 +24,8 @@ func InitCache() {
 // SetCachePlusToken sets the cache
 func SetCachePlusToken(c *gin.Context, username string) {
 	sessionToken := uuid.NewV4().String()
-	_, err := Cache.Do("SETEX", sessionToken, "120000", username)
-	c.SetCookie("session_token", sessionToken, 120000, "/", "localhost", false, false)
+	_, err := Cache.Do("SETEX", sessionToken, "1209600", username)
+	c.SetCookie("session_token", sessionToken, 1209600, "/", "localhost", false, false)
 	if err != nil {
 		return
 	}
@@ -68,7 +68,7 @@ func Refresh(c *gin.Context) error {
 		return dbutils.ErrUnauthorized
 	}
 	newSessionToken := uuid.NewV4().String()
-	_, err = Cache.Do("SETEX", newSessionToken, "120000", response)
+	_, err = Cache.Do("SETEX", newSessionToken, "1209600", response)
 	if err != nil {
 		return dbutils.ErrInternalServer
 
@@ -77,7 +77,7 @@ func Refresh(c *gin.Context) error {
 	if err != nil {
 		return dbutils.ErrInternalServer
 	}
-	c.SetCookie("session_token", newSessionToken, 120000, "/", "localhost", false, false)
+	c.SetCookie("session_token", newSessionToken, 1209600, "/", "localhost", false, false)
 	return nil
 
 }
