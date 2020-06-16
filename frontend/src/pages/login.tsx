@@ -34,10 +34,14 @@ const LoginPage: React.FunctionComponent = () => {
         console.log(data.error)
       } else {
         auth.authenticate(data, () => {
-          console.log(data)
-          console.log(data.username,data.token)
-
-          router.push("/profile")
+          const { token } = data; 
+          // console.log(data)
+          // console.log(data.username, data.token)
+          console.log(token)
+          setValues({ ...values, token })
+          console.log(values)
+          // setValues(data)
+          router.push("/")
          })
       }
     })
@@ -54,6 +58,8 @@ const LoginPage: React.FunctionComponent = () => {
   //      })
   //   }
   // })
+
+  // handle change is a "curried function" see https://stackoverflow.com/questions/32782922/what-do-multiple-arrow-functions-mean-in-javascript
   const handleChange = name => event => {
     
     setValues({ ...values, [name]: event.target.value })
