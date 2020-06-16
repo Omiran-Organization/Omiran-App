@@ -76,19 +76,6 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-// func setCookieResponse(c *gin.Context) string {
-// 	r := c.Request
-
-// 	cookie, err := r.Cookie("session_token")
-
-// 	// token := cookie.Value
-// 	if err != nil {
-
-// 		log.Println(err)
-// 	}
-// 	log.Println(cookie)
-// 	return "hello"
-// }
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
@@ -108,24 +95,20 @@ func SignInHandler(c *gin.Context) {
 	case dbutils.ErrInternalServer:
 		c.String(500, err2.Error())
 	case nil:
-		redis.SetCachePlusToken(c, user.UUID)
+		token, err := redis.SetCachePlusToken(c, user.UUID)
 
-		// r := c.Request
+		log.Println(token)
+		if err != nil {
+			c.String(500, "Cookie not present")
+		}
 
-		// cookie, err := r.Cookie("session_token")
-
-		// token := cookie.Value
-		// if err != nil {
-		// 	c.String(500, "Cookie not present")
-		// }
-		// log.Println(cookie)
 		var re SignInData
 		re.UUID = user.UUID
 		re.Email = user.Email
 		re.Description = user.Description
 		re.Username = user.Username
 		re.ProfilePicture = user.ProfilePicture
-		// re.Token = token
+		re.Token = token
 		c.JSON(200, re)
 
 	default:

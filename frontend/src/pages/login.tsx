@@ -1,4 +1,5 @@
-import * as React from "react";
+// import * as React from "react";
+import React, { useState, useEffect } from 'react';
 
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -11,7 +12,7 @@ import { type } from "os";
 const LoginPage: React.FunctionComponent = () => {
   const router = useRouter();
   
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     username: '',
     password:'',
     token: '',
@@ -28,21 +29,30 @@ const LoginPage: React.FunctionComponent = () => {
     
     signin(user).then((data) => {
       if (data.error) {
+        router.push("/profile")
       } else {
         auth.authenticate(data, () => {
-          const token = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('session_token'))
-            .split('=')[1];
-          values.token = token
-          setValues({ ...values })
-          console.log({ ...values })
+          const { token } = data;
+
+          setValues({ ...values, token: token })
+
           router.push("/")
          })
       }
     })
   }
-
+  useEffect(() => {
+    console.log({ ...values })
+  }), [values]
+  
+  //getToken is (possibly) a useful helper method
+  const getToken = () => {
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('session_token'))
+      .split('=')[1];
+    return token
+  }
 
   // handle change is a "curried function" see https://stackoverflow.com/questions/32782922/what-do-multiple-arrow-functions-mean-in-javascript
   const handleChange = name => event => {
@@ -63,17 +73,12 @@ const LoginPage: React.FunctionComponent = () => {
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-3">The Open Source Streaming Platform</h3>
       <label className="w-full pl-1" htmlFor="email-username-input">
-        {/* Email / Username
-         */}
          Username
       </label>
       <input
         className="input w-full mb-3"
         type="text"
-        // value={emailAddressOrUsername}
         value={values.username}
-        // onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          // setEmailAddressOrUsername(e.target.value)
         onChange={handleChange('username')}
         id="email-username-input"
       />
@@ -84,8 +89,6 @@ const LoginPage: React.FunctionComponent = () => {
         containerProps={{ className: "mb-3" }}
         inputProps={{
           value: values.password,
-          // onChange: (e: React.ChangeEvent<HTMLInputElement>): void =>
-          //   setPassword(e.target.value),
           onChange: handleChange('password'),
           id: "password-input",
         }}
@@ -93,7 +96,6 @@ const LoginPage: React.FunctionComponent = () => {
       <button
         className="btn btn-orange self-start"
         onClick={clickSubmit}
-        // onClick={(): Promise<boolean> => router.push("/profile")}
       >
         Login
       </button>
