@@ -12,7 +12,7 @@
    3. [ ] Integrate test automation and deploy automation scripts
    4. [x] Implement localhost automation scripts
    5. [ ] Implement container orchestration
-   6. [x] Implement github actions
+   6. [ ] Implement github actions
    
 ## Database CRUD
    
