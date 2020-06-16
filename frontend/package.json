@@ -1,5 +1,6 @@
 {
   "name": "create-next-example-app",
+  "proxy": "http://localhost:8080/",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -7,6 +8,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "graphql-tag": "^2.10.3",
     "next": "^9.4.1",
     "postcss-preset-env": "^6.7.0",
     "react": "^16.13.1",

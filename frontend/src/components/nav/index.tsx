@@ -20,6 +20,11 @@ const Nav: React.FunctionComponent = () => (
         <button className="btn btn-orange btn-outlined">Login</button>
       </a>
     </Link>
+    <Link href="/profile">
+      <a>
+        <button className="btn btn-orange btn-outlined">Profile</button>
+      </a>
+    </Link>
   </div>
 );
 
