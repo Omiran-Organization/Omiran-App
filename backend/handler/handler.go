@@ -76,12 +76,32 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
+func setCookieResponse(c *gin.Context) {
+	redis.SetCachePlusToken(c, user.UUID)
+	r := c.Request
+
+	cookie, err := r.Cookie("session_token")
+	token := cookie.Value
+	if err != nil {
+
+		log.Println(err)
+	}
+	var re SignInData
+	re.UUID = user.UUID
+	re.Email = user.Email
+	re.Description = user.Description
+	re.Username = user.Username
+	re.ProfilePicture = user.ProfilePicture
+	re.Token = token
+	c.JSON(200, re)
+}
+
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
 	var creds Credentials
 	err := c.BindJSON(&creds)
 	if err != nil {
-		panic(err)
+		c.String(500, err.Error())
 	}
 	username := creds.Username
 	password := creds.Password
@@ -92,8 +112,9 @@ func SignInHandler(c *gin.Context) {
 	case dbutils.ErrInternalServer:
 		c.String(500, err.Error())
 	case nil:
-		r := c.Request
 		redis.SetCachePlusToken(c, user.UUID)
+		r := c.Request
+
 		cookie, err := r.Cookie("session_token")
 		token := cookie.Value
 		if err != nil {
@@ -133,7 +154,6 @@ func StartFollowingHandler(c *gin.Context) {
 	}
 
 	follow.Follower = UUID
-
 	err2 := follow.Create()
 	if err2 != nil {
 		c.String(400, err2.Error())
