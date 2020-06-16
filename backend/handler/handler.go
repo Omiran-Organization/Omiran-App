@@ -76,58 +76,56 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-func setCookieResponse(c *gin.Context) {
-	redis.SetCachePlusToken(c, user.UUID)
-	r := c.Request
+// func setCookieResponse(c *gin.Context) string {
+// 	r := c.Request
 
-	cookie, err := r.Cookie("session_token")
-	token := cookie.Value
-	if err != nil {
+// 	cookie, err := r.Cookie("session_token")
 
-		log.Println(err)
-	}
-	var re SignInData
-	re.UUID = user.UUID
-	re.Email = user.Email
-	re.Description = user.Description
-	re.Username = user.Username
-	re.ProfilePicture = user.ProfilePicture
-	re.Token = token
-	c.JSON(200, re)
-}
+// 	// token := cookie.Value
+// 	if err != nil {
+
+// 		log.Println(err)
+// 	}
+// 	log.Println(cookie)
+// 	return "hello"
+// }
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
+
 	var creds Credentials
 	err := c.BindJSON(&creds)
 	if err != nil {
-		c.String(500, err.Error())
+		log.Fatal(err)
 	}
+	log.Println(creds)
 	username := creds.Username
 	password := creds.Password
 	user, err2 := dbutils.Auth(username, password)
 	switch err2 {
 	case dbutils.ErrUnauthorized:
-		c.String(401, err.Error())
+		c.String(401, err2.Error())
 	case dbutils.ErrInternalServer:
-		c.String(500, err.Error())
+		c.String(500, err2.Error())
 	case nil:
 		redis.SetCachePlusToken(c, user.UUID)
-		r := c.Request
 
-		cookie, err := r.Cookie("session_token")
-		token := cookie.Value
-		if err != nil {
+		// r := c.Request
 
-			log.Println(err)
-		}
+		// cookie, err := r.Cookie("session_token")
+
+		// token := cookie.Value
+		// if err != nil {
+		// 	c.String(500, "Cookie not present")
+		// }
+		// log.Println(cookie)
 		var re SignInData
 		re.UUID = user.UUID
 		re.Email = user.Email
 		re.Description = user.Description
 		re.Username = user.Username
 		re.ProfilePicture = user.ProfilePicture
-		re.Token = token
+		// re.Token = token
 		c.JSON(200, re)
 
 	default:

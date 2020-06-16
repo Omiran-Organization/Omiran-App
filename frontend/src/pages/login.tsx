@@ -27,37 +27,22 @@ const LoginPage: React.FunctionComponent = () => {
     }
     
     signin(user).then((data) => {
-      console.log(`data${JSON.stringify(data)}`)
-      console.log(typeof(data))
       if (data.error) {
-
-        console.log(data.error)
       } else {
         auth.authenticate(data, () => {
-          const { token } = data; 
-          // console.log(data)
-          // console.log(data.username, data.token)
-          console.log(token)
-          setValues({ ...values, token })
-          console.log(values)
-          // setValues(data)
+          const token = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('session_token'))
+            .split('=')[1];
+          values.token = token
+          setValues({ ...values })
+          console.log({ ...values })
           router.push("/")
          })
       }
     })
   }
 
-  // signin(user).then((data) => {
-  //   console.log(`data${JSON.stringify(data)}`)
-  //   if (data.error) {
-
-  //     setValues({ ...values,error: data.error})
-  //   } else {
-  //     auth.authenticate(data, () => {
-  //       setValues({ ...values, error: '',redirectToReferrer: true})
-  //      })
-  //   }
-  // })
 
   // handle change is a "curried function" see https://stackoverflow.com/questions/32782922/what-do-multiple-arrow-functions-mean-in-javascript
   const handleChange = name => event => {
