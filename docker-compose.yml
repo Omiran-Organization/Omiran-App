@@ -7,5 +7,10 @@ services:
             - ./backend:/go/src/app
         ports:
             - 80:8080 
-        
+    frontend:
+        build: ./frontend
+        volumes:
+            - ./frontend:/app
+        ports:
+            - 3000:3000
             
