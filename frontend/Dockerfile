@@ -1,6 +1,6 @@
 FROM node
-COPY . app/
-WORKDIR app/
+COPY . /app/
+WORKDIR /app/
 RUN npm install
 CMD npm run dev
 ENTRYPOINT [ "/app" ]
