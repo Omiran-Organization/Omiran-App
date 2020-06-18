@@ -144,6 +144,7 @@ func checkPasswordHash(password, hash string) bool {
 // Returns an empty user in case of error.
 func Auth(username string, password string) (User, error) {
 	var user User
+
 	err := DB.Get(&user, "SELECT uuid, username, password, email, description, profile_picture FROM User WHERE username = ? LIMIT 1", username)
 
 	if err != nil && err != sql.ErrNoRows {
@@ -155,7 +156,7 @@ func Auth(username string, password string) (User, error) {
 		// Username does not exist
 		return User{}, ErrUnauthorized
 	}
-	log.Println("hello")
+
 	match := checkPasswordHash(password, user.Password)
 	if match {
 		user.Password = "" // Password not needed outside of this
@@ -178,7 +179,7 @@ func GetFollowers(uuid uuid.UUID) ([]User, error) {
 	return followers, err
 }
 
-// GetUsersBeingFollowed returns a list of all users you are followed.
+// GetUsersBeingFollowed returns a list of all users you are following.
 func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
 	queryString := `
 		SELECT User.uuid, username, email FROM User

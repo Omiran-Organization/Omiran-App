@@ -1,6 +1,11 @@
 import * as React from "react";
 
 import Head from "next/head";
+import gql from 'graphql-tag';
+
+import { initializeApollo } from '../lib/apolloClient'
+
+
 
 const HomePage: React.FunctionComponent = () => (
   <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
@@ -19,4 +24,28 @@ const HomePage: React.FunctionComponent = () => (
   </div>
 );
 
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: gql`
+      query Users { 
+        Users {
+            uuid,
+            username,
+        }
+    }
+    `
+    }).then(result => console.log(`result${JSON.stringify(result)}`));
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    unstable_revalidate: 1,
+  }
+}
+
 export default HomePage;
+
+

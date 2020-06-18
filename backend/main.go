@@ -4,7 +4,9 @@ import (
 	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/handler"
 	"Omiran-App/backend/redis"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +19,18 @@ func init() {
 func main() {
 	// os.Setenv("PORT", "9090")
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"POST", "GET", "PUT", "PATCH", "OPTIONS", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+	// r.Use(cors.Default())
 	r.POST("/graphql", handler.GraphQLService)
 	r.POST("/create", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
