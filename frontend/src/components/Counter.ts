@@ -1,24 +1,24 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
-const useCounter = () => {
-  const count = useSelector((state) => state.count)
-  const dispatch = useDispatch()
-  const increment = () =>
+const useCounter: object = () => {
+  const count: any = useSelector((state) => state.count)
+  const dispatch: any = useDispatch()
+  const increment: object = () =>
     dispatch({
       type: 'INCREMENT',
     })
-  const decrement = () =>
+  const decrement: object = () =>
     dispatch({
       type: 'DECREMENT',
     })
-  const reset = () =>
+  const reset: object = () =>
     dispatch({
       type: 'RESET',
     })
   return { count, increment, decrement, reset }
 }
 
-const Counter = () => {
+const Counter: any = () => {
   const { count, increment, decrement, reset } = useCounter()
   return (
     <div>
@@ -32,4 +32,4 @@ const Counter = () => {
   )
 }
 
-export default Counter
+export default Counter;
