@@ -27,3 +27,31 @@ migrations.
 # Running the backend
 To start the Go server, use `go run main.go`
 MySQL and Redis will have to be started first. 
+
+# Nginx server
+The nginx server currently connects to the Go server on `localhost:8080/streamauth`.
+This should probably be replaced with some CLI argument or config file in the future.
+The stream itself runs on `localhost:8008` as to not collide with the Go server.
+
+```
+docker build --tag streamserver .
+docker run -it --network host --rm streamserver
+```
+
+When running on localhost `--network host` is required to authenticate against the 
+Go server. Else it can't find the localhost of the host machine.
+
+# Stream example
+### OBS Configuration
+* Stream Type: `Custom Streaming Server`
+* URL: `rtmp://localhost:1935/stream`
+* Stream Key: `hello`
+
+### Watch Stream
+* In Safari, VLC or any HLS player, open:
+```
+http://<server ip>:8008/live/$STREAM_NAME.m3u8
+```
+* Example Playlist: `http://localhost:8008/live/hello.m3u8`
+* [VideoJS Player](https://video-dev.github.io/hls.js/stable/demo/?src=http%3A%2F%2Flocalhost%3A8080%2Flive%2Fhello.m3u8)
+* FFplay: `ffplay -fflags nobuffer rtmp://localhost:1935/stream/hello`
