@@ -1,7 +1,7 @@
 
-const signin = async (user) => {
+const signin = async (user): any => {
   try {
-    let response = await fetch("http://localhost:8080/signin", {
+    const response: Response = await fetch("http://localhost:8080/signin", {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(user)
@@ -12,7 +12,7 @@ const signin = async (user) => {
   }
 }
 
-const signout = async () => {
+const signout: Response = async () => {
   try {
     let response = await fetch('/signout/', { method: 'POST' })
     return await response.json()
