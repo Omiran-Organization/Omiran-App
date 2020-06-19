@@ -1,20 +1,29 @@
-import React from "react";
-
-import { AppProps } from "next/app";
-
-import "../public/css/style.css";
 import { ApolloProvider } from '@apollo/react-hooks'
-import { useApollo } from '../lib/apolloClient'
+import { Provider } from 'react-redux'
+import { useStore } from '../lib/redux'
+import { useApollo } from '../lib/apollo'
+import "../public/css/style.css";
 
-const App = ({ Component, pageProps }: AppProps) => {
+export default function App({ Component, pageProps }) {
+  const store = useStore(pageProps.initialReduxState)
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </Provider>
   )
 }
 
-export default App;
 
+// const App = ({ Component, pageProps }: AppProps) => {
+//   const apolloClient = useApollo(pageProps.initialApolloState)
+
+//   return (
+//     <ApolloProvider client={apolloClient}>
+//       <Component {...pageProps} />
+//     </ApolloProvider>
+//   )
+// }
