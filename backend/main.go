@@ -38,7 +38,9 @@ func main() {
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
 	r.DELETE("/signout", handler.SignOut)
-	r.POST("/streamauth", handler.StreamAuth)
+
+	// Streaming related routes
+	r.POST("/streamauth", handler.StartStreamAuth)
 	r.GET("/getstreamkey", handler.GetStreamKey)
 	r.GET("/newstreamkey", handler.CreateNewStreamKey)
 	r.Run()

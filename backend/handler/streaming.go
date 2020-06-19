@@ -13,8 +13,10 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// StreamAuth authorizes streamer
-func StreamAuth(c *gin.Context) {
+// StartStreamAuth authorizes streamer
+// This is only intended to be accesses via a stream request sent
+// from the nginx stream server. Do not access this from the frontend.
+func StartStreamAuth(c *gin.Context) {
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	fmt.Print("BODY: ")
 	fmt.Println(string(body))
@@ -25,18 +27,22 @@ func StreamAuth(c *gin.Context) {
 		return
 	}
 
-	// Also check the name from values.Get("name")
-	key := values.Get("psk") // psk = Private Stream Key
+	key := values.Get("psk")   // psk = Private Stream Key
+	name := values.Get("name") // username associated with stream key
 
-	// key := c.Query("psk")
-	fmt.Printf("KEY: %s\n", key)
-	if key == "test" {
-		fmt.Println("SUCCESS")
-		c.String(200, "Success")
-	} else {
-		fmt.Println("DENIED")
-		c.String(400, "Denied")
+	if key == "" {
+		c.String(400, "No key specified")
+		return
 	}
+
+	err = dbutils.AuthStreamKey(name, key)
+
+	if err != nil {
+		c.String(400, "Invalid stream key")
+		return
+	}
+
+	c.String(200, "Success")
 }
 
 // UserStreamKey fetches the streamkey from db

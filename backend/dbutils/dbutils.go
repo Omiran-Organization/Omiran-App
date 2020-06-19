@@ -211,3 +211,28 @@ func CreateNewStreamKey(id uuid.UUID) (uuid.UUID, error) {
 
 	return streamKey, nil
 }
+
+// AuthStreamKey checks if the name and streamkey exists in the database
+// This is used to authenticate a stream request.
+func AuthStreamKey(name string, privateKey string) error {
+	var user User
+
+	query := `
+	SELECT uuid FROM User 
+	WHERE username = ? 
+	AND private_stream_key = ? 
+	LIMIT 1
+	`
+
+	err := DB.Get(&user, query, name, privateKey)
+
+	if err == sql.ErrNoRows {
+		log.Printf("Streamer '%s' with key '%s' not authorized", name, privateKey)
+		return ErrUnauthorized
+
+	} else if err != nil {
+		return ErrInternalServer
+	}
+
+	return nil
+}

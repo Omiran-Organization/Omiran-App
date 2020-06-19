@@ -31,7 +31,7 @@ MySQL and Redis will have to be started first.
 # Nginx server
 The nginx server currently connects to the Go server on `localhost:8080/streamauth`.
 This should probably be replaced with some CLI argument or config file in the future.
-The stream itself runs on `localhost:8008` as to not collide with the Go server.
+The stream itself runs on `localhost:8008` as to not collide with the Go server on `localhost:8080`.
 
 ```
 docker build --tag streamserver .
@@ -45,13 +45,14 @@ Go server. Else it can't find the localhost of the host machine.
 ### OBS Configuration
 * Stream Type: `Custom Streaming Server`
 * URL: `rtmp://localhost:1935/stream`
-* Stream Key: `hello`
+* Stream Key: `<username>?psk=<private_stream_key>`
 
 ### Watch Stream
+**Replace `<username>` with the actual username**  
 * In Safari, VLC or any HLS player, open:
 ```
-http://<server ip>:8008/live/$STREAM_NAME.m3u8
+http://<server ip>:8008/live/<username>.m3u8
 ```
-* Example Playlist: `http://localhost:8008/live/hello.m3u8`
+* Example Playlist: `http://localhost:8008/live/<username>.m3u8`. This can be pasted into the VideoJS Player below.
 * [VideoJS Player](https://video-dev.github.io/hls.js/stable/demo/?src=http%3A%2F%2Flocalhost%3A8080%2Flive%2Fhello.m3u8)
-* FFplay: `ffplay -fflags nobuffer rtmp://localhost:1935/stream/hello`
+* FFplay: `ffplay -fflags nobuffer rtmp://localhost:1935/stream/<username>`
