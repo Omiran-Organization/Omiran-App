@@ -1,6 +1,6 @@
-import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import PropTypes from 'prop-types'
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 
 const UPDATE_POST_MUTATION = gql`
   mutation updatePost($id: ID!, $votes: Int) {
@@ -59,9 +59,9 @@ const PostUpvoter = ({ votes, id }) => {
   )
 }
 
-PostUpvoter.propTypes = {
+PostUpvoter.propTypes: object = {
   id: PropTypes.string.isRequired,
   votes: PropTypes.number.isRequired,
 }
 
-export default PostUpvoter
+export default PostUpvoter;
