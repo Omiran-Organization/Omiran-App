@@ -1,7 +1,7 @@
-import { ApolloProvider } from '@apollo/react-hooks'
-import { Provider } from 'react-redux'
-import { useStore } from '../lib/redux'
-import { useApollo } from '../lib/apollo'
+import { ApolloProvider } from '@apollo/react-hooks';
+import { Provider } from 'react-redux';
+import { useStore } from '../lib/redux';
+import { useApollo } from '../lib/apollo';
 import "../public/css/style.css";
 
 export default function App({ Component, pageProps }) {

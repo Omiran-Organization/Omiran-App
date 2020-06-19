@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const ErrorMessage = ({ message }) => (
+const ErrorMessage: object = ({ message }) => (
   <aside>
     {message}
     <style jsx>{`
@@ -18,4 +18,4 @@ ErrorMessage.propTypes = {
   message: PropTypes.string.isRequired,
 }
 
-export default ErrorMessage
+export default ErrorMessage;

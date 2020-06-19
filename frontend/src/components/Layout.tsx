@@ -1,7 +1,7 @@
-import Nav from './Nav'
-import PropTypes from 'prop-types'
+import Nav from './Nav';
+import PropTypes from 'prop-types';
 
-const Layout = ({ children }) => (
+const Layout: object = ({ children }) => (
   <main>
     {/* <Nav /> */}
     {children}
@@ -57,4 +57,4 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Layout
+export default Layout;

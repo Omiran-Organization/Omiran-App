@@ -10,6 +10,7 @@ import gql from 'graphql-tag';
 import PasswordInput from "../components/passwordinput";
 
 import { type } from "os";
+import MyDocument from './_document.ts';
 
 const LoginPage: React.FunctionComponent = () => {
   const router = useRouter();
@@ -19,15 +20,15 @@ const LoginPage: React.FunctionComponent = () => {
     password: '',
     token: '',
     error: '',
-    redirectToReferrer: false
-  })
+    redirectToReferrer: false,
+  });
   
   // function expression not hoisted to top level scope
   const clickSubmit = () => {
     const user = {
       username: values.username || undefined,
-      password: values.password || undefined
-    }
+      password: values.password || undefined,
+    };
     
     signin(user).then((data) => {
       if (data.error) {
@@ -39,27 +40,27 @@ const LoginPage: React.FunctionComponent = () => {
           setValues({ ...values, token: token })
 
           router.push("/")
-        })
+        });
       }
-    })
-  }
-  useEffect(() => {
-    console.log({ ...values })
-  }), [values]
-  
+    });
+  };
+  useEffect((): void => {
+    console.log({ ...values });
+  })[values];
+
   //getToken is (possibly) a useful helper method
-  const getToken = () => {
-    const token = document.cookie
+  const getToken: any = () => {
+    const token: any = document.cookie;
       .split('; ')
       .find(row => row.startsWith('session_token'))
       .split('=')[1];
-    return token
+    return token;
   }
 
   // handle change is a "curried function" see https://stackoverflow.com/questions/32782922/what-do-multiple-arrow-functions-mean-in-javascript
-  const handleChange = name => event => {
+  const handleChange: any = name => event => {
     
-    setValues({ ...values, [name]: event.target.value })
+    setValues({ ...values, [name]: event.target.value });
   }
 
   const { redirectToReferrer } = values
@@ -106,8 +107,8 @@ const LoginPage: React.FunctionComponent = () => {
   );
 }
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
+export async function getStaticProps(): any {
+  const apolloClient = initializeApollo();
 
   await apolloClient.query({
     // query: ALL_POSTS_QUERY,
@@ -121,7 +122,7 @@ export async function getStaticProps() {
           }
       }
       `
-  }).then(result => console.log(`result${JSON.stringify(result)}`)
+  }).then(result => console.log(`result${JSON.stringify(result)}`);
   );
   
 
