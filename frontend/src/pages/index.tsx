@@ -3,8 +3,6 @@ import { initializeStore } from '../lib/redux'
 import { initializeApollo } from '../lib/apollo'
 import useInterval from '../lib/useInterval'
 import Layout from '../components/Layout'
-import Clock from '../components/Clock'
-import Counter from '../components/Counter'
 import Submit from '../components/Submit'
 import Head from "next/head";
 import gql from 'graphql-tag';
@@ -46,8 +44,6 @@ const HomePage = (props) => {
 
     <Layout>
         {/* Redux */}
-        <Clock />
-        <Counter />
         <hr />
         {/* Apollo */}
         <Submit />
