@@ -3,7 +3,7 @@ import * as React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import PasswordInput from "@/components/input/passwordinput";
+import PasswordInput from "../src/components/passwordinput";
 
 const LoginPage: React.FunctionComponent = () => {
   const router = useRouter();

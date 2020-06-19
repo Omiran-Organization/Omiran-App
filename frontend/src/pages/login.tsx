@@ -1,12 +1,14 @@
 // import * as React from "react";
 import React, { useState, useEffect } from 'react';
-
+// import { initializeStore } from '../lib/redux'
+import { initializeApollo } from '../lib/apollo'
 import Head from "next/head";
 import { useRouter } from "next/router";
 import auth from '../auth/auth-helper'
 import {signin} from '../auth/api-auth'
+import gql from 'graphql-tag';
+import PasswordInput from "../components/passwordinput";
 
-import PasswordInput from "@/components/input/passwordinput";
 import { type } from "os";
 
 const LoginPage: React.FunctionComponent = () => {
@@ -14,7 +16,7 @@ const LoginPage: React.FunctionComponent = () => {
   
   const [values, setValues] = useState({
     username: '',
-    password:'',
+    password: '',
     token: '',
     error: '',
     redirectToReferrer: false
@@ -37,7 +39,7 @@ const LoginPage: React.FunctionComponent = () => {
           setValues({ ...values, token: token })
 
           router.push("/")
-         })
+        })
       }
     })
   }
@@ -60,10 +62,10 @@ const LoginPage: React.FunctionComponent = () => {
     setValues({ ...values, [name]: event.target.value })
   }
 
-  const {redirectToReferrer} = values
-    if (redirectToReferrer) {
-      return router.push("/profile")
-    }
+  const { redirectToReferrer } = values
+  if (redirectToReferrer) {
+    return router.push("/profile")
+  }
   return (
     <div className="main flex flex-col items-center w-4/5 md:w-2/5 mx-auto">
       <Head>
@@ -73,7 +75,7 @@ const LoginPage: React.FunctionComponent = () => {
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-3">The Open Source Streaming Platform</h3>
       <label className="w-full pl-1" htmlFor="email-username-input">
-         Username
+        Username
       </label>
       <input
         className="input w-full mb-3"
@@ -102,6 +104,34 @@ const LoginPage: React.FunctionComponent = () => {
       <div className="flex-grow-3" />
     </div>
   );
-};
+}
+
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    // query: ALL_POSTS_QUERY,
+    // variables: allPostsQueryVars,
+
+      query: gql`
+        query Users { 
+          Users {
+              uuid,
+              username,
+          }
+      }
+      `
+  }).then(result => console.log(`result${JSON.stringify(result)}`)
+  );
+  
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+    unstable_revalidate: 1,
+  }
+}
 
 export default LoginPage;
+

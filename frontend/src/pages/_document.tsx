@@ -2,7 +2,7 @@ import React from "react";
 
 import Document, { Head, Main, NextScript } from "next/document";
 
-import Nav from "@/components/nav";
+import Nav from "../components/Nav";
 
 export default class MyDocument extends Document {
   render(): React.ReactElement {
