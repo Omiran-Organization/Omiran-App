@@ -29,7 +29,7 @@
     "isolatedModules": true
   },
   "include": [
-    "./src/**/*"
+    "src/**/*", "src/pages/signup.tsx", "src/pages/login.tsx", "src/pages/_document.tsx",  "src/components/head.tsx", "src/components/passwordinput.tsx","src/components/Nav","src/auth", "src/types"
   ],
   "exclude": [
     "node_modules"

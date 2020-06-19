@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Head from "next/head";
 
-import PasswordInput from "@/components/input/passwordinput";
+import PasswordInput from "../components/passwordinput";
 
 const emailAddressRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
