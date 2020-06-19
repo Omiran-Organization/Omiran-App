@@ -1,13 +1,13 @@
-import { useDispatch } from 'react-redux'
-import { initializeStore } from '../lib/redux'
-import useInterval from '../lib/useInterval'
-import Layout from '../components/Layout'
-import Clock from '../components/Clock'
-import Counter from '../components/Counter'
+import { useDispatch } from 'react-redux';
+import { initializeStore } from '../lib/redux';
+import useInterval from '../lib/useInterval';
+import Layout from '../components/Layout';
+import Clock from '../components/Clock';
+import Counter from '../components/Counter';
 
 const ReduxPage = () => {
   // Tick the time every second
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useInterval(() => {
     dispatch({
@@ -25,9 +25,9 @@ const ReduxPage = () => {
   )
 }
 
-export async function getStaticProps() {
-  const reduxStore = initializeStore()
-  const { dispatch } = reduxStore
+export async function getStaticProps(): object {
+  const reduxStore = initializeStore();
+  const { dispatch } = reduxStore;
 
   dispatch({
     type: 'TICK',
@@ -40,7 +40,7 @@ export async function getStaticProps() {
       initialReduxState: reduxStore.getState(),
     },
     unstable_revalidate: 1,
-  }
+  };
 }
 
-export default ReduxPage
+export default ReduxPage;
