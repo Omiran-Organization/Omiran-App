@@ -2,3 +2,5 @@
 .vscode
 backend/config.yaml
 backend/vendor
+backend/backend-config.yaml
+node_modules

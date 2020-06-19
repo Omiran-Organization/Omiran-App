@@ -2,30 +2,12 @@ import { useDispatch } from 'react-redux'
 import { initializeStore } from '../lib/redux'
 import { initializeApollo } from '../lib/apollo'
 import useInterval from '../lib/useInterval'
-import Layout from '../components/Layout'
-import Clock from '../components/Clock'
-import Counter from '../components/Counter'
-import Submit from '../components/Submit'
+
 import Head from "next/head";
 import gql from 'graphql-tag';
 
-// import PostList, {
-//   ALL_POSTS_QUERY,
-//   allPostsQueryVars,
-// } from '../components/PostList'
-
 const HomePage = (props) => {
-  // Tick the time every second
-  const dispatch = useDispatch()
-  
-  useInterval(() => {
-    dispatch({
-      type: 'TICK',
-      light: true,
-      lastUpdate: Date.now(),
-    })
-  }, 1000)
-  console.log(props)
+
   return (
 
       <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
@@ -43,17 +25,6 @@ const HomePage = (props) => {
         <button className="bg-black px-8 py-3 text-xl rounded-lg text-white">
           Go Live
     </button>
-
-    <Layout>
-        {/* Redux */}
-        <Clock />
-        <Counter />
-        <hr />
-        {/* Apollo */}
-        <Submit />
-        {/* <PostList /> */}
-      </Layout>
-
       </div>
    
 
@@ -63,26 +34,27 @@ const HomePage = (props) => {
   
 
   export async function getStaticProps() {
-    const reduxStore = initializeStore()
-    const apolloClient = initializeApollo()
-    const { dispatch } = reduxStore
 
-    dispatch({
-      type: 'TICK',
-      light: true,
-      lastUpdate: Date.now(),
-    })
+    const apolloClient = initializeApollo()
 
     await apolloClient.query({
-      // query: ALL_POSTS_QUERY,
-      // variables: allPostsQueryVars,
 
         query: gql`
-          query Users { 
-            Users {
-                uuid,
-                username,
-            }
+          query User { 
+			User {
+				uuid,
+				username,
+				email,
+				description,
+				profile_picture
+				}
+				  user_i_follow: Follows {
+				  username,
+				  email 
+			}
+			users_following_me: Follows {
+				username
+			}
         }
         `
     }).then(result => console.log(`result${JSON.stringify(result)}`)
@@ -91,7 +63,7 @@ const HomePage = (props) => {
 
     return {
       props: {
-        initialReduxState: reduxStore.getState(),
+
         initialApolloState: apolloClient.cache.extract(),
       },
       unstable_revalidate: 1,

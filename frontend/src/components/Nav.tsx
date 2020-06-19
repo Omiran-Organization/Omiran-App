@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+
 
 export default function Nav() {
-  // const { pathname } = useRouter()
+
 
   return (
     <header>
@@ -28,13 +28,7 @@ export default function Nav() {
         <button className="btn btn-orange btn-outlined">Profile</button>
       </a>
     </Link>
-    {/* <Link href="/apollo">
-        <a className={pathname === '/apollo' ? 'is-active' : ''}>Apollo</a>
-      </Link>
-      <Link href="/redux">
-        <a className={pathname === '/redux' ? 'is-active' : ''}>Redux</a>
-      </Link> */}
-      
+
     </div>
   </header>
     
