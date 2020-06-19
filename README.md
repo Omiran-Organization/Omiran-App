@@ -26,6 +26,9 @@ An open source live streaming application that is developer-oriented and removes
 - Redis (caching)
 - SocketIO
 - Bash
+- Typescript
+- Docker-Compose
+- Redux
 
 ## Architecture And Design
 
