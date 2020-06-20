@@ -29,6 +29,8 @@ An open source live streaming application that is developer-oriented and removes
 - Typescript
 - Docker-Compose
 - Redux
+- Apollo-Client
+
 
 ## Architecture And Design
 
