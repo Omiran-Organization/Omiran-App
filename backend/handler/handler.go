@@ -190,3 +190,9 @@ func SignOut(c *gin.Context) {
 		c.String(500, "internal server error")
 	}
 }
+
+// FollowsHandler handles a request and accordingly creates a follows table row
+func FollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	followsStruct.Create()
+}
