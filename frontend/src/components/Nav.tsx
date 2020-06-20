@@ -5,6 +5,7 @@ export default function Nav() {
 
 
   return (
+
     <header>
       <div className="fixed flex bg-orange-500 flex-row items-center top-0 h-20 w-screen p-3">
     <Link href="/">
@@ -31,6 +32,6 @@ export default function Nav() {
 
     </div>
   </header>
-    
+
   )
 }

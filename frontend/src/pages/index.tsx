@@ -7,7 +7,7 @@ import Head from "next/head";
 import gql from "graphql-tag";
 
 const HomePage = (props) => {
-
+  console.log(props)
   return (
 
       <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
@@ -39,21 +39,22 @@ const HomePage = (props) => {
     await apolloClient.query({
 
         query: gql`
-          query User { 
-			User {
-				uuid,
-				username,
-				email,
-				description,
-				profile_picture
-				}
-				  user_i_follow: Follows {
-				  username,
-				  email 
-			}
-			users_following_me: Follows {
-				username
-			}
+        query User { 
+          User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+            
+            username,
+            email,
+            description,
+            profile_picture
+        }
+        user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
+              username,
+              email 
+          }
+          users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+            username
+            email
+          }
         }
         `
     }).then(result => console.log(`result${JSON.stringify(result)}`)

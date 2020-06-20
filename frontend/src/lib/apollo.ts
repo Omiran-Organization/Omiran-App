@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { resolvers } from "./resolvers";
+import typeDefs from "./typeDefs"
 
 let apolloClient;
 
-function createApolloClient() {
+function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
@@ -15,7 +16,7 @@ function createApolloClient() {
     }),
     cache: new InMemoryCache(),
     resolvers, // resolvers which contain functions that run according to the called mutation.
-    // Compared to Redux a mutation is an action, a resolver is a reducer and ApolloClient is the store.
+    typeDefs,// Compared to Redux a mutation is an action, a resolver is a reducer and ApolloClient is the store.
   });
 }
 

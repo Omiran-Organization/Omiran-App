@@ -1,6 +1,7 @@
 import React from "react";
 import { useApolloClient, useMutation } from "@apollo/react-hooks";
 import { INCREMENT } from "../lib/mutations";
+import Head from "next/head";
 
 // This page has a button that increments the count variable inside apollo local state
 
@@ -18,12 +19,17 @@ export default function apolloLinkTest() {
   const [increment, { data }] = useMutation(INCREMENT);
   console.log(data);
   return (
-    <div>
-      <h1>This is an apollo link test</h1>
+    
+    <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
+      <Head>
+      <title>Omiran</title>
+      </Head>
+
       <button
         onClick={() => {
           increment();
-          console.log(client.cache);
+          console.log(typeof (client.cache));
+          console.log(JSON.stringify(client.cache))
         }}
       >
         Click to add a number

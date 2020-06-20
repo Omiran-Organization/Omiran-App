@@ -76,7 +76,6 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
 
@@ -189,4 +188,10 @@ func SignOut(c *gin.Context) {
 	default:
 		c.String(500, "internal server error")
 	}
+}
+
+// GetUsers return allusers
+func GetUsers(c *gin.Context) {
+	users := dbutils.SelectAllUsers()
+	c.JSON(200, users)
 }

@@ -1,59 +1,74 @@
 // import * as React from "react";
 import React, { useState, useEffect } from 'react';
 import { initializeApollo } from '../lib/apollo'
-// import { ProfileData } from "@/types/profile";
+import { ProfileData } from "@/types/profile";
 import gql from 'graphql-tag';
+import Head from '../components/head'
 
-const ProfileComponent = (props) => {
-	// console.log(props)
-    // const idx = getRandomInt();
-    const stuff = Object.values(props)
-    const user = Object.values(stuff[0]);
-    console.log(user)
-  
-    // const other_stuff = stuff[0];
-    // console.log(other_stuff);
-    // const more_stuff = Object.values(other_stuff);
-    // console.log(more_stuff);
 
-    
-    // const my_stuff = more_stuff[idx];
-    // console.log(my_stuff)
-    const [values, setValues] = useState({
-      isLoggedIn: false
-    })
-    const { username, profilePicture, following, followers } = props;
-    // console.log(props.)
+type ProfileProps = {
+  data: ProfileData;
+  isLoggedIn?: boolean;
 
-    return (
-      <div className="flex flex-col border border-gray-500 rounded-lg w-full p-5">
-        <div className="flex flex-row items-center w-full"> 
-          <img
-            className="rounded-full mr-6"
-            src={profilePicture}
-            alt={username}
-            height={100}
-            width={100}
-          />
-          <div className="flex flex-col">
-            <h1 className="text-xl sm:text-2xl md:text-3xl text-left">
-              {username}
-            </h1>
-            <div className="flex flex-row">
-              <span className="text-sm mr-3">
-                <b>{followers}</b> Followers
-              </span>
-              <span className="text-sm">
-                <b>{following}</b> Following
-              </span>
-            </div>
+};
+const ProfileComponent: React.FunctionComponent<ProfileProps> = (props) => {
+  console.log(props)
+  const initialState = props["initialApolloState"]
+  const user_idx = Object.keys(initialState)[0]
+  const followers_idx = Object.keys(initialState)[2]
+  const followee_idx = Object.keys(initialState)[3]
+  const _user = initialState[user_idx]
+  const _following = initialState[followee_idx]
+  const _followers = initialState[followers_idx]
+
+  let merged = {..._user, ..._following, ..._followers}
+
+  const [values, setValues] = useState({
+    isLoggedIn: false
+  })
+  let followers = Object.values(_followers)
+
+  let following = Object.values(_following)
+
+  const { username, profilePicture } = merged;
+
+  const listItems = followers.map((ele,idx) =>
+    <li key={idx}> {ele}</li>
+  );
+
+  return (
+    <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
+    <Head >
+      <title>Omiran</title>
+    </Head>
+    <div className="flex margin-top:100px flex-col border border-gray-500 rounded-lg w-full p-5">
+      <div className="flex flex-row items-center w-full"> 
+        <img
+          className="rounded-full mr-6"
+          src={profilePicture}
+          alt={username}
+          height={100}
+          width={100}
+        />
+        <div className="flex flex-col">
+          <h1 className="text-xl sm:text-2xl md:text-3xl text-left">
+            {username}
+          </h1>
+          <div className="flex flex-row">
+            <span className="text-sm mr-3">
+              <ul>{listItems}</ul> 
+            </span>
+            <span className="text-sm">
+              <b>{following}</b> Following
+            </span>
           </div>
         </div>
-        <div className="flex-grow" />
-        <button className="btn btn-orange">
-          {values.isLoggedIn ? "Edit Profile" : "Follow"}
-        </button>
       </div>
+      <div className="flex-grow" />
+      <button className="btn btn-orange">
+        {values.isLoggedIn ? "Edit Profile" : "Follow"}
+      </button>
+    </div>
     </div>
   );
 };

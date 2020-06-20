@@ -13,7 +13,8 @@ export const resolvers = {
     increment: (parent, args, { cache }) => {
       let data;
       try {
-        data = cache.readQuery<any>({ query: countQuery });
+
+        data = cache.readQuery({ query: countQuery })
       } catch {
         (err) => console.log(err);
       }
