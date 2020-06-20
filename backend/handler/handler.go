@@ -76,7 +76,6 @@ func AccountCreationHandler(c *gin.Context) {
 	c.String(200, "Success")
 }
 
-
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {
 
@@ -195,4 +194,11 @@ func SignOut(c *gin.Context) {
 func CreateFollowsHandler(c *gin.Context) {
 	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
 	followsStruct.Create()
+}
+
+// DeleteFollowsHandler handle a request and accordingly deletes a follows table row
+func DeleteFollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	followsStruct.Delete()
+
 }
