@@ -48,14 +48,15 @@ const ProfileComponent = (props) => {
               </span>
             </div>
           </div>
-          <div className="flex-grow" />
-          <button className="btn btn-orange">
-            {values.isLoggedIn ? "Edit Profile" : "Follow"}
-          </button>
         </div>
+        <div className="flex-grow" />
+        <button className="btn btn-orange">
+          {values.isLoggedIn ? "Edit Profile" : "Follow"}
+        </button>
       </div>
-    );
-  };
+    </div>
+  );
+};
 export async function getStaticProps() {
   
     const apolloClient = initializeApollo()
@@ -96,7 +97,6 @@ export async function getStaticProps() {
 
 
 export default ProfileComponent;
-
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));

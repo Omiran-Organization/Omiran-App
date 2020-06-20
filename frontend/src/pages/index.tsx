@@ -1,10 +1,10 @@
 import { useDispatch } from 'react-redux'
-import { initializeStore } from '../lib/redux'
+// import { initializeStore } from '../lib/redux'
 import { initializeApollo } from '../lib/apollo'
-import useInterval from '../lib/useInterval'
+
 
 import Head from "next/head";
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const HomePage = (props) => {
 
@@ -30,8 +30,7 @@ const HomePage = (props) => {
 
     
   );
-}
-  
+};
 
   export async function getStaticProps() {
 
@@ -71,4 +70,4 @@ const HomePage = (props) => {
   }
 
 
-export default HomePage
+export default HomePage;
