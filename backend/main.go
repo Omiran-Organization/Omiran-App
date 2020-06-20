@@ -37,5 +37,6 @@ func main() {
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
 	r.DELETE("/signout", handler.SignOut)
+	r.POST("/createfollows", handler.CreateFollowsHandler)
 	r.Run()
 }
