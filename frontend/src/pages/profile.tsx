@@ -6,15 +6,17 @@ import gql from 'graphql-tag';
 
 const ProfileComponent = (props) => {
 	// console.log(props)
-	console.log(Object.values(props))
-
-	// const stuff = Object.values(props);
-    // const other_stuff = stuff[1];
+    // const idx = getRandomInt();
+    const stuff = Object.values(props)
+    const user = Object.values(stuff[0]);
+    console.log(user)
+  
+    // const other_stuff = stuff[0];
     // console.log(other_stuff);
     // const more_stuff = Object.values(other_stuff);
     // console.log(more_stuff);
 
-    // const idx = getRandomInt(more_stuff.length);
+    
     // const my_stuff = more_stuff[idx];
     // console.log(my_stuff)
     const [values, setValues] = useState({
@@ -63,21 +65,22 @@ export async function getStaticProps() {
 
 	  query: gql`
 	  query User { 
-		User {
-			uuid,
-			username,
-			email,
-			description,
-			profile_picture
-			}
-			  user_i_follow: Follows {
-			  username,
-			  email 
-		}
-		users_following_me: Follows {
-			username
-		}
-	}
+      User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+        
+        username,
+        email,
+        description,
+        profile_picture
+    }
+    user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
+          username,
+          email 
+      }
+      users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+        username
+        email
+      }
+    }
 	`
     }).then(result => console.log(result)
     );

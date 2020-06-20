@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renders correctly 1`] = `
+<a
+  className="normal"
+  href="http://www.facebook.com"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  Facebook
+</a>
+`;
+
 exports[`renders homepage unchanged 1`] = `
 <div
   className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center"
