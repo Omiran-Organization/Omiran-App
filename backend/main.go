@@ -33,11 +33,11 @@ func main() {
 	r.POST("/graphql", handler.GraphQLService)
 	r.POST("/create", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
-	r.POST("/follow", handler.StartFollowingHandler)
+	// r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
 	r.DELETE("/signout", handler.SignOut)
-	r.POST("/createfollows", handler.CreateFollowsHandler)
+	r.POST("/follow", handler.CreateFollowsHandler)
 	r.DELETE("/unfollow", handler.DeleteFollowsHandler)
 	r.Run()
 }
