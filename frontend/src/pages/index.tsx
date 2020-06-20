@@ -1,11 +1,9 @@
-import { useDispatch } from 'react-redux'
-import { initializeStore } from '../lib/redux'
-import { initializeApollo } from '../lib/apollo'
-import useInterval from '../lib/useInterval'
-import Layout from '../components/Layout'
-import Clock from '../components/Clock'
-import Counter from '../components/Counter'
-import Submit from '../components/Submit'
+import { useDispatch } from 'react-redux';
+import { initializeStore } from '../lib/redux';
+import { initializeApollo } from '../lib/apollo';
+import useInterval from '../lib/useInterval';
+import Layout from '../components/Layout';
+import Submit from '../components/Submit';
 import Head from "next/head";
 import gql from 'graphql-tag';
 
@@ -14,18 +12,18 @@ import gql from 'graphql-tag';
 //   allPostsQueryVars,
 // } from '../components/PostList'
 
-const HomePage = (props) => {
+const HomePage: object = (props: any) => {
   // Tick the time every second
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   
   useInterval(() => {
     dispatch({
       type: 'TICK',
       light: true,
       lastUpdate: Date.now(),
-    })
+    });
   }, 1000)
-  console.log(props)
+  console.log(props);
   return (
 
       <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
@@ -46,8 +44,6 @@ const HomePage = (props) => {
 
     <Layout>
         {/* Redux */}
-        <Clock />
-        <Counter />
         <hr />
         {/* Apollo */}
         <Submit />
@@ -62,10 +58,10 @@ const HomePage = (props) => {
 }
   
 
-  export async function getStaticProps() {
-    const reduxStore = initializeStore()
-    const apolloClient = initializeApollo()
-    const { dispatch } = reduxStore
+  export async function getStaticProps(): object {
+    const reduxStore = initializeStore();
+    const apolloClient = initializeApollo();
+    const { dispatch } = reduxStore;
 
     dispatch({
       type: 'TICK',
@@ -85,7 +81,7 @@ const HomePage = (props) => {
             }
         }
         `
-    }).then(result => console.log(`result${JSON.stringify(result)}`)
+    }).then(result => console.log(`result${JSON.stringify(result)}`);
     );
     
 
@@ -99,4 +95,4 @@ const HomePage = (props) => {
   }
 
 
-export default HomePage
+export default HomePage;

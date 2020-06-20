@@ -134,6 +134,20 @@ func (f *Follows) Create() error {
 	return nil
 }
 
+// Delete deletes a Follows row
+func (f *Follows) Delete() error {
+	query, err := DB.Prepare("DELETE FROM Follows WHERE follower = ? AND followee = ?")
+	defer query.Close()
+	if err != nil {
+		return errors.New("SQL statement error")
+	}
+	_, err = query.Exec(f.Follower.String, f.Followee.String)
+	if err != nil {
+		return errors.New("Unable to delete Follows row")
+	}
+	return nil
+}
+
 // checkPasswordHash checks whether string input hashes to password after extracating salt
 func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))

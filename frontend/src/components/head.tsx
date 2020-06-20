@@ -1,9 +1,9 @@
 import React from "react";
 import NextHead from "next/head";
 
-const defaultDescription = "";
-const defaultOGURL = "";
-const defaultOGImage = "";
+const defaultDescription: string = "";
+const defaultOGURL: string = "";
+const defaultOGImage: string = "";
 
 type HeadProps = {
   title: string;
