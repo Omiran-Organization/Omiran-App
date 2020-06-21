@@ -1,27 +1,24 @@
 
-const signin = async (user) => {
+const signin = async (user): any => {
   try {
-    let response = await fetch("http://localhost:8080/signin", {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(user)
-    })
-    return await response.json()
+    const response: Response = await fetch("http://localhost:8080/signin", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(user),
+    });
+    return await response.json();
   } catch(err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
-const signout = async () => {
+const signout: Response = async () => {
   try {
-    let response = await fetch('/signout/', { method: 'POST' })
-    return await response.json()
+    const response: Response = await fetch("/signout/", { method: "POST" });
+    return await response.json();
   } catch(err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
-export {
-  signin,
-  signout
-}
+export { signin, signout };

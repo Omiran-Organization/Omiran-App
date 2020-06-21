@@ -194,4 +194,15 @@ func SignOut(c *gin.Context) {
 func GetUsers(c *gin.Context) {
 	users := dbutils.SelectAllUsers()
 	c.JSON(200, users)
+// CreateFollowsHandler handles a request and accordingly creates a follows table row
+func CreateFollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	followsStruct.Create()
+}
+
+// DeleteFollowsHandler handle a request and accordingly deletes a follows table row
+func DeleteFollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	followsStruct.Delete()
+
 }

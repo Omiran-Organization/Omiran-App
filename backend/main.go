@@ -45,5 +45,7 @@ func main() {
 	r.GET("/users", handler.GetUsers)
 	r.DELETE("/signout", handler.SignOut)
 
+	r.POST("/follow", handler.CreateFollowsHandler)
+	r.DELETE("/unfollow", handler.DeleteFollowsHandler)
 	r.Run()
 }
