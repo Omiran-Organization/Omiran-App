@@ -23,6 +23,21 @@ services:
     networks:
       - fullstack
 
+  fullstack-mysql:
+    image: mysql:5.7
+    container_name: full_db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=full_db_mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=Omiran
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
   app:
     container_name: full_app
     build: ./backend
@@ -37,22 +52,6 @@ services:
     networks:
       - fullstack
 
-  fullstack-mysql:
-    image: mysql:5.7
-    container_name: full_db_mysql
-    ports: 
-      - 3306:3306
-    environment: 
-      - MYSQL_ROOT_HOST=fullstack-mysql 
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=teodoro
-      - MYSQL_DATABASE=Omiran
-      - MYSQL_ROOT_PASSWORD=teodoro
-    volumes:
-      - database_mysql:/var/lib/mysql
-    networks:
-      - fullstack
-  
 volumes:
   api:                
   database_mysql:                   

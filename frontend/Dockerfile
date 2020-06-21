@@ -12,10 +12,3 @@ EXPOSE 3000
 # CMD npm run start
 CMD npm run dev
 
-FROM node
-COPY . /app/
-WORKDIR /app/
-RUN npm install
-CMD npm run dev
-ENTRYPOINT [ "/app" ]
-EXPOSE 3000

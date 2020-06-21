@@ -1,6 +1,6 @@
 export const getUsers = async () => {
     try {
-      const response =  fetch("http://localhost:8080/users", {
+      const response =  fetch("http://full_app:8080/users", {
         method: 'GET',
         credentials: 'include', 
     })
