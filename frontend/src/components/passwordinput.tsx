@@ -1,25 +1,22 @@
-import * as React from "react";
+import * as React from 'react'
 
 type PasswordInputProps = {
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-};
+}
 
 const PasswordInput: React.FunctionComponent<PasswordInputProps> = ({
   containerProps = {},
   inputProps = {},
 }) => {
-  const [passwordShown, setPasswordShown] = React.useState(false);
+  const [passwordShown, setPasswordShown] = React.useState(false)
 
   return (
-    <div
-      {...containerProps}
-      className={"input flex flex-row w-full " + containerProps.className}
-    >
+    <div {...containerProps} className={'input flex flex-row w-full ' + containerProps.className}>
       <input
         {...inputProps}
-        type={passwordShown ? "text" : "password"}
-        className={"w-full " + inputProps.className}
+        type={passwordShown ? 'text' : 'password'}
+        className={'w-full ' + inputProps.className}
       />
       <div
         className="text-gray-600 hover:text-gray-700"
@@ -34,7 +31,7 @@ const PasswordInput: React.FunctionComponent<PasswordInputProps> = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PasswordInput;
+export default PasswordInput

@@ -1,27 +1,21 @@
-
-const signin = async (user): any => {
-  try {
-    const response: Response = await fetch("http://localhost:8080/signin", {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(user)
-    })
-    return await response.json()
-  } catch(err) {
-    console.log(err)
-  }
+type Credentials = {
+  username: string;
+  password: string;
 }
 
-const signout: Response = async () => {
-  try {
-    let response = await fetch('/signout/', { method: 'POST' })
-    return await response.json()
-  } catch(err) {
-    console.log(err)
-  }
+const signin = (credentials: Credentials): Promise<Response> => {
+  return fetch('http://localhost:8080/signin', {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(credentials),
+  })
 }
 
-export {
-  signin,
-  signout
+const signout = (): Promise<Response> => {
+  return fetch('http://localhost:8080/signout', {
+    method: 'POST',
+    credentials: 'include',
+  })
 }
+
+export { signin, signout }

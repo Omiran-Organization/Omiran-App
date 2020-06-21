@@ -26,10 +26,17 @@ type Query struct {
 	Query string `json:"query"`
 }
 
-//Credentials is for structuring the signin route
-type Credentials struct {
-	Username string `json:"username" `
+//SignInCredentials is for structuring the signin route
+type SignInCredentials struct {
+	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+//AccountCreationInput is the data sent when creating an account
+type AccountCreationInput struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
 }
 
 //SignInData is structured data that will be converted to json and sent bck to the client
@@ -39,7 +46,6 @@ type SignInData struct {
 	Email          string    `json:"email"`
 	Description    string    `json:"description`
 	ProfilePicture string    `json:"profilepicture`
-	Token          string    `json:"token" `
 }
 
 // GraphQLService is the handler for GraphQL api
@@ -63,58 +69,22 @@ func processQuery(query string) *graphql.Result {
 
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user
 func AccountCreationHandler(c *gin.Context) {
+	var input AccountCreationInput
+	err := c.BindJSON(input)
+	if err != nil {
+		log.Fatalf("Error parsing JSON request body %s", err)
+	}
 	u := uuid.NewV4()
-	userIntermediary := &dbutils.User{UUID: u, Username: c.Request.FormValue("username"), Email: c.Request.FormValue("email"), Password: c.Request.FormValue("password"), Description: c.Request.FormValue("description"), ProfilePicture: c.Request.FormValue(("profile_picture"))}
+	userIntermediary := &dbutils.User{UUID: u, Username: input.Username, Email: input.Email, Password: input.Password}
 
 	// Maybe 500 status code
-	err := userIntermediary.Create()
+	err = userIntermediary.Create()
 	if err != nil {
 		c.String(400, err.Error())
 		return
 	}
 
 	c.String(200, "Success")
-}
-
-
-// SignInHandler signs in user
-func SignInHandler(c *gin.Context) {
-
-	var creds Credentials
-	err := c.BindJSON(&creds)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println(creds)
-	username := creds.Username
-	password := creds.Password
-	user, err2 := dbutils.Auth(username, password)
-	switch err2 {
-	case dbutils.ErrUnauthorized:
-		c.String(401, err2.Error())
-	case dbutils.ErrInternalServer:
-		c.String(500, err2.Error())
-	case nil:
-		token, err := redis.SetCachePlusToken(c, user.UUID)
-
-		log.Println(token)
-		if err != nil {
-			c.String(500, "Cookie not present")
-		}
-
-		var re SignInData
-		re.UUID = user.UUID
-		re.Email = user.Email
-		re.Description = user.Description
-		re.Username = user.Username
-		re.ProfilePicture = user.ProfilePicture
-		re.Token = token
-		c.JSON(200, re)
-
-	default:
-		c.String(500, "internal server error")
-	}
-
 }
 
 // StartFollowingHandler handles follow requests
