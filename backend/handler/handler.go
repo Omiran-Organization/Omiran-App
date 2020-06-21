@@ -199,12 +199,19 @@ func GetUsers(c *gin.Context) {
 // CreateFollowsHandler handles a request and accordingly creates a follows table row
 func CreateFollowsHandler(c *gin.Context) {
 	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
-	followsStruct.Create()
+	err := followsStruct.Create()
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 // DeleteFollowsHandler handle a request and accordingly deletes a follows table row
 func DeleteFollowsHandler(c *gin.Context) {
 	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
-	followsStruct.Delete()
+	err := followsStruct.Delete()
+	if err != nil {
+		panic(err)
+	}
 
 }
