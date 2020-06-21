@@ -1,8 +1,8 @@
 // import * as React from "react";
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux'
-import { initializeStore } from '../lib/redux'
-import { initializeApollo } from '../lib/apollo'
+import { useDispatch } from 'react-redux';
+import { initializeStore } from '../lib/redux';
+import { initializeApollo } from '../lib/apollo';
 import { ProfileData } from "@/types/profile";
 import gql from 'graphql-tag';
 
@@ -19,18 +19,18 @@ import gql from 'graphql-tag';
 
   const ProfileComponent: React.FunctionComponent = (props) => {
 
-    const stuff = Object.values(props)
-    const other_stuff = stuff[1]
-    console.log(other_stuff)
-    const more_stuff = Object.values(other_stuff)
-    console.log(more_stuff)
+    const stuff = Object.values(props);
+    const other_stuff = stuff[1];
+    console.log(other_stuff);
+    const more_stuff = Object.values(other_stuff);
+    console.log(more_stuff);
 
-    const idx = getRandomInt(more_stuff.length)
-    const my_stuff = more_stuff[idx]
-    console.log(my_stuff)
+    const idx = getRandomInt(more_stuff.length);
+    const my_stuff = more_stuff[idx];
+    console.log(my_stuff);
 
     const [values, setValues] = useState({
-      isLoggedIn: false
+      isLoggedIn: false;
     })
     const { username, profilePicture, following, followers } = props;
     // console.log(props.)
@@ -67,8 +67,8 @@ import gql from 'graphql-tag';
     );
   };
 export async function getStaticProps() {
-  const reduxStore = initializeStore()
-  const apolloClient = initializeApollo()
+  const reduxStore = initializeStore();
+  const apolloClient = initializeApollo();
 
   // const typeDefs = gql`
   //   interface Person {
@@ -78,7 +78,7 @@ export async function getStaticProps() {
   //     followers
   //     following
   //   }`
-  const { dispatch } = reduxStore
+  const { dispatch } = reduxStore;
 
   dispatch({
     type: 'TICK',
@@ -98,7 +98,7 @@ export async function getStaticProps() {
           }
       }
       `
-  }).then(result => console.log(`result${JSON.stringify(result)}`)
+  }).then(result => console.log(`result${JSON.stringify(result)}`);
   );
   
 

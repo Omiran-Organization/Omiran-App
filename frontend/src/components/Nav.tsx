@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-export default function Nav() {
+export default function Nav(): object {
   // const { pathname } = useRouter()
 
   return (

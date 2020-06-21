@@ -1,11 +1,11 @@
-import { useQuery } from '@apollo/react-hooks'
-import { NetworkStatus } from 'apollo-client'
-import gql from 'graphql-tag'
-import ErrorMessage from './ErrorMessage'
-import PostUpvoter from './PostUpvoter'
+import { useQuery } from '@apollo/react-hooks';
+import { NetworkStatus } from 'apollo-client';
+import gql from 'graphql-tag';
+import ErrorMessage from './ErrorMessage';
+import PostUpvoter from './PostUpvoter';
 
 export const ALL_POSTS_QUERY = gql`
-  query allPosts($first: Int!, $skip: Int!) {
+  query allPosts($first: Int!, $skip: Int!): object {
     allPosts(orderBy: createdAt_DESC, first: $first, skip: $skip) {
       id
       title
@@ -18,7 +18,7 @@ export const ALL_POSTS_QUERY = gql`
     }
   }
 `
-export const allPostsQueryVars = {
+export const allPostsQueryVars: object = {
   skip: 0,
   first: 10,
 }
@@ -37,14 +37,14 @@ export default function PostList() {
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
-  const loadMorePosts = () => {
+  const loadMorePosts: object = () => {
     fetchMore({
       variables: {
         skip: allPosts.length,
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
-          return previousResult
+          return previousResult;
         }
         return Object.assign({}, previousResult, {
           // Append the new posts results to the old one
