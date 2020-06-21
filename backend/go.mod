@@ -14,6 +14,7 @@ require (
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/graphql-go/graphql v0.7.9
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

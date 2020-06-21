@@ -10,6 +10,7 @@ services:
     command: ["redis-server", "--bind", "redis", "--port", "6379"]
     networks:
       - fullstack
+  
   nextjs:
     ports:
       - 3000:3000
@@ -52,6 +53,10 @@ services:
     networks:
       - fullstack
 
+  nginx-rtmp:
+    image: alfg/nginx-rtmp
+    networks:
+      - fullstack
 volumes:
   api:                
   database_mysql:                   
