@@ -1,10 +1,11 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from 'next/link'
 
-export default function Nav(): object {
-  // const { pathname } = useRouter()
+
+export default function Nav() {
+
 
   return (
+
     <header>
       <div className="fixed flex bg-orange-500 flex-row items-center top-0 h-20 w-screen p-3">
     <Link href="/">
@@ -28,15 +29,9 @@ export default function Nav(): object {
         <button className="btn btn-orange btn-outlined">Profile</button>
       </a>
     </Link>
-    {/* <Link href="/apollo">
-        <a className={pathname === '/apollo' ? 'is-active' : ''}>Apollo</a>
-      </Link>
-      <Link href="/redux">
-        <a className={pathname === '/redux' ? 'is-active' : ''}>Redux</a>
-      </Link> */}
-      
+
     </div>
   </header>
-    
+
   )
 }
