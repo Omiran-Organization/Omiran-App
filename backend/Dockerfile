@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Start from golang base image
 FROM golang:alpine as builder
 
@@ -77,13 +77,4 @@ CMD ["./main"]
 
 # # Command to run
 # ENTRYPOINT ["/main"]
-=======
-FROM golang:1.13.0
-COPY . /go/src/app
-WORKDIR /go/src/app
-RUN go mod tidy
-RUN go mod vendor
-CMD go run main.go
-ENTRYPOINT [ "/go/src/app" ]
-EXPOSE 8080
->>>>>>> origin/docker-implementation
+
