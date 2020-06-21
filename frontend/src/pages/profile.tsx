@@ -1,117 +1,117 @@
 // import * as React from "react";
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { initializeStore } from '../lib/redux';
-import { initializeApollo } from '../lib/apollo';
+import { initializeApollo } from '../lib/apollo'
 import { ProfileData } from "@/types/profile";
 import gql from 'graphql-tag';
+import Head from '../components/head'
 
-// type ProfileComponentProps = {
-//   data: ProfileData;
-//   isLoggedIn?: boolean;
-// };
 
-// const ProfileComponent: React.FunctionComponent<ProfileComponentProps> = ({
-//   props,
-//   data,
-//   isLoggedIn,
-// }) => {
+type ProfileProps = {
+  data: ProfileData;
+  isLoggedIn?: boolean;
 
-  const ProfileComponent: React.FunctionComponent = (props) => {
+};
+const ProfileComponent: React.FunctionComponent<ProfileProps> = (props) => {
+  console.log(props)
+  const initialState = props["initialApolloState"]
+  const user_idx = Object.keys(initialState)[0]
+  const followers_idx = Object.keys(initialState)[2]
+  const followee_idx = Object.keys(initialState)[3]
+  const _user = initialState[user_idx]
+  const _following = initialState[followee_idx]
+  const _followers = initialState[followers_idx]
 
-    const stuff = Object.values(props);
-    const other_stuff = stuff[1];
-    console.log(other_stuff);
-    const more_stuff = Object.values(other_stuff);
-    console.log(more_stuff);
+  let merged = {..._user, ..._following, ..._followers}
 
-    const idx = getRandomInt(more_stuff.length);
-    const my_stuff = more_stuff[idx];
-    console.log(my_stuff);
+  const [values, setValues] = useState({
+    isLoggedIn: false
+  })
+  let followers = Object.values(_followers)
 
-    const [values, setValues] = useState({
-      isLoggedIn: false;
-    })
-    const { username, profilePicture, following, followers } = props;
-    // console.log(props.)
+  let following = Object.values(_following)
 
-    return (
-      <div className="flex flex-col border border-gray-500 rounded-lg w-full p-5">
-        <div className="flex flex-row items-center w-full">
-          <img
-            className="rounded-full mr-6"
-            src={profilePicture}
-            alt={username}
-            height={100}
-            width={100}
-          />
-          <div className="flex flex-col">
-            <h1 className="text-xl sm:text-2xl md:text-3xl text-left">
-              {username}
-            </h1>
-            <div className="flex flex-row">
-              <span className="text-sm mr-3">
-                <b>{followers}</b> Followers
-              </span>
-              <span className="text-sm">
-                <b>{following}</b> Following
-              </span>
-            </div>
+  const { username, profilePicture } = merged;
+
+  const listItems = followers.map((ele,idx) =>
+    <li key={idx}> {ele}</li>
+  );
+
+  return (
+    <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
+    <Head >
+      <title>Omiran</title>
+    </Head>
+    <div className="flex margin-top:100px flex-col border border-gray-500 rounded-lg w-full p-5">
+      <div className="flex flex-row items-center w-full"> 
+        <img
+          className="rounded-full mr-6"
+          src={profilePicture}
+          alt={username}
+          height={100}
+          width={100}
+        />
+        <div className="flex flex-col">
+          <h1 className="text-xl sm:text-2xl md:text-3xl text-left">
+            {username}
+          </h1>
+          <div className="flex flex-row">
+            <span className="text-sm mr-3">
+              <ul>{listItems}</ul> 
+            </span>
+            <span className="text-sm">
+              <b>{following}</b> Following
+            </span>
           </div>
-          <div className="flex-grow" />
-          <button className="btn btn-orange">
-            {values.isLoggedIn ? "Edit Profile" : "Follow"}
-          </button>
         </div>
       </div>
-    );
-  };
-export async function getStaticProps() {
-  const reduxStore = initializeStore();
-  const apolloClient = initializeApollo();
-
-  // const typeDefs = gql`
-  //   interface Person {
-  //     uuid
-  //     username
-  //     email
-  //     followers
-  //     following
-  //   }`
-  const { dispatch } = reduxStore;
-
-  dispatch({
-    type: 'TICK',
-    light: true,
-    lastUpdate: Date.now(),
-  })
-
-  await apolloClient.query({
-      query: gql`
-        query Users {
-          Users {
-            uuid,
-            username,
-            email,
-            description,
-            profile_picture
-          }
-      }
-      `
-  }).then(result => console.log(`result${JSON.stringify(result)}`);
+      <div className="flex-grow" />
+      <button className="btn btn-orange">
+        {values.isLoggedIn ? "Edit Profile" : "Follow"}
+      </button>
+    </div>
+    </div>
   );
+};
+export async function getStaticProps() {
   
+    const apolloClient = initializeApollo()
 
-  return {
-    props: {
-      initialReduxState: reduxStore.getState(),
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    unstable_revalidate: 1,
+
+    await apolloClient.query({
+
+	  query: gql`
+	  query User { 
+      User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+        
+        username,
+        email,
+        description,
+        profile_picture
+    }
+    user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
+          username,
+          email 
+      }
+      users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+        username
+        email
+      }
+    }
+	`
+    }).then(result => console.log(result)
+    );
+    
+
+    return {
+      props: {
+        initialApolloState: apolloClient.cache.extract(),
+      },
+      unstable_revalidate: 1,
+    }
   }
-}
-export default ProfileComponent;
 
+
+export default ProfileComponent;
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));

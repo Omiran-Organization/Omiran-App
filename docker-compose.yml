@@ -1,18 +1,66 @@
+
+# version: '3.7'
 version: '3'
 
 services:
-    backend:
-        build: ./backend
-        volumes:
-            - ./backend:/go/src/app
-        ports:
-            - 80:8080 
-    frontend:
-        build: ./frontend
-        volumes:
-            - ./frontend:/app
-        ports:
-            - 3000:3000
-        depends_on: 
-            - backend
-            
+
+
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    networks:
+      - fullstack
+  nextjs:
+    ports:
+      - 3000:3000
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    networks:
+      - fullstack
+
+  app:
+    container_name: full_app
+    build: ./backend
+    ports: 
+      - 8080:8080 
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - fullstack-mysql  
+      - redis       
+    networks:
+      - fullstack
+
+  fullstack-mysql:
+    image: mysql:5.7
+    container_name: full_db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=fullstack-mysql 
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=teodoro
+      - MYSQL_DATABASE=Omiran
+      - MYSQL_ROOT_PASSWORD=teodoro
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
+  
+volumes:
+  api:                
+  database_mysql:                   
+
+networks:
+  fullstack:
+    driver: bridge
+
+
+
+ 

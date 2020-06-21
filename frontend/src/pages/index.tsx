@@ -1,29 +1,13 @@
-import { useDispatch } from 'react-redux';
-import { initializeStore } from '../lib/redux';
-import { initializeApollo } from '../lib/apollo';
-import useInterval from '../lib/useInterval';
-import Layout from '../components/Layout';
-import Submit from '../components/Submit';
+import { useDispatch } from 'react-redux'
+// import { initializeStore } from '../lib/redux'
+import { initializeApollo } from '../lib/apollo'
+
+
 import Head from "next/head";
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
-// import PostList, {
-//   ALL_POSTS_QUERY,
-//   allPostsQueryVars,
-// } from '../components/PostList'
-
-const HomePage: object = (props: any) => {
-  // Tick the time every second
-  const dispatch = useDispatch();
-  
-  useInterval(() => {
-    dispatch({
-      type: 'TICK',
-      light: true,
-      lastUpdate: Date.now(),
-    });
-  }, 1000)
-  console.log(props);
+const HomePage = (props) => {
+  console.log(props)
   return (
 
       <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
@@ -41,58 +25,50 @@ const HomePage: object = (props: any) => {
         <button className="bg-black px-8 py-3 text-xl rounded-lg text-white">
           Go Live
     </button>
-
-    <Layout>
-        {/* Redux */}
-        <hr />
-        {/* Apollo */}
-        <Submit />
-        {/* <PostList /> */}
-      </Layout>
-
       </div>
    
 
     
   );
-}
-  
+};
 
-  export async function getStaticProps(): object {
-    const reduxStore = initializeStore();
-    const apolloClient = initializeApollo();
-    const { dispatch } = reduxStore;
+  // export async function getStaticProps() {
 
-    dispatch({
-      type: 'TICK',
-      light: true,
-      lastUpdate: Date.now(),
-    })
+  //   const apolloClient = initializeApollo()
 
-    await apolloClient.query({
-      // query: ALL_POSTS_QUERY,
-      // variables: allPostsQueryVars,
+  //   await apolloClient.query({
 
-        query: gql`
-          query Users { 
-            Users {
-                uuid,
-                username,
-            }
-        }
-        `
-    }).then(result => console.log(`result${JSON.stringify(result)}`);
-    );
+  //       query: gql`
+  //       query User { 
+  //         User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+            
+  //           username,
+  //           email,
+  //           description,
+  //           profile_picture
+  //       }
+  //       user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
+  //             username,
+  //             email 
+  //         }
+  //         users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+  //           username
+  //           email
+  //         }
+  //       }
+  //       `
+  //   }).then(result => console.log(`result${JSON.stringify(result)}`)
+  //   );
     
 
-    return {
-      props: {
-        initialReduxState: reduxStore.getState(),
-        initialApolloState: apolloClient.cache.extract(),
-      },
-      unstable_revalidate: 1,
-    }
-  }
+  //   return {
+  //     props: {
+
+  //       initialApolloState: apolloClient.cache.extract(),
+  //     },
+  //     unstable_revalidate: 1,
+  //   }
+  // }
 
 
 export default HomePage;

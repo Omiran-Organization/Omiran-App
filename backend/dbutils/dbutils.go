@@ -204,3 +204,49 @@ func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
 	err := DB.Select(&followees, queryString, uuid)
 	return followees, err
 }
+
+// CreateNewStreamKey creates a new private stream key. If one already
+// exists it is overwritten. Then it returns the new
+func CreateNewStreamKey(id uuid.UUID) (uuid.UUID, error) {
+	streamKey := uuid.NewV4()
+
+	stmnt, err := DB.Prepare("UPDATE User SET private_stream_key = ? WHERE uuid = ?")
+	defer stmnt.Close()
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	_, err = stmnt.Exec(streamKey, id)
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	return streamKey, nil
+}
+
+// AuthStreamKey checks if the name and streamkey exists in the database
+// This is used to authenticate a stream request.
+func AuthStreamKey(name string, privateKey string) error {
+	var user User
+
+	query := `
+	SELECT uuid FROM User 
+	WHERE username = ? 
+	AND private_stream_key = ? 
+	LIMIT 1
+	`
+
+	err := DB.Get(&user, query, name, privateKey)
+
+	if err == sql.ErrNoRows {
+		log.Printf("Streamer '%s' with key '%s' not authorized", name, privateKey)
+		return ErrUnauthorized
+
+	} else if err != nil {
+		return ErrInternalServer
+	}
+
+	return nil
+}
