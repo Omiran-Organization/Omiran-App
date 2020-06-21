@@ -17,6 +17,7 @@ func init() {
 }
 
 func main() {
+	// os.Setenv("PORT", "9090")
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -37,7 +38,11 @@ func main() {
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
 	r.DELETE("/signout", handler.SignOut)
-	r.POST("/follow", handler.CreateFollowsHandler)
+  r.POST("/follow", handler.CreateFollowsHandler)
 	r.DELETE("/unfollow", handler.DeleteFollowsHandler)
+	// Streaming related routes
+	r.POST("/streamauth", handler.StartStreamAuth)
+	r.GET("/getstreamkey", handler.GetStreamKey)
+	r.GET("/newstreamkey", handler.CreateNewStreamKey)
 	r.Run()
 }
