@@ -1,10 +1,11 @@
 package main
 
 import (
-	"Omiran-App/backend/dbutils"
 	"Omiran-App/backend/handler"
 	"Omiran-App/backend/redis"
 	"time"
+
+	"Omiran-App/backend/dbutils"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -39,7 +40,7 @@ func main() {
 	r.POST("/graphql", handler.GraphQLService)
 	r.POST("/create", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
-	r.POST("/follow", handler.StartFollowingHandler)
+	// r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
 	r.GET("/users", handler.GetUsers)

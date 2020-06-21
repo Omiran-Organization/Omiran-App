@@ -32,43 +32,43 @@ const HomePage = (props) => {
   );
 };
 
-  export async function getStaticProps() {
+  // export async function getStaticProps() {
 
-    const apolloClient = initializeApollo()
+  //   const apolloClient = initializeApollo()
 
-    await apolloClient.query({
+  //   await apolloClient.query({
 
-        query: gql`
-        query User { 
-          User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+  //       query: gql`
+  //       query User { 
+  //         User (uuid: "02e92cbf-6736-46d9-bc7c-549209107a48"){
             
-            username,
-            email,
-            description,
-            profile_picture
-        }
-        user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
-              username,
-              email 
-          }
-          users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
-            username
-            email
-          }
-        }
-        `
-    }).then(result => console.log(`result${JSON.stringify(result)}`)
-    );
+  //           username,
+  //           email,
+  //           description,
+  //           profile_picture
+  //       }
+  //       user_i_follow: Follows (follower:"f5a13066-31d3-4aef-81b7-a5613b774734"){
+  //             username,
+  //             email 
+  //         }
+  //         users_following_me: Follows (followee: "02e92cbf-6736-46d9-bc7c-549209107a48"){
+  //           username
+  //           email
+  //         }
+  //       }
+  //       `
+  //   }).then(result => console.log(`result${JSON.stringify(result)}`)
+  //   );
     
 
-    return {
-      props: {
+  //   return {
+  //     props: {
 
-        initialApolloState: apolloClient.cache.extract(),
-      },
-      unstable_revalidate: 1,
-    }
-  }
+  //       initialApolloState: apolloClient.cache.extract(),
+  //     },
+  //     unstable_revalidate: 1,
+  //   }
+  // }
 
 
 export default HomePage;
