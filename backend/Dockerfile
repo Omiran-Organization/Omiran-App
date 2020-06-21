@@ -1,3 +1,4 @@
+
 # Start from golang base image
 FROM golang:alpine as builder
 
@@ -76,3 +77,4 @@ CMD ["./main"]
 
 # # Command to run
 # ENTRYPOINT ["/main"]
+
