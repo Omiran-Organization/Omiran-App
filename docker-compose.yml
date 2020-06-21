@@ -10,6 +10,7 @@ services:
     command: ["redis-server", "--bind", "redis", "--port", "6379"]
     networks:
       - fullstack
+  
   nextjs:
     ports:
       - 3000:3000
@@ -23,6 +24,21 @@ services:
     networks:
       - fullstack
 
+  fullstack-mysql:
+    image: mysql:5.7
+    container_name: full_db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=${DB_HOST} 
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
   app:
     container_name: full_app
     build: ./backend
@@ -37,22 +53,10 @@ services:
     networks:
       - fullstack
 
-  fullstack-mysql:
-    image: mysql:5.7
-    container_name: full_db_mysql
-    ports: 
-      - 3306:3306
-    environment: 
-      - MYSQL_ROOT_HOST=fullstack-mysql 
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=teodoro
-      - MYSQL_DATABASE=Omiran
-      - MYSQL_ROOT_PASSWORD=teodoro
-    volumes:
-      - database_mysql:/var/lib/mysql
+  nginx-rtmp:
+    image: alfg/nginx-rtmp
     networks:
       - fullstack
-  
 volumes:
   api:                
   database_mysql:                   
