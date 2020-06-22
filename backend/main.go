@@ -44,7 +44,6 @@ func main() {
 	// r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
-	r.GET("/users", handler.GetUsers)
 	r.DELETE("/signout", handler.SignOut)
 	r.POST("/follow", handler.CreateFollowsHandler)
 	r.DELETE("/unfollow", handler.DeleteFollowsHandler)
