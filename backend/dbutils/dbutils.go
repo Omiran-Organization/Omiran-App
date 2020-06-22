@@ -68,16 +68,6 @@ func Open() {
 	} else {
 		fmt.Println("We are getting the env values")
 	}
-	// infoStruct := &DBConfig{}
-	// file, err := ioutil.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("database info file error: %s\n", err)
-	}
-	// err = yaml.Unmarshal(file, infoStruct)
-	if err != nil {
-		log.Fatalf("unmarshalling problem: %s\n", err)
-	}
-	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%d)/Omiran", infoStruct.User, infoStruct.Password, infoStruct.Port))
 	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
 	if err != nil {
 		log.Fatalf("database connection error: %s\n", err)
