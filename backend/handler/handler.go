@@ -26,13 +26,13 @@ type Query struct {
 	Query string `json:"query"`
 }
 
-//Credentials is for structuring the signin route
+// Credentials is for structuring the signin route
 type Credentials struct {
 	Username string `json:"username" `
 	Password string `json:"password"`
 }
 
-//SignInData is structured data that will be converted to json and sent bck to the client
+// SignInData is structured data that will be converted to json and sent bck to the client
 type SignInData struct {
 	UUID           uuid.UUID `json:"uuid"`
 	Username       string    `json:"username"`
@@ -160,7 +160,7 @@ func AuthHandler(c *gin.Context) {
 
 }
 
-//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+// RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
 func RefreshSessionHandler(c *gin.Context) {
 	err := redis.Refresh(c)
 	switch err {
