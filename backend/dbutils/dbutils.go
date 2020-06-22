@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -14,7 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"gopkg.in/yaml.v2"
 )
 
 func init() {
@@ -62,7 +60,7 @@ type Follows struct {
 }
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
-func Open(filename string) {
+func Open() {
 	var err error
 	err = godotenv.Load()
 	if err != nil {
@@ -70,12 +68,12 @@ func Open(filename string) {
 	} else {
 		fmt.Println("We are getting the env values")
 	}
-	infoStruct := &DBConfig{}
-	file, err := ioutil.ReadFile(filename)
+	// infoStruct := &DBConfig{}
+	// file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatalf("database info file error: %s\n", err)
 	}
-	err = yaml.Unmarshal(file, infoStruct)
+	// err = yaml.Unmarshal(file, infoStruct)
 	if err != nil {
 		log.Fatalf("unmarshalling problem: %s\n", err)
 	}
