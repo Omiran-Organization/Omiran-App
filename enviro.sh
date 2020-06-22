@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-export DB_HOST=fullstack-mysql \
-export DB_USER=root \
-export DB_PASSWORD=teodoro \
-export DB_NAME=Omiran
+export MYSQL_ROOT_PASSWORD= \
+export DB_HOST= \
+export DB_USER= \
+export DB_PASSWORD= \
+export DB_NAME= 
