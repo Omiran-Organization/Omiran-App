@@ -16,13 +16,14 @@ type ProfilePageProps = {
 const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloState }) => {
   const apolloClient = useApollo(initialApolloState)
   const router = useRouter()
-
+  
   const data = apolloClient.readQuery({
     query: ProfileDataQuery,
     variables: {
       uuid: router.query.uuid
     }
   })
+  console.log(data)
   const userData: UserData = data.Users[0]
   const followers: UserData[] = data.followers
   const following: UserData[] = data.following
