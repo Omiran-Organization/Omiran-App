@@ -31,7 +31,7 @@ func main() {
 	}))
 	// r.Use(cors.Default())
 	r.POST("/graphql", handler.GraphQLService)
-	r.POST("/create", handler.AccountCreationHandler)
+	r.POST("/signup", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
 	r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)

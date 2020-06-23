@@ -22,11 +22,6 @@ export default function Nav() {
             <button className="btn btn-orange btn-outlined mx-1">Login</button>
           </a>
         </Link>
-        <Link href="/profile">
-          <a>
-            <button className="btn btn-orange btn-outlined mx-1">Profile</button>
-          </a>
-        </Link>
       </div>
     </header>
   )

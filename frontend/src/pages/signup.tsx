@@ -1,17 +1,44 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Head from 'next/head'
+import PasswordInput from '@/components/passwordinput'
 
-import PasswordInput from '../components/passwordinput'
+import { useRouter } from 'next/router'
+import { signup } from '../auth/api-auth'
+
+import { UserData } from '@/types'
 
 const emailAddressRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
 const SignupPage: React.FunctionComponent = () => {
-  const [emailAddress, setEmailAddress] = React.useState('')
-  const [username, setUsername] = React.useState('')
+  const router = useRouter()
 
-  const [password, setPassword] = React.useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = React.useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const trySignup = () => {
+    const credentials = {
+      username,
+      email: emailAddress,
+      password,
+    }
+
+    signup(credentials)
+      .then(async (res) => {
+        const body = await res.text()
+        try {
+          const data: UserData = JSON.parse(body)
+          router.push(`/profile/${ data.uuid }`)
+        } catch {
+          setErrorMessage(body)
+        }
+      })
+  }
+
+  const [emailAddress, setEmailAddress] = useState('')
+  const [username, setUsername] = useState('')
+
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   // Form validation
   const isEmailAddressValid = emailAddressRegex.test(emailAddress)
@@ -19,6 +46,10 @@ const SignupPage: React.FunctionComponent = () => {
 
   const isPasswordValid = password.length > 0
   const arePasswordsMatching = password == passwordConfirmation
+
+  useEffect(() => {
+    setErrorMessage('')
+  }, [emailAddress, username, password, passwordConfirmation])
 
   const isFormComplete =
     isEmailAddressValid && isUsernameValid && isPasswordValid && arePasswordsMatching
@@ -31,7 +62,7 @@ const SignupPage: React.FunctionComponent = () => {
       <div className="flex-grow-2" />
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-2">The Open Source Streaming Platform</h3>
-      <label className="w-full pl-1" htmlFor="email-input" name="email">
+      <label className="w-full pl-1" htmlFor="email-input">
         Email
       </label>
       <input
@@ -54,17 +85,6 @@ const SignupPage: React.FunctionComponent = () => {
         id="username-input"
         name="username"
       />
-      <label className="w-full pl-1" htmlFor="description-input">
-        Description
-      </label>
-      <input
-        className="input w-full mb-2"
-        type="text"
-        value={description}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setDescription(e.target.value)}
-        id="description-input"
-        name="description"
-      />
       <label className="w-full pl-1" htmlFor="password-input">
         Password
       </label>
@@ -75,7 +95,6 @@ const SignupPage: React.FunctionComponent = () => {
           onChange: (e: React.ChangeEvent<HTMLInputElement>): void => setPassword(e.target.value),
           id: 'password-input',
         }}
-        name="password"
       />
       <label className="w-full pl-1" htmlFor="password-confirmation-input">
         Confirm Password
@@ -90,11 +109,15 @@ const SignupPage: React.FunctionComponent = () => {
         }}
       />
       <div className="flex flex-row items-center w-full">
-        <button className={`btn ${isFormComplete ? 'btn-orange' : 'btn-disabled'} mr-4`}>
+        <button className={`btn ${isFormComplete ? 'btn-orange' : 'btn-disabled'} mr-4`} onClick={ trySignup }>
           Sign Up
         </button>
         <span className="text-red-500">
-          {!arePasswordsMatching ? 'Passwords do not match.' : ''}
+          { !arePasswordsMatching ?
+            'Passwords do not match.' : (
+              errorMessage ? `Error: ${ errorMessage }` : ''
+            )
+          }
         </span>
       </div>
       <div className="flex-grow-3" />

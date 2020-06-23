@@ -3,8 +3,17 @@ type Credentials = {
   password: string;
 }
 
+const API_URL = process.env.API_URL ?? 'http://localhost:8080'
+
+const signup = (credentials: Credentials & { email: string }): Promise<Response> => {
+  return fetch(API_URL + '/signup', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+  })
+}
+
 const signin = (credentials: Credentials): Promise<Response> => {
-  return fetch('http://localhost:8080/signin', {
+  return fetch(API_URL + '/signin', {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify(credentials),
@@ -12,10 +21,10 @@ const signin = (credentials: Credentials): Promise<Response> => {
 }
 
 const signout = (): Promise<Response> => {
-  return fetch('http://localhost:8080/signout', {
+  return fetch(API_URL + '/signout', {
     method: 'POST',
     credentials: 'include',
   })
 }
 
-export { signin, signout }
+export { signup, signin, signout }
