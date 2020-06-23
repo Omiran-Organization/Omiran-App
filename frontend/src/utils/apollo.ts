@@ -11,8 +11,10 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "http://full_app:8080/graphql", // Server URL (must be absolute)
+      uri: "http://localhost:8080/graphql", // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+      // uri: process.env.API_URL + '/graphql', // Server URL (must be absolute)
+      // credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache(),
     resolvers, // resolvers which contain functions that run according to the called mutation.
@@ -20,8 +22,8 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   });
 }
 
-export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(initialState: any = null): ApolloClient<NormalizedCacheObject> {
+  const _apolloClient = apolloClient ?? createApolloClient()
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here
@@ -36,7 +38,7 @@ export function initializeApollo(initialState = null) {
   return _apolloClient;
 }
 
-export function useApollo(initialState) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState]);
-  return store;
+export function useApollo(initialState: any): ApolloClient<NormalizedCacheObject> {
+  const client = useMemo(() => initializeApollo(initialState), [initialState])
+  return client
 }

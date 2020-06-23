@@ -15,7 +15,7 @@ var session string
 
 // InitCache creates the cache
 func InitCache() {
-	conn, err := redis.DialURL("redis://redis")
+	conn, err := redis.DialURL("redis://localhost")
 	if err != nil {
 		panic(err)
 	}

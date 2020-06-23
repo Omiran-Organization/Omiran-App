@@ -1,6 +1,6 @@
 // import * as React from "react";
 import React, { useState, useEffect } from "react";
-import { initializeApollo } from "../../lib/apollo";
+import { initializeApollo } from "../../lib/mutations";
 import Head from "next/head";
 
 

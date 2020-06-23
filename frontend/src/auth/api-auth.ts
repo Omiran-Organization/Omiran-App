@@ -1,24 +1,31 @@
+type Credentials = {
+  username: string;
+  password: string;
+}
 
-const signin = async (user): any => {
-  try {
-    const response: Response = await fetch("http://full_app:8080/signin", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(user),
-    });
-    return await response.json();
-  } catch(err) {
-    console.log(err);
-  }
-};
+// Removed async so that we can do error handling in component
+const API_URL = process.env.API_URL ?? 'http://localhost:8080'
 
-const signout: Response = async () => {
-  try {
-    const response: Response = await fetch("/signout/", { method: "POST" });
-    return await response.json();
-  } catch(err) {
-    console.log(err);
-  }
-};
+const signup = (credentials: Credentials & { email: string }): Promise<Response> => {
+  return fetch(API_URL + '/signup', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+  })
+}
 
-export { signin, signout };
+const signin = (credentials: Credentials): Promise<Response> => {
+  return fetch(API_URL + '/signin', {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(credentials),
+  })
+}
+
+const signout = (): Promise<Response> => {
+  return fetch(API_URL + '/signout', {
+    method: 'POST',
+    credentials: 'include',
+  })
+}
+
+export { signup, signin, signout }

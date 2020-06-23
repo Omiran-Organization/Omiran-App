@@ -1,11 +1,11 @@
 module.exports = {
   webpack: (config) => {
-    const oldConfig = config;
+    const oldConfig = config
 
     oldConfig.node = {
-      fs: "empty",
-    };
+      fs: 'empty',
+    }
 
-    return oldConfig;
+    return oldConfig
   },
-};
+}

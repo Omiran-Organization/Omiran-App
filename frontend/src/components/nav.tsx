@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
+
 import Link from 'next/link'
 
-export default function Footer(props) {
+export default function Nav() {
   return (
-
-    <div className="fixed flex bg-orange-500 flex-row items-center top-0 h-20 w-screen p-3">
+    <header>
+        <div className="fixed flex bg-orange-500 flex-row items-center top-0 h-20 w-screen p-3">
       <Link href="/">
         <a>
           <h1 className="text-black text-3xl font-bold">Omiran</h1>
@@ -21,12 +22,7 @@ export default function Footer(props) {
           <button className="btn btn-orange btn-outlined">Login</button>
         </a>
       </Link>
-      <Link href="/profile">
-        <a>
-          <button className="btn btn-orange btn-outlined">Profile</button>
-        </a>
-      </Link>
-
-    </div>
+      </div>
+    </header>
   )
-};
+}

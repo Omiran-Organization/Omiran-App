@@ -1,15 +1,15 @@
 module.exports = {
-  purge: ["./src/**/*.tsx"],
+  purge: ['./src/**/*.tsx'],
   theme: {
     fontFamily: {
-      Inter: ["Inter", "Sans-serif"],
+      Inter: ['Inter', 'Sans-serif'],
     },
     flexGrow: {
       default: 1,
-      "2": 2,
-      "3": 3,
+      '2': 2,
+      '3': 3,
     },
   },
   variants: {},
   plugins: [],
-};
+}

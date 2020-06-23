@@ -1,7 +1,7 @@
 // import * as React from "react";
 import React, { useState, useEffect } from "react";
-import { initializeApollo } from "../lib/apollo";
-import { getUsers } from "../api/users";
+import { initializeApollo } from "../lib/mutations";
+// import { getUsers } from "../api/users";
 import Head from "next/head";
 import { GetStaticProps } from 'next'
 import { useRouter } from "next/router";
@@ -36,7 +36,7 @@ export default function UserPage(props) {
 
 export const getStaticProps: GetStaticProps = async (context) => {  // Call an external API endpoint to get posts.
   // You can use any data fetching library
-  const response =  await fetch("http://full_app:8080/users", {
+  const response =  await fetch("http://localhost:8080/users", {
       method: 'GET',
       credentials: 'include', 
   })
