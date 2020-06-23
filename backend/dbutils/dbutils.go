@@ -8,20 +8,12 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/yaml.v2"
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
-func init() {
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		log.Print("sad .env file found")
-	}
-}
 
 var (
 	// DB is an instance of sqlx.DB
