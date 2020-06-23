@@ -121,7 +121,7 @@ func AuthHandler(c *gin.Context) {
 
 }
 
-//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+// RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
 func RefreshSessionHandler(c *gin.Context) {
 	err := redis.Refresh(c)
 	switch err {
@@ -149,4 +149,24 @@ func SignOut(c *gin.Context) {
 	default:
 		c.String(500, "internal server error")
 	}
+}
+
+// CreateFollowsHandler handles a request and accordingly creates a follows table row
+func CreateFollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	err := followsStruct.Create()
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+// DeleteFollowsHandler handle a request and accordingly deletes a follows table row
+func DeleteFollowsHandler(c *gin.Context) {
+	followsStruct := &dbutils.Follows{uuid.FromStringOrNil(c.Request.FormValue("follower")), uuid.FromStringOrNil(c.Request.FormValue("followee"))}
+	err := followsStruct.Delete()
+	if err != nil {
+		panic(err)
+	}
+
 }

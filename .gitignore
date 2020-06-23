@@ -1,4 +1,8 @@
 # Workspace settings
-.vscode
 backend/config.yaml
 backend/vendor
+backend/backend-config.yaml
+backend/.env
+node_modules
+.vscode
+enviro.sh

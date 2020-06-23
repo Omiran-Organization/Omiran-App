@@ -10,9 +10,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/yaml.v2"
 
 	_ "github.com/go-sql-driver/mysql"
-	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -54,18 +54,18 @@ type Follows struct {
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
 func Open(filename string) {
-	infoStruct := &DBConfig{}
+	infostruct := &DBConfig{}
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("database info file error: %s\n", err)
+		panic(err)
 	}
-	err = yaml.Unmarshal(file, infoStruct)
+	err = yaml.Unmarshal(file, infostruct)
 	if err != nil {
-		log.Fatalf("unmarshalling problem: %s\n", err)
+		panic(err)
 	}
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%d)/Omiran", infoStruct.User, infoStruct.Password, infoStruct.Port))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
 	if err != nil {
-		log.Fatalf("database connection error: %s\n", err)
+		panic(err)
 	}
 }
 
@@ -134,6 +134,20 @@ func (f *Follows) Create() error {
 	return nil
 }
 
+// Delete deletes a Follows row
+func (f *Follows) Delete() error {
+	query, err := DB.Prepare("DELETE FROM Follows WHERE follower = ? AND followee = ?")
+	defer query.Close()
+	if err != nil {
+		return errors.New("SQL statement error")
+	}
+	_, err = query.Exec(f.Follower.String, f.Followee.String)
+	if err != nil {
+		return errors.New("Unable to delete Follows row")
+	}
+	return nil
+}
+
 // checkPasswordHash checks whether string input hashes to password after extracating salt
 func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
@@ -189,4 +203,50 @@ func GetUsersBeingFollowed(uuid uuid.UUID) ([]User, error) {
 	var followees []User
 	err := DB.Select(&followees, queryString, uuid)
 	return followees, err
+}
+
+// CreateNewStreamKey creates a new private stream key. If one already
+// exists it is overwritten. Then it returns the new
+func CreateNewStreamKey(id uuid.UUID) (uuid.UUID, error) {
+	streamKey := uuid.NewV4()
+
+	stmnt, err := DB.Prepare("UPDATE User SET private_stream_key = ? WHERE uuid = ?")
+	defer stmnt.Close()
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	_, err = stmnt.Exec(streamKey, id)
+
+	if err != nil {
+		return streamKey, ErrInternalServer
+	}
+
+	return streamKey, nil
+}
+
+// AuthStreamKey checks if the name and streamkey exists in the database
+// This is used to authenticate a stream request.
+func AuthStreamKey(name string, privateKey string) error {
+	var user User
+
+	query := `
+	SELECT uuid FROM User 
+	WHERE username = ? 
+	AND private_stream_key = ? 
+	LIMIT 1
+	`
+
+	err := DB.Get(&user, query, name, privateKey)
+
+	if err == sql.ErrNoRows {
+		log.Printf("Streamer '%s' with key '%s' not authorized", name, privateKey)
+		return ErrUnauthorized
+
+	} else if err != nil {
+		return ErrInternalServer
+	}
+
+	return nil
 }

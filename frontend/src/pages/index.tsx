@@ -20,4 +20,4 @@ const HomePage: React.FunctionComponent = () => {
   )
 }
 
-export default HomePage
+export default HomePage;

@@ -6,11 +6,11 @@
 
 ## CI/CD 
   
-   1. [ ] Dockerize frontend
-   2. [ ] Dockerize backend
+   1. [x] Dockerize frontend
+   2. [x] Dockerize backend
    3. [ ] Integrate test automation and deploy automation scripts
    4. [x] Implement localhost automation scripts
-   5. [ ] Implement container orchestration
+   5. [x] Implement container orchestration
    6. [ ] Implement github actions
    
 ## Database CRUD
