@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	dbutils.Open()
+	dbutils.Open("config.yaml")
 	handler.InitGQLSchema()
 	redis.InitCache()
 }
