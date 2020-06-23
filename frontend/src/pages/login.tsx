@@ -6,6 +6,8 @@ import PasswordInput from '../components/passwordinput'
 import { useRouter } from 'next/router'
 import { signin } from '../auth/api-auth'
 
+import { UserData } from '@/types';
+
 const LoginPage: React.FunctionComponent = () => {
   const router = useRouter()
     
@@ -23,8 +25,8 @@ const LoginPage: React.FunctionComponent = () => {
       .then(async (res) => {
         const body = await res.text()
         try {
-          JSON.parse(body)
-          router.push('/profile')
+          const data: UserData = JSON.parse(body)
+          router.push(`/profile/${ data.uuid }`)
         } catch {
           setErrorMessage(body)
         }
@@ -36,7 +38,7 @@ const LoginPage: React.FunctionComponent = () => {
       <Head>
         <title>Login - Omiran</title>
       </Head>
-      <div className="flex-grow-2" />
+      <div className="flex-grow-2"/>
       <h1 className="text-4xl font-bold leading-none">Omiran</h1>
       <h3 className="text-sm mb-3">The Open Source Streaming Platform</h3>
       <div className="w-full">

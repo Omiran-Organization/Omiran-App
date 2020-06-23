@@ -23,7 +23,8 @@ func InitGQLSchema() {
 
 // Query is for deserializing graphql queries
 type Query struct {
-	Query string `json:"query"`
+	Query          string                 `json:"query"`
+	VariableValues map[string]interface{} `json:"variables"`
 }
 
 //SignInCredentials is for structuring the signin route
@@ -39,15 +40,6 @@ type AccountCreationInput struct {
 	Email    string `json:"email"`
 }
 
-//SignInData is structured data that will be converted to json and sent bck to the client
-type SignInData struct {
-	UUID           uuid.UUID `json:"uuid"`
-	Username       string    `json:"username"`
-	Email          string    `json:"email"`
-	Description    string    `json:"description`
-	ProfilePicture string    `json:"profilepicture`
-}
-
 // GraphQLService is the handler for GraphQL api
 func GraphQLService(c *gin.Context) {
 	var q Query
@@ -55,11 +47,11 @@ func GraphQLService(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Error parsing JSON request body %s", err)
 	}
-	c.JSON(200, processQuery(q.Query))
+	c.JSON(200, processQuery(q.Query, q.VariableValues))
 }
 
-func processQuery(query string) *graphql.Result {
-	params := graphql.Params{Schema: schema, RequestString: query}
+func processQuery(query string, variables map[string]interface{}) *graphql.Result {
+	params := graphql.Params{Schema: schema, RequestString: query, VariableValues: variables}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
 		log.Printf("failed to execute graphql operation, errors: %+v", r.Errors)
@@ -116,7 +108,6 @@ func StartFollowingHandler(c *gin.Context) {
 
 // AuthHandler handles authentication by receiving form values, calling dbutils code, and checking to see if dbutils throws ErrNoRows (if it does, deny access)
 func AuthHandler(c *gin.Context) {
-
 	err := redis.CheckSessCookie(c)
 	switch err {
 	case dbutils.ErrUnauthorized:

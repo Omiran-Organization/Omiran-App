@@ -1,7 +1,8 @@
+import React from 'react';
+
 import Head from 'next/head'
 
-const HomePage = (props) => {
-  console.log(props)
+const HomePage: React.FunctionComponent = () => {
   return (
     <div className="main flex flex-col justify-center items-center w-4/5 lg:w-1/2 mx-auto text-center">
       <Head>

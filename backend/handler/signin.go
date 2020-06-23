@@ -6,7 +6,17 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 )
+
+//SignInData is structured data that will be converted to json and sent bck to the client
+type SignInData struct {
+	UUID           uuid.UUID `json:"uuid"`
+	Username       string    `json:"username"`
+	Email          string    `json:"email"`
+	Description    string    `json:"description"`
+	ProfilePicture string    `json:"profilePicture"`
+}
 
 // SignInHandler signs in user
 func SignInHandler(c *gin.Context) {

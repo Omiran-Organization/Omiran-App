@@ -8,7 +8,7 @@ const emailAddressRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
 const SignupPage: React.FunctionComponent = () => {
   const [emailAddress, setEmailAddress] = React.useState('')
-  const [username, setUsername, setDescription, description] = React.useState('')
+  const [username, setUsername] = React.useState('')
 
   const [password, setPassword] = React.useState('')
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('')

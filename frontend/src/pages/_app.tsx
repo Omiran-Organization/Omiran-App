@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ApolloProvider } from '@apollo/react-hooks'
 
-import { useApollo } from '../lib/apollo'
+import { useApollo } from '../utils/apollo'
 
 import '../styles/style.css'
 

@@ -41,8 +41,7 @@
 }
 
 .main {
-  @apply mt-20;
-  min-height: calc(100vh - 5rem);
+  min-height: calc(100vh - 80px);
 }
 
 @tailwind utilities;
