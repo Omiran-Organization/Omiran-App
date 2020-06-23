@@ -21,7 +21,7 @@ type SignInData struct {
 	Username       string    `json:"username"`
 	Email          string    `json:"email"`
 	Description    string    `json:"description"`
-	ProfilePicture string    `json:"profilePicture"`
+	ProfilePicture string    `json:"profile_picture"`
 }
 
 // SignInHandler signs in user

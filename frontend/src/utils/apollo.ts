@@ -13,6 +13,8 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
     link: new HttpLink({
       uri: "http://localhost:8080/graphql", // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+      // uri: process.env.API_URL + '/graphql', // Server URL (must be absolute)
+      // credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache(),
     resolvers, // resolvers which contain functions that run according to the called mutation.

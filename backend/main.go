@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	dbutils.Open()
+	dbutils.Open("config.yaml")
 	handler.InitGQLSchema()
 	redis.InitCache()
 }
@@ -39,12 +39,11 @@ func main() {
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	r.POST("/graphql", handler.GraphQLService)
-	r.POST("/create", handler.AccountCreationHandler)
+	r.POST("/signup", handler.AccountCreationHandler)
 	r.POST("/auth", handler.AuthHandler)
 	// r.POST("/follow", handler.StartFollowingHandler)
 	r.POST("/refresh", handler.RefreshSessionHandler)
 	r.POST("/signin", handler.SignInHandler)
-	r.GET("/users", handler.GetUsers)
 	r.DELETE("/signout", handler.SignOut)
 	r.POST("/follow", handler.CreateFollowsHandler)
 	r.DELETE("/unfollow", handler.DeleteFollowsHandler)

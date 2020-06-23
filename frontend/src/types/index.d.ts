@@ -3,5 +3,5 @@ export type UserData = {
   username: string
   email: string
   description: string
-  profilePicture: string
+  profile_picture: string
 }

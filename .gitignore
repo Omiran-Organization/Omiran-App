@@ -5,3 +5,4 @@ backend/backend-config.yaml
 backend/.env
 node_modules
 .vscode
+enviro.sh

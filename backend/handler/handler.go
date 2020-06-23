@@ -56,7 +56,7 @@ func processQuery(query string, variables map[string]interface{}) *graphql.Resul
 // AccountCreationHandler generates a new UUID, receives form values, and creates a new user
 func AccountCreationHandler(c *gin.Context) {
 	var input AccountCreationInput
-	err := c.BindJSON(input)
+	err := c.BindJSON(&input)
 	if err != nil {
 		log.Fatalf("Error parsing JSON request body %s", err)
 	}
@@ -70,12 +70,11 @@ func AccountCreationHandler(c *gin.Context) {
 		return
 	}
 
-	c.String(200, "Success")
+	c.JSON(200, userIntermediary)
 }
 
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
-
 	UUID, err := redis.GetLoggedInUUID(c)
 
 	if err != nil {
@@ -116,7 +115,7 @@ func AuthHandler(c *gin.Context) {
 
 }
 
-//RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
+// RefreshSessionHandler calls refresh cookie from redis and assigns new cookie at /refresh
 func RefreshSessionHandler(c *gin.Context) {
 	err := redis.Refresh(c)
 	switch err {
@@ -144,12 +143,6 @@ func SignOut(c *gin.Context) {
 	default:
 		c.String(500, "internal server error")
 	}
-}
-
-// GetUsers return allusers
-func GetUsers(c *gin.Context) {
-	users := dbutils.SelectAllUsers()
-	c.JSON(200, users)
 }
 
 // CreateFollowsHandler handles a request and accordingly creates a follows table row
