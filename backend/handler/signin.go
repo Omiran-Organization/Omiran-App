@@ -9,6 +9,12 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+//SignInCredentials is for structuring the signin route
+type SignInCredentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 //SignInData is structured data that will be converted to json and sent bck to the client
 type SignInData struct {
 	UUID           uuid.UUID `json:"uuid"`

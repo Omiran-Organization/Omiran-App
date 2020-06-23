@@ -68,7 +68,8 @@ func Open() {
 	} else {
 		fmt.Println("We are getting the env values")
 	}
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
+	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
 	if err != nil {
 		log.Fatalf("database connection error: %s\n", err)
 	}
