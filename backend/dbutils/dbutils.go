@@ -71,7 +71,7 @@ func Open(filename string) {
 	if err != nil {
 		panic(err)
 	}
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%s)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
 	if err != nil {
 		panic(err)
 	}
