@@ -65,7 +65,7 @@ func Open(filename string) {
 	}
 	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
 	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
 	if err != nil {
 		panic(err)
 	}
