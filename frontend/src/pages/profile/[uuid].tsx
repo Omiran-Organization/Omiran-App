@@ -16,26 +16,24 @@ type ProfilePageProps = {
 const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloState }) => {
   const apolloClient = useApollo(initialApolloState)
   const router = useRouter()
-  // const [isPaused, setPause] = useState(false)
+  const [isPaused, setPause] = useState(false)
 
-//   useEffect(() => {
-//     ws.current = new WebSocket("ws://localhost:8080/ws");
-//     ws.current.onopen = () => console.log("ws opened");
-//     ws.current.onclose = () => console.log("ws closed");
-
-//     return () => {
-//       ws.current.close()
-//     }
-//   }, []);
-//   useEffect(() => {
-//     if (!ws.current) return;
-
-//     ws.current.onmessage = e => {
-//         if (isPaused) return;
-//         const message = JSON.parse(e.data);
-//         console.log("e", message);
-//     };
-// }, [isPaused]);
+  useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8080/ws/" + String(99));
+    ws.current.onopen = () => console.log("ws opened");
+    ws.current.onclose = () => console.log("ws closed");
+    return () => {
+      ws.current.close()
+    }
+  }, []);
+  useEffect(() => {
+    if (!ws.current) return;
+    ws.current.onmessage = e => {
+      if (isPaused) return;
+      const message = JSON.parse(e.data);
+      console.log("e", message);
+    };
+  }, [isPaused]);
   const data = apolloClient.readQuery({
     query: ProfileDataQuery,
     variables: {
