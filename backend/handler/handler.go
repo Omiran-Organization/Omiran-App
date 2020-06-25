@@ -27,7 +27,7 @@ type Query struct {
 	VariableValues map[string]interface{} `json:"variables"`
 }
 
-//AccountCreationInput is the data sent when creating an account
+// AccountCreationInput is the data sent when creating an account
 type AccountCreationInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
