@@ -1,9 +1,10 @@
 // import * as React from "react";
 import React, { useState, useEffect } from "react";
-import { initializeApollo } from "../../lib/mutations";
+
 import Head from "next/head";
 
-
+import ReactHLS from 'react-hls-player';
+ 
 
 import gql from "graphql-tag";
 
@@ -16,7 +17,12 @@ export default function FirstPost() {
     <Head>
       <title>Omiran</title>
     </Head>
-  
+    <div className="flex mb-4">
+      <div class="w-full bg-gray-500 h-12">
+      <ReactHLS url={'http://localhost:8008/live/zoomer.m3u8'} controls={true} />
+      </div>
+    </div>
+    
     <h1 className="text-orange-500 text-6xl font-bold m-3">Omiran</h1>
     <h3 className="text-white text-3xl mb-5">
       This is a standard stream

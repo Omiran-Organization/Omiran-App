@@ -4,17 +4,23 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/yaml.v2"
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("sad .env file found")
+	}
+}
 
 var (
 	// DB is an instance of sqlx.DB
@@ -54,21 +60,17 @@ type Follows struct {
 }
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
-func Open(filename string) {
-	infostruct := &DBConfig{}
-	file, err := ioutil.ReadFile(filename)
+func Open() {
+	var err error
+	err = godotenv.Load()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error getting env, %v", err)
+	} else {
+		fmt.Println("We are getting the env values")
 	}
-	err = yaml.Unmarshal(file, infostruct)
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
 	if err != nil {
-		panic(err)
-	}
-	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
-	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
-	if err != nil {
-		panic(err)
+		log.Fatalf("database connection error: %s\n", err)
 	}
 }
 

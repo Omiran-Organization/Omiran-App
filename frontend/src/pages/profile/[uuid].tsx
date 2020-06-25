@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect, useRef } from 'react'
 
 import Head from 'next/head'
 
@@ -16,7 +16,26 @@ type ProfilePageProps = {
 const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloState }) => {
   const apolloClient = useApollo(initialApolloState)
   const router = useRouter()
-  
+  // const [isPaused, setPause] = useState(false)
+
+//   useEffect(() => {
+//     ws.current = new WebSocket("ws://localhost:8080/ws");
+//     ws.current.onopen = () => console.log("ws opened");
+//     ws.current.onclose = () => console.log("ws closed");
+
+//     return () => {
+//       ws.current.close()
+//     }
+//   }, []);
+//   useEffect(() => {
+//     if (!ws.current) return;
+
+//     ws.current.onmessage = e => {
+//         if (isPaused) return;
+//         const message = JSON.parse(e.data);
+//         console.log("e", message);
+//     };
+// }, [isPaused]);
   const data = apolloClient.readQuery({
     query: ProfileDataQuery,
     variables: {
@@ -24,10 +43,12 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     }
   })
   console.log(data)
+
   const userData: UserData = data.Users[0]
   const followers: UserData[] = data.followers
   const following: UserData[] = data.following
-
+  const ws = useRef(null)
+  
   return (
     <div className="main flex flex-col">
       <Head>

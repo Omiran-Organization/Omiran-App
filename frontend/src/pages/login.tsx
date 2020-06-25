@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import Head from 'next/head'
 import PasswordInput from '../components/passwordinput'
@@ -15,6 +15,7 @@ const LoginPage: React.FunctionComponent = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
+  
   const tryLogin = () => {
     const credentials = {
       username,

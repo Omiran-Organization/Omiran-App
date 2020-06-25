@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	dbutils.Open("config.yaml")
+	dbutils.Open()
 	handler.InitGQLSchema()
 	redis.InitCache()
 }
@@ -35,6 +35,8 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+	go handler.H.Run()
+
 	// r.Use(cors.Default())
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
@@ -48,8 +50,20 @@ func main() {
 	r.POST("/follow", handler.CreateFollowsHandler)
 	r.DELETE("/unfollow", handler.DeleteFollowsHandler)
 	// Streaming related routes
+
 	r.POST("/streamauth", handler.StartStreamAuth)
 	r.GET("/getstreamkey", handler.GetStreamKey)
 	r.GET("/newstreamkey", handler.CreateNewStreamKey)
+
+	//WebSocket Related Routes
+	r.LoadHTMLFiles("index.html")
+	r.GET("/room/:roomId", func(c *gin.Context) {
+		c.HTML(200, "index.html", nil)
+	})
+	r.GET("/ws/:roomId", func(c *gin.Context) {
+		roomID := c.Param("roomId")
+		handler.OpenWebSocket(c.Writer, c.Request, roomID)
+	})
+	// r.GET("/ws/roomId", handler.OpenWebSocket)
 	r.Run()
 }
