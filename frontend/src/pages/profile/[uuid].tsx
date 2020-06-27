@@ -25,15 +25,11 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
   const router = useRouter()
   const [isPaused, setPause] = useState(false)
   const [message, setMessage] = useState('');
-
-
   const [users, setUsers] = useState([]);
-
-
   const [messages, setMessages] = useState([]);
 
   const ws = useRef(null)
-  console.log(ws)
+
   const data = apolloClient.readQuery({
     query: ProfileDataQuery,
     variables: {
@@ -41,26 +37,20 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     }
   })
 
-
-
   const userData: UserData = data.User
-  console.log(userData)
   const followers: UserData[] = data.followers
   const following: UserData[] = data.following
-
-
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/ws/" + String(99));
     ws.current.onopen = () => console.log("ws opened");
     ws.current.onclose = () => console.log("ws closed");
+    
     return () => {
       ws.current.close()
     }
+    
   }, []);
-
- 
-
 
   useEffect(() => {
     if (!ws.current) return;
@@ -73,8 +63,6 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     
     }, [isPaused]);
  
-
-
   const sendMessage = (event) => {
     event.preventDefault();
 
@@ -83,9 +71,6 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
 
     }
   }
-  
-  console.log(messages)
-  
 
   return (
     <div className="main flex flex-col">
