@@ -33,7 +33,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
   const [messages, setMessages] = useState([]);
 
   const ws = useRef(null)
-
+  console.log(ws)
   const data = apolloClient.readQuery({
     query: ProfileDataQuery,
     variables: {
@@ -65,7 +65,6 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
   useEffect(() => {
     if (!ws.current) return;
     ws.current.addEventListener('message', message => {
-      message.name = userData.username
 
       if (isPaused) return;
       setMessages(messages => [...messages, message]);
@@ -75,22 +74,17 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     }, [isPaused]);
  
 
-  useEffect(() => {
-    if (!ws.current) return;
-    if (users.includes(userData.username)) return;
-    setUsers([...users,userData.username])
-  }, []);
 
   const sendMessage = (event) => {
     event.preventDefault();
 
     if (message) {
-      ws.current.send(message, () => setMessage(''));
+      ws.current.send(message+ " " +userData.username, () => setMessage(''));
 
     }
   }
   
-  console.log(users)
+  console.log(messages)
   
 
   return (
@@ -125,7 +119,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
             <div className="outerContainer flex-grow">
               <div className="container flex-grow">
                 <InfoBar room={99} />
-                <Messages messages={messages} users={users} name={userData.username} />
+                <Messages messages={messages}  name={userData.username} />
                 <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
               </div>
               <TextContainer users={users}/>

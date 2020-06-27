@@ -4,15 +4,10 @@ import ReactEmoji from 'react-emoji';
 
 
 
-const Message = ({message, name}) => {
-
-  // let newMessage = message.data[message.length-1]
-  // let newUser = message.name[user.length-1]
-  // let user = message.name
-
+const Message = ({message, user, name}) => {
 
   let isSentByCurrentUser = false;
-  if(message.name === name) {
+  if(user=== name) {
     isSentByCurrentUser = true;
   }
   return (
@@ -21,16 +16,16 @@ const Message = ({message, name}) => {
         <div className="messageContainer justifyEnd">
           <p className="sentText pr-10">{name}</p>
           <div className="messageBox backgroundBlue">
-            <p className="messageText colorWhite">{message.data}</p>
+            <p className="messageText colorWhite">{message}</p>
           </div>
         </div>
         )
         : (
           <div className="messageContainer justifyStart">
              <div className="messageBox backgroundLight">
-              <p className="messageText colorDark">{message.data}</p> 
+              <p className="messageText colorDark">{message}</p> 
             </div>
-            <p className="sentText pl-10 ">{message.name}</p>
+            <p className="sentText pl-10 ">{user}</p>
           </div>
         )
   );
