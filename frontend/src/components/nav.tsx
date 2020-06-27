@@ -21,7 +21,13 @@ export default function Nav() {
         <a>
           <button className="btn btn-orange btn-outlined">Login</button>
         </a>
-      </Link>
+        </Link>
+        <Link href="/chat">
+        <a>
+          <button className="btn btn-orange btn-outlined">Chat</button>
+        </a>
+        </Link>
+
       </div>
     </header>
   )

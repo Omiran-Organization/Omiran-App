@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const ProfileDataQuery = gql`
     query Users($uuid: String!) {
-      Users {
+      User (uuid: $uuid) {
         uuid
         username
         email

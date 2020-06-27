@@ -4,7 +4,7 @@ import Head from 'next/head'
 import PasswordInput from '../components/passwordinput'
 
 import { useRouter } from 'next/router'
-import { signin } from '../auth/api-auth'
+import { signin,signout } from '../auth/api-auth'
 
 import { UserData } from '@/types';
 
@@ -21,12 +21,15 @@ const LoginPage: React.FunctionComponent = () => {
       username,
       password,
     }
-
+    console.log(credentials)
+    
+    signout()
     signin(credentials)
       .then(async (res) => {
         const body = await res.text()
         try {
           const data: UserData = JSON.parse(body)
+          console.log(data)
           router.push(`/profile/${ data.uuid }`)
         } catch {
           setErrorMessage(body)

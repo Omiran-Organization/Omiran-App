@@ -23,7 +23,7 @@ const signin = (credentials: Credentials): Promise<Response> => {
 
 const signout = (): Promise<Response> => {
   return fetch(API_URL + '/signout', {
-    method: 'POST',
+    method: 'DELETE',
     credentials: 'include',
   })
 }

@@ -56,10 +56,10 @@ func main() {
 	r.GET("/newstreamkey", handler.CreateNewStreamKey)
 
 	//WebSocket Related Routes
-	r.LoadHTMLFiles("index.html")
-	r.GET("/room/:roomId", func(c *gin.Context) {
-		c.HTML(200, "index.html", nil)
-	})
+	// // r.LoadHTMLFiles("index.html")
+	// r.GET("/room/:roomId", func(c *gin.Context) {
+	// 	c.HTML(200, "index.html", nil)
+	// })
 	r.GET("/ws/:roomId", func(c *gin.Context) {
 		roomID := c.Param("roomId")
 		handler.OpenWebSocket(c.Writer, c.Request, roomID)
