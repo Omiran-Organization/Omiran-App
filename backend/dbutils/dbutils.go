@@ -78,18 +78,14 @@ func Open() {
 	}
 }
 
-// SelectAllUsers returns all Users from the User table
-func SelectAllUsers() []User {
-	users := []User{}
-	DB.Select(&users, "SELECT uuid, username, email, description, profile_picture FROM User")
-	return users
+// SelectUserByUsername selects a user by their username
+func SelectUserByUsername(username string, user *User) error {
+	return DB.Get(user, "SELECT uuid, username, email, description, profile_picture, password FROM User WHERE username = ?", username)
 }
 
-// SelectAllFollows returns all Follows from the Follows table
-func SelectAllFollows() []Follows {
-	follows := []Follows{}
-	DB.Select(&follows, "SELECT uuid, user_following FROM Follows")
-	return follows
+// SelectUserByUUID selects a user by their uuid
+func SelectUserByUUID(uuid uuid.UUID, user *User) error {
+	return DB.Get(user, "SELECT uuid, username, email, description, profile_picture, password FROM User WHERE uuid = ?", uuid)
 }
 
 // HashPassword hashes password
@@ -168,7 +164,8 @@ func checkPasswordHash(password, hash string) bool {
 func Auth(username string, password string) (User, error) {
 	var user User
 
-	err := DB.Get(&user, "SELECT uuid, username, password, email, description, profile_picture FROM User WHERE username = ? LIMIT 1", username)
+	err := SelectUserByUsername(username, &user)
+	log.Println(user)
 
 	if err != nil && err != sql.ErrNoRows {
 		log.Printf("user auth err %s\n", err)
@@ -176,6 +173,7 @@ func Auth(username string, password string) (User, error) {
 		return User{}, ErrInternalServer
 
 	} else if err == sql.ErrNoRows {
+		log.Printf("user doesn't exist %s\n", err)
 		// Username does not exist
 		return User{}, ErrUnauthorized
 	}

@@ -75,7 +75,7 @@ func AccountCreationHandler(c *gin.Context) {
 
 // StartFollowingHandler handles follow requests
 func StartFollowingHandler(c *gin.Context) {
-	UUID, err := redis.GetLoggedInUUID(c)
+	UUID, err := redis.GetLoggedInUUID(c.Request)
 
 	if err != nil {
 		c.String(400, "unauthorized")

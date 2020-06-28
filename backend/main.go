@@ -62,7 +62,7 @@ func main() {
 	// })
 	r.GET("/ws/:roomId", func(c *gin.Context) {
 		roomID := c.Param("roomId")
-		handler.OpenWebSocket(c.Writer, c.Request, roomID)
+		handler.OpenWebSocket(c, roomID)
 	})
 	// r.GET("/ws/roomId", handler.OpenWebSocket)
 	r.Run()

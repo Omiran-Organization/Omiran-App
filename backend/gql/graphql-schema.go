@@ -48,15 +48,6 @@ var followsType = graphql.NewObject(
 // GraphQLSchema is the schema for the graphql endpoint of Omiran
 func GraphQLSchema() graphql.Schema {
 	fields := graphql.Fields{
-		"Users": &graphql.Field{
-			Type:        graphql.NewList(userType),
-			Description: "All Users",
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				users := dbutils.SelectAllUsers()
-				return users, nil
-			},
-		},
-
 		"User": &graphql.Field{
 			Type:        userType,
 			Description: "get users by uuid or username",
@@ -70,8 +61,8 @@ func GraphQLSchema() graphql.Schema {
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				var user dbutils.User
-				if name, ok := params.Args["username"]; ok {
-					err := dbutils.DB.Get(&user, "SELECT uuid, username, email, description, profile_picture FROM User WHERE username = ?", name)
+				if username, ok := params.Args["username"]; ok {
+					err := dbutils.SelectUserByUsername(username.(string), &user)
 					if err != nil {
 						return nil, nil
 					}
@@ -81,7 +72,7 @@ func GraphQLSchema() graphql.Schema {
 					if err != nil {
 						return nil, nil
 					}
-					err = dbutils.DB.Get(&user, "SELECT uuid, username, email, description, profile_picture FROM User WHERE uuid = ?", uuid)
+					err = dbutils.SelectUserByUUID(uuid, &user)
 					if err != nil {
 						return nil, nil
 					}

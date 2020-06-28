@@ -55,9 +55,9 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
   useEffect(() => {
     if (!ws.current) return;
     ws.current.addEventListener('message', message => {
-
+      console.log(message)
       if (isPaused) return;
-      setMessages(messages => [...messages, message]);
+      setMessages(messages => [...messages, JSON.parse(message.data)]);
       
     });
     
@@ -67,7 +67,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     event.preventDefault();
 
     if (message) {
-      ws.current.send(message+ " " +userData.username, () => setMessage(''));
+      ws.current.send(message, () => setMessage(''));
 
     }
   }

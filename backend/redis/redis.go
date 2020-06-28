@@ -3,6 +3,7 @@ package redis
 import (
 	"Omiran-App/backend/dbutils"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
@@ -101,10 +102,9 @@ func DeleteSessionByToken(c *gin.Context) error {
 
 // GetLoggedInUUID gets the uuid of the currently logged in user.
 // Can be used to check if the user is currently logged in.
-func GetLoggedInUUID(c *gin.Context) (uuid.UUID, error) {
-	// func GetUser(c *gin.Context) {
-
-	cookie, err := c.Request.Cookie("session_token")
+func GetLoggedInUUID(r *http.Request) (uuid.UUID, error) {
+	cookie, err := r.Cookie("session_token")
+	log.Println(cookie)
 	if err != nil {
 		return uuid.UUID{}, dbutils.ErrUnauthorized
 	}

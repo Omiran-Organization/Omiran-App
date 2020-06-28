@@ -59,7 +59,7 @@ func GetStreamKey(c *gin.Context) {
 
 	// If logged in, fetch stream key for that user.
 
-	uuid, err := redis.GetLoggedInUUID(c)
+	uuid, err := redis.GetLoggedInUUID(c.Request)
 
 	if err != nil {
 		c.String(400, "unauthorized")
@@ -96,7 +96,7 @@ func GetStreamKey(c *gin.Context) {
 func CreateNewStreamKey(c *gin.Context) {
 
 	// If logged in, create or update key for user.
-	uuid, err := redis.GetLoggedInUUID(c)
+	uuid, err := redis.GetLoggedInUUID(c.Request)
 
 	if err != nil {
 		c.String(400, "unauthorized")

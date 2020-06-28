@@ -1,9 +1,14 @@
 package handler
 
 import (
+	"Omiran-App/backend/dbutils"
+	"Omiran-App/backend/redis"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/gorilla/websocket"
 )
@@ -38,8 +43,9 @@ type hub struct {
 }
 
 type message struct {
-	data []byte
-	room string
+	Data   string `json:"message"`
+	room   string
+	Sender string `json:"sender"`
 }
 
 type subscription struct {
@@ -48,18 +54,37 @@ type subscription struct {
 }
 
 type connection struct {
-	ws   *websocket.Conn
-	send chan []byte
+	ws       *websocket.Conn
+	username string
+	send     chan []byte
 }
 
 //OpenWebSocket opens a connection to our nice websocket
-func OpenWebSocket(w http.ResponseWriter, r *http.Request, roomID string) {
-	ws, err := upgrader.Upgrade(w, r, nil)
+func OpenWebSocket(c *gin.Context, roomID string) {
+	uuid, err := redis.GetLoggedInUUID(c.Request)
 	if err != nil {
-		log.Println(err.Error())
+		switch err {
+		case dbutils.ErrUnauthorized:
+			c.String(401, err.Error())
+		case dbutils.ErrInternalServer:
+			c.String(500, err.Error())
+		default:
+			c.String(500, "internal server error")
+		}
 		return
 	}
-	co := &connection{send: make(chan []byte, 256), ws: ws}
+	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		c.String(500, "Server Error")
+		return
+	}
+	var user dbutils.User
+	err = dbutils.SelectUserByUUID(uuid, &user)
+	if err != nil {
+		c.String(500, "Server Error")
+		return
+	}
+	co := &connection{send: make(chan []byte, 256), ws: ws, username: user.Username}
 	s := subscription{co, roomID}
 	H.register <- s
 	go s.writePump()
@@ -96,7 +121,7 @@ func (s subscription) readPump() {
 			}
 			break
 		}
-		m := message{msg, s.room}
+		m := message{string(msg), s.room, c.username}
 		H.broadcast <- m
 	}
 }
@@ -149,9 +174,10 @@ func (H *hub) Run() {
 			}
 		case m := <-H.broadcast:
 			connections := H.rooms[m.room]
+			data, _ := json.Marshal(m)
 			for c := range connections {
 				select {
-				case c.send <- m.data:
+				case c.send <- data:
 				default:
 					close(c.send)
 					delete(connections, c)
