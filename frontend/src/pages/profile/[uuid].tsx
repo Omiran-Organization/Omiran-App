@@ -20,6 +20,7 @@ type ProfilePageProps = {
 }
 
 const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloState }) => {
+
   //initialApolloState is props retrieved from server side
   const apolloClient = useApollo(initialApolloState)
   const router = useRouter()
@@ -27,6 +28,7 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
   const [message, setMessage] = useState('');
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
 
   const ws = useRef(null)
 
@@ -49,13 +51,13 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
     return () => {
       ws.current.close()
     }
-    
+
   }, []);
 
   useEffect(() => {
     if (!ws.current) return;
     ws.current.addEventListener('message', message => {
-      console.log(message)
+
       if (isPaused) return;
       setMessages(messages => [...messages, JSON.parse(message.data)]);
       
@@ -65,18 +67,21 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
  
   const sendMessage = (event) => {
     event.preventDefault();
-
+    console.log(event.target)
     if (message) {
       ws.current.send(message, () => setMessage(''));
-
     }
+    setInput("")
   }
-
+  const sendToStream = function () {
+    router.push(`/streams/${ userData.uuid }`)
+  }
   return (
     <div className="main flex flex-col">
       <Head>
         <title>{ userData.username } - Omiran</title>
       </Head>
+  
       <div className="flex-grow"/>
       <div className="flex-1 flex-col border border-gray-500 rounded-lg w-11/12 md:w-4/5 p-5 mx-auto">
         <div className="flex flex-row items-center w-full">
@@ -100,12 +105,12 @@ const ProfilePage: React.FunctionComponent<ProfilePageProps> = ({ initialApolloS
           </div>
           <div className="flex-grow" />
           <button className="btn btn-orange">{true ? 'Edit Profile' : 'Follow'}</button>
-
+          <button className="btn btn-orange btn-outlined" onClick={sendToStream}>Streams</button>
             <div className="outerContainer flex-grow">
               <div className="container flex-grow">
                 <InfoBar room={99} />
                 <Messages messages={messages}  name={userData.username} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} input={input} setInput={setInput}/>
               </div>
               <TextContainer users={users}/>
               </div>

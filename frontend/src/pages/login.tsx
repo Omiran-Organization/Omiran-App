@@ -15,6 +15,13 @@ const LoginPage: React.FunctionComponent = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
+  const hitLogin = () => {
+    if (username && password) {
+      tryLogin()
+    } else {
+      return false
+    }
+  }
   
   const tryLogin = () => {
     const credentials = {
@@ -37,6 +44,7 @@ const LoginPage: React.FunctionComponent = () => {
       })
   }
 
+
   return (
     <div className="main flex flex-col items-center w-4/5 md:w-2/5 mx-auto">
       <Head>
@@ -54,6 +62,8 @@ const LoginPage: React.FunctionComponent = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          onKeyPress={event => event.key === 'Enter' &&  ? sendMessage(event) : null}
+
           id="email-username-input"
         />
       </div>
