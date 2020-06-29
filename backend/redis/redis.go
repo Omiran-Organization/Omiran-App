@@ -2,11 +2,14 @@ package redis
 
 import (
 	"Omiran-App/backend/dbutils"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
+	"github.com/joho/godotenv"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -14,13 +17,30 @@ import (
 var Cache redis.Conn
 var session string
 
+func getEnv() string {
+	return os.Getenv("APP_ENV")
+}
+
 // InitCache creates the cache
 func InitCache() {
-	conn, err := redis.DialURL("redis://localhost")
+	var err error
+	if getEnv() == "prod" {
+		err = godotenv.Load(".env_prod")
+	} else {
+		err = godotenv.Load(".env")
+	}
+
+	if err != nil {
+		log.Fatalf("Error getting env, %v", err)
+	} else {
+		fmt.Println("We are getting the env values")
+	}
+	conn, err := redis.DialURL(fmt.Sprintf("redis://%s", os.Getenv("REDIS")))
 	if err != nil {
 		panic(err)
 	}
 	Cache = conn
+
 }
 
 // SetCachePlusToken sets the cache

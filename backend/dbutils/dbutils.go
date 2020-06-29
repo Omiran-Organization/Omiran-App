@@ -15,11 +15,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func init() {
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		log.Print("sad .env file found")
-	}
+// func init() {
+// 	// loads values from .env into the system
+// 	if err := godotenv.Load(); err != nil {
+// 		log.Print("sad .env file found")
+// 	}
+// }
+
+func getEnv() string {
+	return os.Getenv("APP_ENV")
 }
 
 var (
@@ -61,15 +65,20 @@ type Follows struct {
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
 func Open() {
+	// var err error
+	// err = godotenv.Load("")
+	// if err != nil {
+	// 	log.Fatalf("Error getting env, %v", err)
+	// } else {
+	// 	fmt.Println("We are getting the env values")
+	// }
 	var err error
-	err = godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error getting env, %v", err)
+	if getEnv() == "prod" {
+		err = godotenv.Load(".env_prod")
 	} else {
-		fmt.Println("We are getting the env values")
+		err = godotenv.Load(".env")
 	}
-
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%s)/Omiran", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT")))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
 
 	// 	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
 
