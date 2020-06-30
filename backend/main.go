@@ -5,6 +5,7 @@ import (
 	"Omiran-App/backend/redis"
 	"time"
 
+	"Omiran-App/backend/algolia"
 	"Omiran-App/backend/dbutils"
 
 	"github.com/gin-contrib/cors"
@@ -19,6 +20,7 @@ func init() {
 	dbutils.Open()
 	handler.InitGQLSchema()
 	redis.InitCache()
+	algolia.InitAlgolia()
 }
 
 func main() {

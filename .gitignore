@@ -3,6 +3,7 @@ backend/config.yaml
 backend/vendor
 backend/backend-config.yaml
 backend/.env
+frontend/.env.local
 backend/.env_prod
 node_modules
 .vscode

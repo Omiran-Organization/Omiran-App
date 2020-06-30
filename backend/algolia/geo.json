@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Hartsfield Jackson Atlanta Intl",
+    "city": "Atlanta",
+    "country": "United States",
+    "airport_id": "ATL",
+    "_geoloc": {
+      "lat": 33.636719,
+      "lng": -84.428067
+    },
+    "nb_airline_liaisons": 1826
+  }
+]

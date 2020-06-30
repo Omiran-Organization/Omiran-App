@@ -33,7 +33,7 @@ func InitCache() {
 	if err != nil {
 		log.Fatalf("Error getting env, %v", err)
 	} else {
-		fmt.Println("We are getting the env values")
+		log.Println("We are getting the env values")
 	}
 	conn, err := redis.DialURL(fmt.Sprintf("redis://%s", os.Getenv("REDIS")))
 	if err != nil {

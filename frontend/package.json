@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "algoliasearch": "^4.3.0",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
     "babel-jest": "^26.0.1",
+    "dotenv": "^8.2.0",
     "graphql": "^15.1.0",
     "graphql-tag": "^2.10.3",
     "next": "^9.4.1",
@@ -22,6 +24,8 @@
     "react-dom": "^16.13.1",
     "react-emoji": "^0.5.0",
     "react-hls-player": "^0.1.6",
+    "react-instantsearch": "^6.6.0",
+    "react-instantsearch-dom": "^6.6.0",
     "react-redux": "^7.2.0",
     "react-scroll-to-bottom": "^3.0.0",
     "tailwindcss": "^1.4.6"

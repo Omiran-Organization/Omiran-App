@@ -3,6 +3,7 @@ module Omiran-App/backend
 go 1.13
 
 require (
+	github.com/algolia/algoliasearch-client-go/v3 v3.4.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
@@ -21,6 +22,7 @@ require (
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/satori/go.uuid v1.2.0
+	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.7 // indirect
