@@ -3,6 +3,7 @@ FROM node:13.12.0 as build
 
 WORKDIR /usr/src/app/
 ENV TZ America/New_York
+ENV NODE_ENV=prod
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json . /usr/src/app/
 RUN npm install

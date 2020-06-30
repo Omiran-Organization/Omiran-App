@@ -11,10 +11,8 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "http://localhost:8080/graphql", // Server URL (must be absolute)
+      uri: process.env.NODE_ENV=="prod" ? "http://full_app:8080/graphql":"http://localhost:8080/graphql", // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-      // uri: process.env.API_URL + '/graphql', // Server URL (must be absolute)
-
     }),
     connectToDevTools: true, //make false for production
     cache: new InMemoryCache(),

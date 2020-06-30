@@ -62,8 +62,6 @@ const LoginPage: React.FunctionComponent = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          onKeyPress={event => event.key === 'Enter' &&  ? sendMessage(event) : null}
-
           id="email-username-input"
         />
       </div>

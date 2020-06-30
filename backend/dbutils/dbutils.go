@@ -15,13 +15,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// func init() {
-// 	// loads values from .env into the system
-// 	if err := godotenv.Load(); err != nil {
-// 		log.Print("sad .env file found")
-// 	}
-// }
-
 func getEnv() string {
 	return os.Getenv("APP_ENV")
 }
@@ -65,13 +58,7 @@ type Follows struct {
 
 // Open is a boilerplate function that handles opening of the database (reading credentials from a yaml file as well to open said database)
 func Open() {
-	// var err error
-	// err = godotenv.Load("")
-	// if err != nil {
-	// 	log.Fatalf("Error getting env, %v", err)
-	// } else {
-	// 	fmt.Println("We are getting the env values")
-	// }
+
 	var err error
 	if getEnv() == "prod" {
 		err = godotenv.Load(".env_prod")
