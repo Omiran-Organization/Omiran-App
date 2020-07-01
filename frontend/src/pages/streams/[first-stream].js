@@ -18,7 +18,7 @@ export default function FirstPost() {
       <title>Omiran</title>
     </Head>
     <div className="flex mb-4">
-      <div class="w-full bg-gray-500 h-12">
+      <div className="w-full bg-gray-500 h-12">
       <ReactHLS url={'http://localhost:8008/live/zoomer.m3u8'} controls={true} />
       </div>
     </div>

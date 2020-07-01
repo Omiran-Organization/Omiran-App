@@ -15,8 +15,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    # environment:
-    #   - NODE_ENV=development
+    environment:
+      - NODE_ENV=development
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
