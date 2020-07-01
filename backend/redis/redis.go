@@ -2,7 +2,6 @@ package redis
 
 import (
 	"Omiran-App/backend/dbutils"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -24,8 +23,8 @@ func getEnv() string {
 // InitCache creates the cache
 func InitCache() {
 	var err error
-	if getEnv() == "prod" {
-		err = godotenv.Load(".env_prod")
+	if getEnv() == "development" {
+		err = godotenv.Load(".env_dev")
 	} else {
 		err = godotenv.Load(".env")
 	}
@@ -35,7 +34,8 @@ func InitCache() {
 	} else {
 		log.Println("We are getting the env values")
 	}
-	conn, err := redis.DialURL(fmt.Sprintf("redis://%s", os.Getenv("REDIS")))
+	conn, err := redis.DialURL("redis://redis")
+	// conn, err := redis.DialURL(fmt.Sprintf("redis://%s", os.Getenv("REDIS")))
 	if err != nil {
 		panic(err)
 	}

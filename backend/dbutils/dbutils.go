@@ -60,12 +60,13 @@ type Follows struct {
 func Open() {
 
 	var err error
-	if getEnv() == "prod" {
-		err = godotenv.Load(".env_prod")
+	if getEnv() == "development" {
+		err = godotenv.Load(".env_dev")
 	} else {
 		err = godotenv.Load(".env")
 	}
-	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
+	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(full_db_mysql:%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
+	// DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
 
 	// 	DB, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(localhost:%d)/Omiran", infostruct.User, infostruct.Password, infostruct.Port))
 

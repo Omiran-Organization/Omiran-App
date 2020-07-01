@@ -4,7 +4,7 @@ type Credentials = {
 }
 
 // Removed async so that we can do error handling in component
-const API_URL = process.env.API_URL ?? 'http://localhost:8080'
+const API_URL = 'http://localhost:8080'
 
 const signup = (credentials: Credentials & { email: string }): Promise<Response> => {
   return fetch(API_URL + '/signup', {

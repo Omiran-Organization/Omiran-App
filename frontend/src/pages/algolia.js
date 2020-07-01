@@ -18,7 +18,7 @@ import Head from "next/head";
 
 
 const searchClient = algoliasearch(
-    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 );
 
@@ -29,19 +29,20 @@ class App extends Component {
         
        
       <div className="main flex flex-col">
-      <Head>
+      {/* <Head>
         <title> Omiran</title>
-      </Head>
-         <h1>React InstantSearch e-commerce demo</h1>
+      </Head> */}
+      <div className="flex-grow py-100"/>
+         <h1>React InstantSearch </h1>
          <InstantSearch indexName="demo_ecommerce" searchClient={searchClient} >
-           <div className="left-panel">
+           <div className="left-panel py-40">
              <ClearRefinements />
              <h2>Brands</h2>
              {/* <RefinementList attribute="brand" /> */}
              {/* <Configure hitsPerPage={8} /> */}
            </div>
 
-           <div className="right-panel py-10">
+           <div className="right-panel py-40">
              <SearchBox className="input w-64 mb-3"/>
              <Hits hitComponent={Hit} />
              <Pagination />
@@ -49,8 +50,8 @@ class App extends Component {
          </InstantSearch>
 
 
-        <div className="flex-grow" />
-  </div>
+        <div />
+    </div>
 
   )}
 }

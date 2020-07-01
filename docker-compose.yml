@@ -15,6 +15,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    # environment:
+    #   - NODE_ENV=development
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
@@ -44,6 +46,8 @@ services:
     ports: 
       - 8080:8080 
     restart: on-failure
+    environment:
+      - APP_ENV=development
     volumes:
       - api:/usr/src/app/
     depends_on:

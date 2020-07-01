@@ -13,7 +13,7 @@ RUN apk update && apk add --no-cache git
 
 # Set the current working directory inside the container 
 WORKDIR /app
-ENV APP_ENV=prod
+
 # Copy go mod and sum files 
 COPY go.mod go.sum ./
 
@@ -35,7 +35,7 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage. Observe we also copied the .env file
 COPY --from=builder /app/main .
 COPY --from=builder /app/.env . 
-COPY --from=builder /app/.env_prod . 
+COPY --from=builder /app/.env_dev . 
 # COPY --from=builder /app/config.yaml .
 COPY --from=builder /app/index.html .
 # Expose port 8080 to the outside world

@@ -5,6 +5,7 @@ backend/backend-config.yaml
 backend/.env
 frontend/.env.local
 backend/.env_prod
+backend/.env_dev
 node_modules
 .vscode
 enviro.sh

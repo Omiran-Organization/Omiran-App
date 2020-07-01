@@ -2,9 +2,10 @@ package algolia
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
-	"log"
+
 	"github.com/algolia/algoliasearch-client-go/v3/algolia/opt"
 	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/joho/godotenv"
@@ -12,8 +13,8 @@ import (
 
 func init() {
 	var err error
-	if getEnv() == "prod" {
-		err = godotenv.Load(".env_prod")
+	if getEnv() == "development" {
+		err = godotenv.Load(".env_dev")
 	} else {
 		err = godotenv.Load(".env")
 	}
@@ -34,22 +35,25 @@ func InitAlgolia() {
 	// client := search.NewClient(Sprintf(("%s","%s"),os.Getenv("ALGOLIA_APP_ID"),os.Getenv("ALGOLIA_ADMIN_KEY")))
 	index := client.InitIndex("demo_ecommerce")
 
-	
 	getRes, _ := http.Get("https://alg.li/doc-ecommerce.json")
 	defer getRes.Body.Close()
 
 	var products []map[string]interface{}
 	err := json.NewDecoder(getRes.Body).Decode(&products)
 	// error handling
-
-	res, err := index.SaveObjects(products, opt.AutoGenerateObjectIDIfNotExist(true))
 	if err != nil {
 		log.Fatalf("Error setting up algolia, %v", err)
 	} else {
 		log.Println("Setting up algolia")
 	}
-	log.Println(res)
-	res2, err2 := index.SetSettings(search.Settings{
+	_, err = index.SaveObjects(products, opt.AutoGenerateObjectIDIfNotExist(true))
+	if err != nil {
+		log.Fatalf("Error setting up algolia, %v", err)
+	} else {
+		log.Println("Setting up algolia")
+	}
+
+	_, err = index.SetSettings(search.Settings{
 		// Select the attributes you want to search in
 		SearchableAttributes: opt.SearchableAttributes(
 			"brand", "name", "categories", "description",
@@ -63,12 +67,12 @@ func InitAlgolia() {
 			"categories", "searchable(brand)", "price",
 		),
 	})
-	if err2 != nil {
-		log.Fatalf("Error setting up algolia, %v", err2)
+	if err != nil {
+		log.Fatalf("Error setting up algolia, %v", err)
 	} else {
 		log.Println("Setting up algolia")
 	}
-	log.Println(res2)
+
 } // error handling
 // type Contact struct {
 // 	Firstname string

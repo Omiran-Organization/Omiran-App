@@ -28,7 +28,7 @@ const LoginPage: React.FunctionComponent = () => {
       username,
       password,
     }
-    console.log(credentials)
+    
     
     signout()
     signin(credentials)
@@ -36,7 +36,7 @@ const LoginPage: React.FunctionComponent = () => {
         const body = await res.text()
         try {
           const data: UserData = JSON.parse(body)
-          console.log(data)
+
           router.push(`/profile/${ data.uuid }`)
         } catch {
           setErrorMessage(body)
