@@ -30,11 +30,11 @@ services:
     ports: 
       - 3306:3306
     environment: 
-      - MYSQL_ROOT_HOST=${DB_HOST} 
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_HOST=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=
+      - MYSQL_ROOT_PASSWORD=
     volumes:
       - database_mysql:/var/lib/mysql
     networks:
