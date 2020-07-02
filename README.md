@@ -31,6 +31,22 @@ An open source live streaming application that is developer-oriented and removes
 - Redux
 - Apollo-Client
 
+## Installation and Setup
+
+1. Clone the repository
+2. Go into `docker-compose.yml` (in the root directory of the project)
+3. Locate these environment variables:
+```yml
+      - MYSQL_ROOT_HOST=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=
+```
+4. Fill them with your preferred values (database name, for the time being, must be, `Omiran`, which is already taken care of for you) 
+
+5. Run: `./automate-build.sh`
+
+6. Happy Hacking!
 
 ## Architecture And Design
 
@@ -43,9 +59,3 @@ An open source live streaming application that is developer-oriented and removes
 ### [Streaming Architecture](architecture-prototypes/streaming.png)
 
 ### [Container Orchestration Conception](architecture-prototypes/container-orchestration-prototype.png)
-
-## Todo list
-
-### [Frontend](frontend.md)
-
-### [Backend](backend.md)
