@@ -48,6 +48,8 @@ An open source live streaming application that is developer-oriented and removes
 
 6. Happy Hacking!
 
+*directions regarding creating database tables have not been included yet as there is ambiguity in development currently about whether this process of configuration should be abstracted away from the user; algolia configuration directions are soon to come as well*
+
 ## Architecture And Design
 
 ### [Database Schema](database-schema.md)
