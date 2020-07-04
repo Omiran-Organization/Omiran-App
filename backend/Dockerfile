@@ -39,7 +39,7 @@ COPY --from=builder /app/main .
 # COPY --from=builder /app/config.yaml .
 COPY --from=builder /app/index.html .
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 8080app
 EXPOSE 5000
 
 #Command to run the executable
