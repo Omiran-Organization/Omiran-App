@@ -14,14 +14,11 @@ import (
 func init() {
 	var err error
 	if getEnv() == "development" {
-		err = godotenv.Load(".env_dev")
-	} else {
-		err = godotenv.Load(".env")
+		err = godotenv.Load()
 	}
+
 	if err != nil {
 		log.Fatalf("Error getting env, %v", err)
-	} else {
-		log.Println("We are getting the env values")
 	}
 }
 
