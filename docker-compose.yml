@@ -1,0 +1,91 @@
+version: '3.7'
+# version: '3'
+
+services:
+
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    networks:
+      - fullstack
+  
+  nextjs:
+    ports:
+      - 3000:3000
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+      - ALGOLIA_ADMIN_KEY=
+      - ALGOLIA_SEARCH_KEY=
+      - ALGOLIA_APP_ID=
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    networks:
+      - fullstack
+
+  fullstack-mysql:
+    image: mysql:5.7
+    container_name: full_db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=
+      - MYSQL_ROOT_PASSWORD=
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
+
+  app:
+    container_name: full_app
+    build: ./backend
+    ports: 
+      - 8080:8080 
+    restart: on-failure
+    environment:
+      - ALGOLIA_ADMIN_KEY=
+      - ALGOLIA_SEARCH_KEY=
+      - ALGOLIA_APP_ID=
+      - APP_ENV=
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - fullstack-mysql  
+      - redis       
+    networks:
+      - fullstack
+    
+
+  nginx-rtmp:
+    container_name: rtmp
+    build: ./docker-nginx-rtmp
+    ports:
+      - 1935:1935
+      # - 8080:80
+      - 8008:80
+      - 8443:443
+    environment:
+      - HTTP_PORT=80
+      - RTMP_PORT=1935
+    volumes:
+      - ./certs:/opt/certs  
+    networks:
+      - fullstack
+  
+volumes:
+  api:                
+  database_mysql:                   
+
+networks:
+  fullstack:
+    driver: bridge
+
+
+

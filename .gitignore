@@ -9,4 +9,3 @@ backend/.env_dev
 node_modules
 .vscode
 enviro.sh
-docker-compose.yml
