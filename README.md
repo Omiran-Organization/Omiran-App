@@ -42,6 +42,13 @@ An open source live streaming application that is developer-oriented and removes
       - MYSQL_PASSWORD=
       - MYSQL_ROOT_PASSWORD=
 ```
+
+```yml
+      - ALGOLIA_ADMIN_KEY=
+      - ALGOLIA_SEARCH_KEY=
+      - ALGOLIA_APP_ID=
+```
+
 4. Fill them with your preferred values (database name, for the time being, must be, `Omiran`, which is already taken care of for you) 
 
 5. Run: `./automate-build.sh`
