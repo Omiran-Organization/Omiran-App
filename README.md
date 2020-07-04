@@ -59,12 +59,16 @@ An open source live streaming application that is developer-oriented and removes
 7. Locate the PID for mysql, and run this:
 `sudo docker exec -it [PID] bash`
 
+8. Once you've entered the MySql container shell, run:
+`sudo mysql -u root -p`
 
-7. Happy Hacking!
+9. Copy and paste the commands from `database-schema.sql`
+
+10. Exit the container shell and access the app!
+
+11. Happy Hacking!
 
 *note, running `automate-build.sh` will take a long time as it builds everything from scratch*
-
-*directions regarding creating database tables have not been included yet as there is ambiguity in development currently about whether this process of configuration should be abstracted away from the user; algolia configuration directions are soon to come as well*
 
 ## Architecture And Design
 
