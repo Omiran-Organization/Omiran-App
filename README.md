@@ -53,7 +53,14 @@ An open source live streaming application that is developer-oriented and removes
 
 5. Run: `./automate-build.sh`
 
-6. Happy Hacking!
+6. After running `./automate-build.sh` for the first time, run
+`docker ps`
+
+7. Locate the PID for mysql, and run this:
+`sudo docker exec -it [PID] bash`
+
+
+7. Happy Hacking!
 
 *note, running `automate-build.sh` will take a long time as it builds everything from scratch*
 
