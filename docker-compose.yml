@@ -17,9 +17,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=development
-      - ALGOLIA_ADMIN_KEY=16621e7fda40d67257414624822fa3bd
-      - ALGOLIA_SEARCH_KEY=2226e8c5e19c20524cf820cc02beca24
-      - ALGOLIA_APP_ID=L33H3A4YMG
+      - ALGOLIA_ADMIN_KEY=
+      - ALGOLIA_SEARCH_KEY=
+      - ALGOLIA_APP_ID=
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
@@ -33,11 +33,11 @@ services:
     ports: 
       - 3306:3306
     environment: 
-      - MYSQL_ROOT_HOST=full_db_mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=lulz
-      - MYSQL_DATABASE=Omiran
-      - MYSQL_ROOT_PASSWORD=lulz
+      - MYSQL_ROOT_HOST=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=
+      - MYSQL_ROOT_PASSWORD=
     volumes:
       - database_mysql:/var/lib/mysql
     networks:
@@ -50,10 +50,10 @@ services:
       - 8080:8080 
     restart: on-failure
     environment:
-      - ALGOLIA_ADMIN_KEY=16621e7fda40d67257414624822fa3bd
-      - ALGOLIA_SEARCH_KEY=2226e8c5e19c20524cf820cc02beca24
-      - ALGOLIA_APP_ID=L33H3A4YMG
-      - APP_ENV=development
+      - ALGOLIA_ADMIN_KEY=
+      - ALGOLIA_SEARCH_KEY=
+      - ALGOLIA_APP_ID=
+      - APP_ENV=
     volumes:
       - api:/usr/src/app/
     depends_on:
