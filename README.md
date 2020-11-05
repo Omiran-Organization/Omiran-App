@@ -8,38 +8,21 @@ An open source live streaming application that is developer-oriented and removes
 - Live websocket stream chat
 - Live streaming and future quirk integration
 - 0% deduction in subscription revenue to streamer
-- User and livestream search yielding optimized responses using elasticsearch
+- User and livestream search 
 
 ## Tech Stack
 
-- MinIO (potentially)
-- NextJS
+- Amazon S3 (or some other bucket storage solution) 
 - React
-- React Native 
-- Go 
-- Go gin router
+- Go (vanilla HTTP router)
 - MySQL
-- GraphQL
-- Docker
+- GraphQL (could adopt a RESTful architecture as well)
+- Docker (eventually)
 - RTMP
-- TailwindCSS
+- Bootstrap
 - Redis (caching)
 - SocketIO
 - Bash
 - Typescript
 - Docker-Compose
-- Redux
 - Apollo-Client
-
-
-## Architecture And Design
-
-### [Database Schema](database-schema.md)
-
-### [Chat Architecture](architecture-prototypes/chat.png)
-
-### [GraphQL service](architecture-prototypes/view_data_querying_architecture.png)
-
-### [Streaming Architecture](architecture-prototypes/streaming.png)
-
-### [Container Orchestration Conception](architecture-prototypes/container-orchestration-prototype.png)
